@@ -4,12 +4,16 @@ import Type;
 
 import org.transition9.async.AsyncLambda;
 
-import haxe.rtti.MetaUtil;
+import org.transition9.rtti.MetaUtil;
 
 import js.Lib;
 
 using StringTools;
 
+
+/**
+  * Simple async testing.  Workds with Node.js
+  */
 class AsyncTestTools
 {
 	static var ASYNC_LABEL = "AsyncTest";
@@ -45,7 +49,6 @@ class AsyncTestTools
 			untyped __js__('process.exit(0)');
 		});
 	}
-	
 	
 	public static function doTests (cls :Class<Dynamic>, testsComplete :TestResults->Void) :Void
 	{
@@ -156,8 +159,6 @@ class AsyncTestTools
 		
 		AsyncLambda.iter(asyncTestQueue, doAsyncCall, onFinish);
 	}
-	
-	
 }
 
 class TestResults

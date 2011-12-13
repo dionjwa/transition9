@@ -1,6 +1,6 @@
 package async;
 
-import com.pblabs.util.Assert;
+import org.transition9.util.Assert;
 
 import org.transition9.async.Step;
 
@@ -13,7 +13,7 @@ using StringTools;
 /**
  * Serialization tests
  */
-class AsyncTest 
+class StepTest 
 {
 	public function new() 
 	{

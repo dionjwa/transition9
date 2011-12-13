@@ -8,7 +8,7 @@ os.system("createhaxelib.py etc/haxelib.xml src")
 #haxelib install the first found zip file
 for f in os.listdir("."):
 	if f.endswith(".zip"):
-		os.system("haxelib test " + f)
+		os.system("haxelib submit " + f)
 		os.remove(f)
 		break;
 

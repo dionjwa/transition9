@@ -1,7 +1,7 @@
 <project name="transition9" url="https://github.com/dionjwa/transition9" license="BSD">
         <user name="dionjwa"/>
-        <description>Useful tools for async programming, designed for Node.js.</description>
-        <version name="0.1">Initial import</version>
+        <description>A collection of tools, including async utilities for Node.js.</description>
+        <version name="0.2">Initial import</version>
         <tag v="nodejs"/>
         <tag v="asynchronous"/>
 </project>

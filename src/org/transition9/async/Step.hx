@@ -35,8 +35,8 @@ class Step
 	  */
 	public function cb (err :Dynamic, result :Dynamic) :Void
 	{
-		com.pblabs.util.Assert.isNotNull(_chain);
-		com.pblabs.util.Assert.isTrue(_chain.length > 0);
+		org.transition9.util.Assert.isNotNull(_chain);
+		org.transition9.util.Assert.isTrue(_chain.length > 0);
 		
 		//If there is an error, call the final function
 		if (err != null) {
@@ -76,7 +76,7 @@ class Step
 	
 	function handleError (err :Dynamic) :Void
 	{
-		com.pblabs.util.Assert.isTrue(_chain.length > 0);
+		org.transition9.util.Assert.isTrue(_chain.length > 0);
 		_pendingResults = null;
 		_pendingErrors = null;
 		_pending = 0;
