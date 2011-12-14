@@ -1,6 +1,8 @@
 package org.transition9.util;
 
+#if js
 import js.Dom;
+#end
 
 using org.transition9.util.StringUtil;
 
@@ -31,6 +33,7 @@ class DomUtil
 		return style + ";" + name + ":" + value;
 	}
 	
+	#if js
 	public static function removeAllChildren (dom :HtmlDom) :HtmlDom
 	{
 		while (dom.lastChild != null) {
@@ -38,5 +41,6 @@ class DomUtil
 		}
 		return dom;
 	}
+	#end
 	
 }

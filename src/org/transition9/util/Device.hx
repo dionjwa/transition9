@@ -41,7 +41,7 @@ class Device
 	public static var isMobileBrowser = {
 		browser == Browser.SAFARI_IOS || browser == Browser.ANDROID;//TODO: Android browsers.  How to detect?
 	}
-	#end
+	
 	
 	public static function getScreenDimensions () :XY
 	{
@@ -58,4 +58,6 @@ class Device
 		}
 		
 	}
+	
+	#end
 }
