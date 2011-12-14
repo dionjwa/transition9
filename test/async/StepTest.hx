@@ -82,7 +82,6 @@ class StepTest
 			},
 			function (err :Dynamic, input :String) :Void {
 				Assert.isNull(err);
-				trace("starting PARALLELNODELAY");
 				parallelNoDelay("1", step.parallel());
 				parallelNoDelay("2", step.parallel());
 			},
