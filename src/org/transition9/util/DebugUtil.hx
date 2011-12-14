@@ -12,7 +12,7 @@ import com.pblabs.components.scene2D.BaseSceneLayer;
 import com.pblabs.components.scene2D.SceneUtil;
 import com.pblabs.engine.core.NameManager;
 import com.pblabs.engine.resource.ResourceToken;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.Vector2;
 import org.transition9.ds.Map;
 
 import de.polygonal.motor2.geom.math.XY;

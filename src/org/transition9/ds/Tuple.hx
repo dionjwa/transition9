@@ -10,8 +10,9 @@ package org.transition9.ds;
 
 import org.transition9.ds.Hashable;
 import org.transition9.util.Equalable;
-import org.transition9.util.StringUtil;
 import org.transition9.util.EqualableUtil;
+import org.transition9.util.HashUtil;
+import org.transition9.util.StringUtil;
 
 /**
   * Order dependent pair
@@ -114,5 +115,3 @@ class Tuple <V1, V2>
 
 	var _hashCode :Int;
 }
-
-

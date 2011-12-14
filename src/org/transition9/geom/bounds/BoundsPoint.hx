@@ -8,20 +8,20 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Geometry;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.AbstractBounds;
-import com.pblabs.geom.bounds.BoundsLine;
-import com.pblabs.geom.bounds.BoundsPolygon;
-import com.pblabs.geom.bounds.BoundsUtil;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Geometry;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.AbstractBounds;
+import org.transition9.geom.bounds.BoundsLine;
+import org.transition9.geom.bounds.BoundsPolygon;
+import org.transition9.geom.bounds.BoundsUtil;
+import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 
 import de.polygonal.motor2.geom.math.XY;
 
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.VectorTools;
 
 class BoundsPoint extends AbstractBounds<BoundsPoint>
 {

@@ -16,7 +16,7 @@ import haxe.macro.Context;
 using Lambda;
 using StringTools;
 
-class PBMacros
+class Macros
 {
 	
 	@:macro public static function getDate() 
@@ -29,10 +29,10 @@ class PBMacros
 	/**
 	  * Returns the name of the field variable instance.
 	  *
-	  * E.g. public static var Foo :String = PBMacros.getFieldName();
+	  * E.g. public static var Foo :String = Macros.getFieldName();
 	  * Foo == "Foo"
 	  * 
-	  * Careful: the PBMacros.getFieldName() MUST be on the same 
+	  * Careful: the Macros.getFieldName() MUST be on the same 
 	  * line as the var declaration!
 	  */
 	@:macro 
@@ -173,8 +173,10 @@ class PBMacros
 	
 	/**
 	  * Create an app specific class called e.g. Properties:
-	  *  @:build(org.transition9.util.PBMacros.buildPropertiesClass(["etc/build.properties"])) class Properties {}
-	  * The local "etc/build.propertis" file will be added.  This can parse Strings, Ints, and Floats.  
+	  *  @:build(org.transition9.util.Macros.buildPropertiesClass(["etc/build.properties"])) class Properties {}
+	  * The local "etc/build.propertis" file will be added.  This can parse Strings, Ints, and Floats.
+	  * The properties in the file take the form of
+	  * name=value
 	  * More than one properties file can be added.
 	  */
 	@:macro 
@@ -244,7 +246,7 @@ class PBMacros
 	  * Returns the haxe.Resource key.
 	  *
 	  * Example:
-	  * var embed = org.transition9.util.PBMacros.embedBinaryDataResource("build/server.swf", "battlecomputer", 1234);
+	  * var embed = org.transition9.util.Macros.embedBinaryDataResource("build/server.swf", "battlecomputer", 1234);
 	  * var bytes = haxe.Resource.getBytes("battlecomputer");
 	  * trace("bytes.length=" + (bytes == null ? -1 :bytes.length));
 	  * 

@@ -9,7 +9,7 @@
 package org.transition9.geom;
 
 import com.pblabs.engine.serialization.Serializer;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.Vector2;
 import org.transition9.ds.Map;
 import org.transition9.ds.Maps;
 
@@ -17,12 +17,12 @@ import de.polygonal.motor2.geom.math.XY;
 
 using Lambda;
 
-using com.pblabs.geom.Geometry;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.Geometry;
+using org.transition9.geom.VectorTools;
 using org.transition9.util.XmlTools;
 
 /**
- * Use "using com.pblabs.geom.VectorTools" for code 
+ * Use "using org.transition9.geom.VectorTools" for code 
  * completion access to these functions.
  *
  */

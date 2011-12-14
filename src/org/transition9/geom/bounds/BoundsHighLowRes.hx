@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.AbstractBounds;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.AbstractBounds;
+import org.transition9.geom.bounds.IBounds;
 
 import de.polygonal.motor2.geom.math.XY;
 

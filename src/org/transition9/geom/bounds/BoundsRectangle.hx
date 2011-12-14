@@ -8,21 +8,21 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Polygon;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.BoundsCircle;
-import com.pblabs.geom.bounds.BoundsForwarding;
-import com.pblabs.geom.bounds.BoundsPoint;
-import com.pblabs.geom.bounds.BoundsPolygon;
-import com.pblabs.geom.bounds.BoundsUtil;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Polygon;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.BoundsCircle;
+import org.transition9.geom.bounds.BoundsForwarding;
+import org.transition9.geom.bounds.BoundsPoint;
+import org.transition9.geom.bounds.BoundsPolygon;
+import org.transition9.geom.bounds.BoundsUtil;
+import org.transition9.geom.bounds.IBounds;
 
 import de.polygonal.motor2.geom.math.XY;
 
-using com.pblabs.geom.PolygonTools;
-using com.pblabs.geom.RectangleTools;
+using org.transition9.geom.PolygonTools;
+using org.transition9.geom.RectangleTools;
 
 class BoundsRectangle extends BoundsForwarding<BoundsRectangle>
 {

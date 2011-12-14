@@ -9,7 +9,7 @@
 
 [Node.js][nodejs] is a single-threaded asynchronous server, particularly well suited for high performance servers such as game back-ends.  Writing your Node.js code in [Haxe][haxe] is provides so many advantages there are almost too many to list.
 
-The standard Haxe library is generally aimed at synchronous programming.  This is a collection of tools to make it easier to write async code. For the most part, these tools reduce the amount of code and make it easier to read, since async programming can often become verbose, especially when processing a long chain of async callbacks. 
+The standard Haxe library is generally aimed at synchronous programming.  This is a small collection of tools that I proved useful when writing async code. For the most part, these tools reduce the amount of code and make it easier to read, since async programming can often become verbose, especially when processing a long chain of async callbacks. 
 
 ### Step
 

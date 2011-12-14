@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import com.pblabs.geom.LineSegment;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.LineSegment;
+import org.transition9.geom.Vector2;
 
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.VectorTools;
 
 class LineSegmentTools
 {

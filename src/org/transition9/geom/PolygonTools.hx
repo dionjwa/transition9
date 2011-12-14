@@ -8,11 +8,11 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import com.pblabs.geom.Geometry;
-import com.pblabs.geom.LineSegment;
-import com.pblabs.geom.Polygon;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.Geometry;
+import org.transition9.geom.LineSegment;
+import org.transition9.geom.Polygon;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Comparators;
 import org.transition9.ds.Map;
@@ -22,9 +22,9 @@ import de.polygonal.motor2.geom.math.XY;
 
 import Type;
 
-using com.pblabs.geom.Geometry;
-using com.pblabs.geom.PolygonTools;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.Geometry;
+using org.transition9.geom.PolygonTools;
+using org.transition9.geom.VectorTools;
 
 /**
  * Static method operating on an iterable of XY objects.

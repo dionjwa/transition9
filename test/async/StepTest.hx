@@ -48,6 +48,10 @@ class StepTest
 			}, 100);
 		}
 		
+		var parallelNoDelay = function (input :String, cb :Dynamic->String->Void) :Void {
+			cb(null, "p" + input);
+		}
+		
 		var group = function (input :String, cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb(null, "g" + input);
@@ -75,6 +79,17 @@ class StepTest
 			function (err :Dynamic, input :String) :Void {
 				Assert.isTrue(input == parallelResult1 + parallelResult2);
 				delayed(input, step.cb);
+			},
+			function (err :Dynamic, input :String) :Void {
+				Assert.isNull(err);
+				trace("starting PARALLELNODELAY");
+				parallelNoDelay("1", step.parallel());
+				parallelNoDelay("2", step.parallel());
+			},
+			function (err :Dynamic, input1 :String, input2 :String) :Void {
+				Assert.isTrue(input1 == parallelResult1);
+				Assert.isTrue(input2 == parallelResult2);
+				delayed(null, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
 				group("0", step.group());

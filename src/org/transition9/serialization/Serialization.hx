@@ -65,7 +65,7 @@ class Serialization
 	// 	var arr = new Array<de.polygonal.motor2.geom.math.XY>();
 	// 	var ii = 0;
 	// 	while (ii < floats.length) {
-	// 		arr.push(new com.pblabs.geom.Vector2(floats[ii], floats[ii + 1]));
+	// 		arr.push(new org.transition9.geom.Vector2(floats[ii], floats[ii + 1]));
 	// 		ii += 2;
 	// 	}
 	// 	return arr;

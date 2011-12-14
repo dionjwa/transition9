@@ -8,15 +8,15 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.IBounds;
 
 import de.polygonal.motor2.geom.math.XY;
 
-using com.pblabs.geom.CircleUtil;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.CircleUtil;
+using org.transition9.geom.VectorTools;
 
 class AbstractBounds<T>
 	implements IBounds<T> 

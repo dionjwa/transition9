@@ -9,7 +9,7 @@
 package org.transition9.geom;
 
 import de.polygonal.motor2.geom.math.XY;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.VectorTools;
 
 class Rectangle
 {
@@ -69,7 +69,7 @@ class Rectangle
 	  return p.clone();
    }
    
-   public function clone() : com.pblabs.geom.Rectangle
+   public function clone() : org.transition9.geom.Rectangle
    {
 	  return new Rectangle(x,y,width,height);
    }
@@ -81,11 +81,11 @@ class Rectangle
    {
 	  return contains(point.x,point.y);
    }
-   public function containsRect(rect : com.pblabs.geom.Rectangle) : Bool
+   public function containsRect(rect : org.transition9.geom.Rectangle) : Bool
    {
 	 return contains(rect.x,rect.y) && containsPoint(rect.bottomRight);
    }
-   public function equals(toCompare : com.pblabs.geom.Rectangle) : Bool
+   public function equals(toCompare : org.transition9.geom.Rectangle) : Bool
    {
 	  return x==toCompare.x && y==toCompare.y &&
 			 width==toCompare.width && height==toCompare.height;
@@ -99,7 +99,7 @@ class Rectangle
    {
 	  inflate(point.x,point.y);
    }
-   public function intersection(toIntersect : com.pblabs.geom.Rectangle) : com.pblabs.geom.Rectangle
+   public function intersection(toIntersect : org.transition9.geom.Rectangle) : org.transition9.geom.Rectangle
    {
 	  var x0 = x<toIntersect.x ? toIntersect.x : x;
 	  var x1 = right>toIntersect.right ? toIntersect.right : right;
@@ -114,7 +114,7 @@ class Rectangle
 	  return new Rectangle(x0,y0,x1-x0,y1-y0);
    }
 
-   public function intersects(toIntersect : com.pblabs.geom.Rectangle) : Bool
+   public function intersects(toIntersect : org.transition9.geom.Rectangle) : Bool
    {
 	  var x0 = x<toIntersect.x ? toIntersect.x : x;
 	  var x1 = right>toIntersect.right ? toIntersect.right : right;
@@ -126,7 +126,7 @@ class Rectangle
 	  return y1>y0;
    }
 
-   public function union(toUnion : com.pblabs.geom.Rectangle) : com.pblabs.geom.Rectangle
+   public function union(toUnion : org.transition9.geom.Rectangle) : org.transition9.geom.Rectangle
    {
 	  var x0 = x>toUnion.x ? toUnion.x : x;
 	  var x1 = right<toUnion.right ? toUnion.right : right;

@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
 import org.transition9.rtti.ReflectUtil;
 
 import de.polygonal.motor2.geom.math.XY;

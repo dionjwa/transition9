@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.LineSegment;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.VectorTools;
+import org.transition9.geom.Circle;
+import org.transition9.geom.LineSegment;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.VectorTools;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Assert;
 import org.transition9.util.Cloneable;
@@ -19,10 +19,10 @@ import org.transition9.util.NumberUtil;
 
 import de.polygonal.motor2.geom.math.XY;
 
-using com.pblabs.geom.CircleUtil;
-using com.pblabs.geom.PolygonTools;
-using com.pblabs.geom.VectorTools;
-using com.pblabs.geom.Geometry;
+using org.transition9.geom.CircleUtil;
+using org.transition9.geom.PolygonTools;
+using org.transition9.geom.VectorTools;
+using org.transition9.geom.Geometry;
 
 class Polygon
 	implements Cloneable<Polygon>

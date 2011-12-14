@@ -8,17 +8,17 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.LineSegment;
-import com.pblabs.geom.Polygon;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.AbstractBounds;
-import com.pblabs.geom.bounds.BoundsForwarding;
-import com.pblabs.geom.bounds.BoundsLine;
-import com.pblabs.geom.bounds.BoundsPoint;
-import com.pblabs.geom.bounds.BoundsUtil;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.LineSegment;
+import org.transition9.geom.Polygon;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.AbstractBounds;
+import org.transition9.geom.bounds.BoundsForwarding;
+import org.transition9.geom.bounds.BoundsLine;
+import org.transition9.geom.bounds.BoundsPoint;
+import org.transition9.geom.bounds.BoundsUtil;
+import org.transition9.geom.bounds.IBounds;
 import org.transition9.util.MathUtil;
 import org.transition9.rtti.ReflectUtil;
 
@@ -26,14 +26,14 @@ import de.polygonal.motor2.geom.math.XY;
 
 using Lambda;
 
-using com.pblabs.geom.CircleUtil;
-using com.pblabs.geom.PolygonTools;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.CircleUtil;
+using org.transition9.geom.PolygonTools;
+using org.transition9.geom.VectorTools;
 
 class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 {
 	/** Don't modify this outside of the Bounds.  The cached bounds will be wrong*/   
-	public var polygon(get_polygon, null) : com.pblabs.geom.Polygon;
+	public var polygon(get_polygon, null) : org.transition9.geom.Polygon;
 	public var offset :XY;
 	
 	public function new (polygon :Polygon)
@@ -72,7 +72,7 @@ class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 		return val;
 	}
 
-	function get_polygon () :com.pblabs.geom.Polygon
+	function get_polygon () :org.transition9.geom.Polygon
 	{
 		return _polygon;
 	}

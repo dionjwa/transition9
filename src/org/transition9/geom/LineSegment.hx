@@ -13,8 +13,8 @@ import org.transition9.util.Equalable;
 
 import de.polygonal.motor2.geom.math.XY;
 
-using com.pblabs.geom.LineSegmentTools;
-using com.pblabs.geom.VectorTools;
+using org.transition9.geom.LineSegmentTools;
+using org.transition9.geom.VectorTools;
 
 class LineSegment 
 	implements Equalable<LineSegment>, implements Cloneable<LineSegment>

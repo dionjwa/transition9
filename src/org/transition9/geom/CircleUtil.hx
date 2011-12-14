@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Geometry;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Geometry;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
 
 import de.polygonal.motor2.geom.math.XY;
 

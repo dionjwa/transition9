@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.Rectangle;
+import org.transition9.geom.Circle;
+import org.transition9.geom.Rectangle;
 import org.transition9.util.Cloneable;
 
 import de.polygonal.motor2.geom.math.XY;

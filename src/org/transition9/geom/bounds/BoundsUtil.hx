@@ -8,16 +8,16 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.bounds.BoundsLine;
-import com.pblabs.geom.bounds.BoundsPoint;
-import com.pblabs.geom.bounds.BoundsPolygon;
-import com.pblabs.geom.bounds.BoundsRectangle;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.bounds.BoundsLine;
+import org.transition9.geom.bounds.BoundsPoint;
+import org.transition9.geom.bounds.BoundsPolygon;
+import org.transition9.geom.bounds.BoundsRectangle;
+import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
-using com.pblabs.geom.CircleUtil;
-using com.pblabs.geom.PolygonTools;
-using com.pblabs.geom.VectorTools;
-using com.pblabs.geom.CircleUtil;
+using org.transition9.geom.CircleUtil;
+using org.transition9.geom.PolygonTools;
+using org.transition9.geom.VectorTools;
+using org.transition9.geom.CircleUtil;
 
 class BoundsUtil
 {

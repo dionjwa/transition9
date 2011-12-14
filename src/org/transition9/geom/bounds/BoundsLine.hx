@@ -8,14 +8,14 @@
  ******************************************************************************/
 package org.transition9.geom.bounds;
 
-import com.pblabs.geom.Circle;
-import com.pblabs.geom.LineSegment;
-import com.pblabs.geom.Rectangle;
-import com.pblabs.geom.Vector2;
-import com.pblabs.geom.bounds.AbstractBounds;
-import com.pblabs.geom.bounds.BoundsPoint;
-import com.pblabs.geom.bounds.BoundsPolygon;
-import com.pblabs.geom.bounds.IBounds;
+import org.transition9.geom.Circle;
+import org.transition9.geom.LineSegment;
+import org.transition9.geom.Rectangle;
+import org.transition9.geom.Vector2;
+import org.transition9.geom.bounds.AbstractBounds;
+import org.transition9.geom.bounds.BoundsPoint;
+import org.transition9.geom.bounds.BoundsPolygon;
+import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 
 import de.polygonal.motor2.geom.math.XY;
