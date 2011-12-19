@@ -16,7 +16,7 @@ import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 using org.transition9.geom.CircleUtil;
 using org.transition9.geom.PolygonTools;
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 using org.transition9.geom.CircleUtil;
 
 class BoundsUtil

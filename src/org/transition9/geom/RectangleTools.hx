@@ -10,18 +10,18 @@ package org.transition9.geom;
 
 import org.transition9.geom.Rectangle;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 class RectangleTools
 {
-	public static function center (rect :Rectangle) :XY
+	public static function center (rect :Rectangle) :Vec2
 	{
-		return new Vector2(rect.left + rect.width / 2, rect.top + rect.height / 2);
+		return new Vec2(rect.left + rect.width / 2, rect.top + rect.height / 2);
 	}
 	
-   public static function contains (x :Float, y :Float, w :Float, h :Float, query :XY, ?rotation :Float = 0) : Bool
+   public static function contains (x :Float, y :Float, w :Float, h :Float, query :Vec2, ?rotation :Float = 0) : Bool
    {
 	   if (rotation != 0) {
 		   var relativeToRectCenter = query.clone();

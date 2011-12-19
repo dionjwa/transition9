@@ -5,7 +5,7 @@
 
 ## A collection of utilities for [Haxe][haxe].
 
-### Varous utilities
+### Various utilities
 
 Including logging, fully typed maps and sets, SVG tools, and many more. 
 

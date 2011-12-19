@@ -10,11 +10,10 @@ package org.transition9.geom.bounds;
 
 import org.transition9.geom.Circle;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 using org.transition9.geom.CircleUtil;
 
@@ -26,12 +25,12 @@ class BoundsForwarding<T> extends AbstractBounds<T>
 		_forwarding = forwadingBounds;
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
 		return _forwarding().get_center();
 	}
 	
-	override function set_center (v :XY) :XY
+	override function set_center (v :Vec2) :Vec2
 	{
 		_forwarding().set_center(v);
 		return v;
@@ -52,7 +51,7 @@ class BoundsForwarding<T> extends AbstractBounds<T>
 		return _forwarding().computeBoundingRect();
 	}
 
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		return _forwarding().containsPoint(v);
 	}
@@ -72,7 +71,7 @@ class BoundsForwarding<T> extends AbstractBounds<T>
 		return _forwarding().isWithinDistance(b, d);
 	}
 
-	override public function distanceToPoint (p :XY) :Float
+	override public function distanceToPoint (p :Vec2) :Float
 	{
 		return _forwarding().distanceToPoint(p);
 	}

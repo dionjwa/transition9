@@ -105,7 +105,9 @@ class StringUtil
 		
 		fields = fields == null ? [] : fields;
 		for (f in fields) {
-			s.add(", " + f + "=" + (isDynamic ? ReflectUtil.field(obj, f) : ReflectUtil.field(obj, f)));
+			if (!Reflect.isFunction(Reflect.field(obj, f))) {
+				s.add(", " + f + "=" + (isDynamic ? ReflectUtil.field(obj, f) : ReflectUtil.field(obj, f)));
+			}
 		}
 		s.add("]");
 		return s.toString();

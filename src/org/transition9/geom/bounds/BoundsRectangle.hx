@@ -11,7 +11,6 @@ package org.transition9.geom.bounds;
 import org.transition9.geom.Circle;
 import org.transition9.geom.Polygon;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.BoundsCircle;
 import org.transition9.geom.bounds.BoundsForwarding;
 import org.transition9.geom.bounds.BoundsPoint;
@@ -19,7 +18,7 @@ import org.transition9.geom.bounds.BoundsPolygon;
 import org.transition9.geom.bounds.BoundsUtil;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 using org.transition9.geom.PolygonTools;
 using org.transition9.geom.RectangleTools;
@@ -32,15 +31,15 @@ class BoundsRectangle extends BoundsForwarding<BoundsRectangle>
 		super(get_polygonBounds);
 		_boundsRect = r;
 		_boundsCircle = new Circle();
-		set_center(new Vector2(r.left + r.width / 2, r.top + r.height / 2));
+		set_center(new Vec2(r.left + r.width / 2, r.top + r.height / 2));
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
 		return _center;
 	}
 
-	override function set_center (v :XY) :XY
+	override function set_center (v :Vec2) :Vec2
 	{
 		super.set_center(center);
 		_center = _boundsCircle.center = v;
@@ -55,12 +54,12 @@ class BoundsRectangle extends BoundsForwarding<BoundsRectangle>
 		return new BoundsRectangle(_boundsRect.clone());
 	}
 
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		return _boundsRect.contains(v.x, v.y);
 	}
 
-	override public function distanceToPoint (v :XY) :Float
+	override public function distanceToPoint (v :Vec2) :Float
 	{
 		if (containsPoint(v)) {
 			return 0;

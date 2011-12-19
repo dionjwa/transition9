@@ -9,11 +9,10 @@
 package org.transition9.geom.bounds;
 
 import org.transition9.geom.Circle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 /**
  * For using computationally lighter bounds first
@@ -36,7 +35,7 @@ class BoundsHighLowRes extends BoundsForwarding<Dynamic>
 		}
 	}
 	
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		if (!_lowResBounds().containsPoint(v)) {
 			return false;

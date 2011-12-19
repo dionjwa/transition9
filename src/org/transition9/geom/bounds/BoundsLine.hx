@@ -11,19 +11,18 @@ package org.transition9.geom.bounds;
 import org.transition9.geom.Circle;
 import org.transition9.geom.LineSegment;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.BoundsPoint;
 import org.transition9.geom.bounds.BoundsPolygon;
 import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 class BoundsLine extends AbstractBounds<BoundsLine>
 	// implements IBounds<BoundsLine> 
 {
-	// public var center(get_center, set_center) : Vector2;
+	// public var center(get_center, set_center) : Vec2;
 	// public var boundingRect (get_boundingRect, null) :Rectangle;
 	// public var boundingCircle (get_boundingCircle, null) :Circle;
 	public var lineSegment(getLineSegment, null) : LineSegment;
@@ -31,8 +30,8 @@ class BoundsLine extends AbstractBounds<BoundsLine>
 	public function new (x1 :Float, y1 :Float, x2 :Float, y2 :Float)
 	{
 		super();
-		_p1 = new Vector2(x1, y1);
-		_p2 = new Vector2(x2, y2);
+		_p1 = new Vec2(x1, y1);
+		_p2 = new Vec2(x2, y2);
 		_lineSegment = new LineSegment(_p1, _p2);
 	}
 
@@ -41,9 +40,9 @@ class BoundsLine extends AbstractBounds<BoundsLine>
 		return _lineSegment;
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
-		return VectorTools.interpolate(_p1, _p2, 0.5);
+		return Vec2Tools.interpolate(_p1, _p2, 0.5);
 	}
 	
 	override function computeBoundingRect () :Rectangle
@@ -71,15 +70,15 @@ class BoundsLine extends AbstractBounds<BoundsLine>
 		return new BoundsLine(_p1.x, _p1.y, _p2.x, _p2.y);
 	}
 
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		return LineSegment.distToLineSegment(_p1, _p2, v) == 0;
 	}
 
 	// public function convertToGlobal (localDisp :DisplayObject) :Bounds<BoundsLine>
 	// {
-	//	 var p1:XY = XY.toXY(localDisp.localToGlobal(_p1.toPoint()));
-	//	 var p2:XY = XY.toXY(localDisp.localToGlobal(_p2.toPoint()));
+	//	 var p1:Vec2 = Vec2.toVec2(localDisp.localToGlobal(_p1.toPoint()));
+	//	 var p2:Vec2 = Vec2.toVec2(localDisp.localToGlobal(_p2.toPoint()));
 	//	 return new BoundsLine(p1.x, p1.y, p2.x, p2.y);
 	// }
 
@@ -108,12 +107,12 @@ class BoundsLine extends AbstractBounds<BoundsLine>
 
 	}
 
-	override public function distanceToPoint (p :XY) :Float
+	override public function distanceToPoint (p :Vec2) :Float
 	{
 		return LineSegment.distToLineSegment(_p1, _p2, p);
 	}
 
-	override public function getBoundedPoint (v :XY, ?bounded :XY) :XY
+	override public function getBoundedPoint (v :Vec2, ?bounded :Vec2) :Vec2
 	{
 		if (bounded != null) {
 			var p = LineSegment.closestPoint(_p1, _p2, v);
@@ -125,12 +124,12 @@ class BoundsLine extends AbstractBounds<BoundsLine>
 		}
 	}
 
-	override public function getBoundedPointFromMove (originX :Float, originY :Float, targetX :Float, targetY :Float, ?bounded :XY) :XY
+	override public function getBoundedPointFromMove (originX :Float, originY :Float, targetX :Float, targetY :Float, ?bounded :Vec2) :Vec2
 	{
-		return getBoundedPoint(new Vector2(targetX, targetY));
+		return getBoundedPoint(new Vec2(targetX, targetY));
 	}
 
 	var _lineSegment:LineSegment;
-	var _p1:XY;
-	var _p2:XY;
+	var _p1:Vec2;
+	var _p2:Vec2;
 }

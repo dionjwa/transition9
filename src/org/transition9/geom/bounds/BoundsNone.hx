@@ -9,10 +9,10 @@
 package org.transition9.geom.bounds;
 
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
+import Vec2;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 class BoundsNone extends AbstractBounds<BoundsNone> 
 {
@@ -21,7 +21,7 @@ class BoundsNone extends AbstractBounds<BoundsNone>
 		super();
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
 		throw "Abstract method";
 		return null;
@@ -37,7 +37,7 @@ class BoundsNone extends AbstractBounds<BoundsNone>
 		return 0;
 	}
 
-	public override function distanceToPoint (p :XY) :Float
+	public override function distanceToPoint (p :Vec2) :Float
 	{
 		return 0;
 	}

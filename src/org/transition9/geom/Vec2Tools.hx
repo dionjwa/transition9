@@ -9,25 +9,25 @@
 package org.transition9.geom;
 
 import com.pblabs.engine.serialization.Serializer;
-import org.transition9.geom.Vector2;
 import org.transition9.ds.Map;
 import org.transition9.ds.Maps;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.motor.geom.math.XY;
 
 using Lambda;
 
 using org.transition9.geom.Geometry;
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 using org.transition9.util.XmlTools;
 
 /**
- * Use "using org.transition9.geom.VectorTools" for code 
+ * Use "using Vec2Tools" for code 
  * completion access to these functions.
  *
  */
-class VectorTools
- {
+class Vec2Tools
+{
 	//Multiply by these numbers to get your result.
 	//EG: angleInRadians = 30 * DEG_TO_RAD;
 	// public function new() { }
@@ -36,7 +36,7 @@ class VectorTools
 	//EG: angleInRadians = 30 * DEG_TO_RAD;
 	public static inline var RAD_TO_DEG :Float = (180 / Math.PI); //57.29577951;
 	public static inline var DEG_TO_RAD :Float = (Math.PI / 180); //0.017453293;
-	public static inline var ZERO :Vector2 = new Vector2(); //0.017453293;
+	public static inline var ZERO :Vec2 = new Vec2(); //0.017453293;
 	public static inline var PI2 :Float = Math.PI * 2;
 
 	inline public static function distance (a :XY, b :XY) :Float
@@ -66,21 +66,21 @@ class VectorTools
 		return angle + Math.PI * 2;
 	}
 
-	inline public static function addLocalPolarVector (v :Vector2, rad :Float, length :Float) :Vector2
+	inline public static function addLocalPolarVector (v :Vec2, rad :Float, length :Float) :Vec2
 	{
-		var polar = VectorTools.angleToVector2(rad, length);
+		var polar = Vec2Tools.angleToVec2(rad, length);
 		v.addLocal(polar);
 		return v;
 	}
 	
 	/**
-	 * Creates a Vector2 of magnitude 'len' that has been rotated about the origin by 'radians'.
+	 * Creates a Vec2 of magnitude 'len' that has been rotated about the origin by 'radians'.
 	 */
-	public static inline function angleToVector2 (radians :Float, ?len :Float = 1) :Vector2
+	public static inline function angleToVec2 (radians :Float, ?len :Float = 1) :Vec2
 	{
 	   // we use the unit vector (1, 0)
 
-		return new Vector2(
+		return new Vec2(
 			Math.cos(radians) * len,   // == len * (cos(theta)*x - sin(theta)*y)
 			Math.sin(radians) * len);  // == len * (sin(theta)*x + cos(theta)*y)
 	}
@@ -98,14 +98,19 @@ class VectorTools
 		return Math.atan2(y2 - y1, x2 - x1);
 	}
 	
-	inline public static function getMidpoint (v1 :XY, v2 :XY) :Vector2
+	inline public static function getMidpoint (v1 :XY, v2 :XY) :Vec2
 	{
-		return new Vector2(v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
+		return new Vec2(v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
 	}
 	
 	inline public static function lengthSq (v1 :XY) :Float
 	{
 		return v1.x*v1.x + v1.y*v1.y;
+	}
+	
+	inline public static function length (v1 :XY) :Float
+	{
+		return Math.sqrt(lengthSq(v1));
 	}
 	
 	inline public static function isEqual (v1 :XY, v2 :XY) :Bool
@@ -185,9 +190,9 @@ class VectorTools
 		return simplifyRadian(-diff);
 	}
 	
-	public static function clone (xy :XY) :XY
+	public static function clone (xy :XY) :Vec2
 	{
-		return new Vector2(xy.x, xy.y);    
+		return new Vec2(xy.x, xy.y);    
 	}
 
 	/**
@@ -215,10 +220,10 @@ class VectorTools
 	}
 	
 	/**
-	 * Adds another Vector2 to this, in place.
+	 * Adds another Vec2 to this, in place.
 	 * Returns a reference to 'this', for chaining.
 	 */
-	inline public static function addLocal (v1 :XY, v2 :XY) :XY
+	inline public static function addLocal (v1 :Vec2, v2 :XY) :Vec2
 	{
 		v1.x += v2.x;
 		v1.y += v2.y;
@@ -229,7 +234,7 @@ class VectorTools
 	/**
 	 * Returns a copy of this vector added to 'v'.
 	 */
-	public static function add (v1 :XY, v2 :XY) :XY
+	public static function add (v1 :XY, v2 :XY) :Vec2
 	{
 		return v1.clone().addLocal(v2);
 	}
@@ -238,7 +243,7 @@ class VectorTools
 	 * Subtracts another vector from this one, in place.
 	 * Returns a reference to 'this', for chaining.
 	 */
-	public static function subtractLocal (v1 :XY, v2 :XY) :XY
+	public static function subtractLocal (v1 :Vec2, v2 :XY) :Vec2
 	{
 		v1.x -= v2.x;
 		v1.y -= v2.y;
@@ -249,7 +254,7 @@ class VectorTools
 	/**
 	 * Returns (this - v).
 	 */
-	public static function subtract (v1: XY, v2 :XY) :XY
+	public static function subtract (v1: XY, v2 :XY) :Vec2
 	{
 	   return clone(v1).subtractLocal(v2);
 	}
@@ -257,7 +262,7 @@ class VectorTools
 	/**
 	 * Scales this vector by value.
 	 */
-	public static function scaleLocal (v :XY, value :Float) :XY
+	public static function scaleLocal (v :Vec2, value :Float) :Vec2
 	{
 		v.x *= value;
 		v.y *= value;
@@ -271,7 +276,7 @@ class VectorTools
 		return v.clone().scaleLocal(value);
 	}
 	
-	public static function rotateLocal (xy :XY, radians :Float) :XY
+	public static function rotateLocal (xy :Vec2, radians :Float) :Vec2
 	{
 		var cosTheta = Math.cos(radians);
 		var sinTheta = Math.sin(radians);
@@ -286,7 +291,7 @@ class VectorTools
 	/**
 	 * Returns a rotated copy of this vector.
 	 */
-	public static function rotate (v :XY, radians :Float) :XY
+	public static function rotate (v :XY, radians :Float) :Vec2
 	{
 		return v.clone().rotateLocal(radians);
 	}
@@ -301,10 +306,10 @@ class VectorTools
 	 * at proportion p, where p is in [0, 1], p = 0 means the result is equal to a,
 	 * and p = 1 means the result is equal to b.
 	 */
-	public static function interpolate (a :XY, b :XY, p :Float) :XY
+	public static function interpolate (a :XY, b :XY, p :Float) :Vec2
 	{
 		var q:Float = 1 - p;
-		return new Vector2(q * a.x + p * b.x, q * a.y + p * b.y);
+		return new Vec2(q * a.x + p * b.x, q * a.y + p * b.y);
 	}
 	
 	/**
@@ -321,15 +326,15 @@ class VectorTools
 	}
 	
 	
-	public static function serializeXY (val :XY, xml :Xml) :Void
+	public static function serializeVec2 (val :XY, xml :Xml) :Void
 	{
 		xml.createChild("x", val.x, Serializer.serializeFloat);
 		xml.createChild("y", val.y, Serializer.serializeFloat);
 	}
 	
-	public static function deserializeXY (xml :Xml) :XY
+	public static function deserializeVec2 (xml :Xml) :Vec2
 	{
-		var v = new Vector2();
+		var v = new Vec2();
 		v.x = xml.parseFloat("x");
 		v.y = xml.parseFloat("y");
 		return v;
@@ -337,11 +342,11 @@ class VectorTools
 	
 	#if (flash || cpp)
 	/**
-	 * Converts Point p to a Vector2.
+	 * Converts Point p to a Vec2.
 	 */
-	public static function toVector2 (p :flash.geom.Point) :Vector2
+	public static function toVec2 (p :flash.geom.Point) :Vec2
 	{
-		return new Vector2(p.x, p.y);
+		return new Vec2(p.x, p.y);
 	}
 	
 	public static function toPoint (v :XY) :flash.geom.Point

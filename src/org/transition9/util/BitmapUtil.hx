@@ -4,7 +4,7 @@ import com.pblabs.components.scene2D.ImageType;
 import com.pblabs.components.scene2D.ImageData;
 
 import de.polygonal.core.math.Mathematics;
-import de.polygonal.motor2.geom.primitive.AABB2;
+import de.polygonal.motor.geom.primitive.AABB2;
 #if jeash
 import Html5Dom;
 typedef Canvas = Html5Dom.HTMLCanvasElement;

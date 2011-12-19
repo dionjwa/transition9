@@ -9,14 +9,15 @@
 package org.transition9.geom;
 
 import org.transition9.geom.LineSegment;
-import org.transition9.geom.Vector2;
 
-using org.transition9.geom.VectorTools;
+import de.polygonal.motor.geom.math.Vec2;
+
+using org.transition9.geom.Vec2Tools;
 
 class LineSegmentTools
 {
 
-	public static function getMidpoint (line :LineSegment) :Vector2
+	public static function getMidpoint (line :LineSegment) :Vec2
 	{
 		return line.a.getMidpoint(line.b);
 	}

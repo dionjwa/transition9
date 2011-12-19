@@ -1,10 +1,12 @@
 package org.transition9.serialization;
 
 import haxe.rtti.CType;
-import org.transition9.rtti.ReflectUtil;
+
 import org.transition9.rtti.MetaUtil;
+import org.transition9.rtti.ReflectUtil;
 
 using Lambda;
+
 using StringTools;
 
 interface SerializableDynamic 
@@ -25,51 +27,51 @@ interface SerializableDynamic
 
 class Serialization
 {
-	// 	/** Convert to base64 encoded String */
-	// public static function encode (bytes :haxe.io.BytesData) :String
-	// {
-	// 	#if flash
-	// 	//It's fast.  Polygonal?
-	//     return jpauclair.Base64.encode(bytes);
-	//     #else
-	//     throw "What is the Base64 encoder for this platform?";
-	//     return null;
-	//     #end
-	// }
+		/** Convert to base64 encoded String */
+	public static function encode (bytes :haxe.io.BytesData) :String
+	{
+		#if flash
+		//It's fast.  Polygonal?
+	    return jpauclair.Base64.encode(bytes);
+	    #else
+	    throw "What is the Base64 encoder for this platform?";
+	    return null;
+	    #end
+	}
 	
-	// /** Convert from base64 encoded String */
-	// public static function decode (base64Encoded :String) :haxe.io.BytesData
-	// {
-	// 	#if flash
-	// 	//It's fast.  Polygonal?
-	//     return jpauclair.Base64.decode(base64Encoded);
-	//     #else
-	//     throw "What is the Base64 encoder for this platform?";
-	//     return null;
-	//     #end
-	// }
+	/** Convert from base64 encoded String */
+	public static function decode (base64Encoded :String) :haxe.io.BytesData
+	{
+		#if flash
+		//It's fast.  Polygonal?
+	    return jpauclair.Base64.decode(base64Encoded);
+	    #else
+	    throw "What is the Base64 encoder for this platform?";
+	    return null;
+	    #end
+	}
 	
 	// #if polygonal
-	// public static function xyArrayToFloatArray (xys :Array<de.polygonal.motor2.geom.math.XY>) :Array<Float>
-	// {
-	// 	var arr = [];
-	// 	for (v in xys) {
-	// 		arr.push(v.x);
-	// 		arr.push(v.y);
-	// 	}
-	// 	return arr;
-	// }
+	public static function xyArrayToFloatArray (xys :Array<de.polygonal.motor.geom.math.Vec2>) :Array<Float>
+	{
+		var arr = [];
+		for (v in xys) {
+			arr.push(v.x);
+			arr.push(v.y);
+		}
+		return arr;
+	}
 	
-	// public static function floatArrayToXYArray (floats :Array<Float>) :Array<de.polygonal.motor2.geom.math.XY>
-	// {
-	// 	var arr = new Array<de.polygonal.motor2.geom.math.XY>();
-	// 	var ii = 0;
-	// 	while (ii < floats.length) {
-	// 		arr.push(new org.transition9.geom.Vector2(floats[ii], floats[ii + 1]));
-	// 		ii += 2;
-	// 	}
-	// 	return arr;
-	// }
+	public static function floatArrayToVec2Array (floats :Array<Float>) :Array<de.polygonal.motor.geom.math.Vec2>
+	{
+		var arr = new Array<de.polygonal.motor.geom.math.Vec2>();
+		var ii = 0;
+		while (ii < floats.length) {
+			arr.push(new de.polygonal.motor.geom.math.Vec2(floats[ii], floats[ii + 1]));
+			ii += 2;
+		}
+		return arr;
+	}
 	// #end
 	
 	public static function floatArrayToBytes (floats :Array<Float>) :haxe.io.Bytes

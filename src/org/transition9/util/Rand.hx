@@ -39,7 +39,7 @@ class Rand
 	inline public static var STREAM_GAME :Int = 0;
 	inline public static var STREAM_COSMETIC :Int = 1;
 	public static var DEFAULT_RNG_CLASS :Class<Dynamic> = ParkMiller;
-	public static var CHARPOOL :String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	public static var CHARPOOL :String = "ABCDEFGHIJKLMNOPQRSTUVWVec2Zabcdefghijklmnopqrstuvwxyz0123456789";
 
 	/** The compiler doesn't like constant defined function default arguments */
 	inline public static var STREAM_UNSPECIFIED :Int = 0xffffff;//==MathUtil.UINT32_MAX;
@@ -84,6 +84,17 @@ class Rand
 	/** Returns a random element from the given Array. */
 	public static function nextElement <T> (arr :Array<T>, ?streamId :Int = 0xffffff) :T
 	{
+		// if (arr.length == 0) {
+		// 	trace("arr.length == 0");
+		// 	return null;
+		// }
+		// trace('arr.length=' + arr.length);
+		// for (x in 0...10) {
+		// 	trace(Std.int(nextIntInRange(0, arr.length - 1, streamId)));
+		// }
+		// var ii = nextIntInRange(0, arr.length - 1, streamId);
+		// trace('ii=' + ii);
+		// return arr[ii];
 		return (arr.length > 0 ? arr[nextIntInRange(0, arr.length - 1, streamId)] :null);
 	}
 
@@ -106,7 +117,7 @@ class Rand
 	/** Returns an int in the range [min, max] */
 	public static function nextIntInRange (min :Int, max :Int, ?streamId :Int = 0xffffff) :Int
 	{
-		return getStream(streamId).randomRange(min, max);
+		return Std.int(getStream(streamId).randomRange(min, max));
 	}
 
 	/** Returns a Boolean. */

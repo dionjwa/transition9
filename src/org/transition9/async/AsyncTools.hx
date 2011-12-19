@@ -5,7 +5,7 @@ class AsyncTools
 	/**
 	  * Converts the callback function into a Node.js compatible one, where the first arg is an error.
 	  */
-	public static function addErrorArg <T>(f :T->Void, ?onError :Dynamic->Void) :Dynamic->T->Void
+	public static function adapt1 <T>(f :T->Void, ?onError :Dynamic->Void) :Dynamic->T->Void
 	{
 		return function (err :Dynamic, val :T) :Void {
 			if (err) {
@@ -20,7 +20,7 @@ class AsyncTools
 	/**
 	  * Converts the callback function into a Node.js compatible one, where the first arg is an error.
 	  */
-	public static function addErrorArg1 (f :Void->Void, ?onError :Dynamic->Void) :Dynamic->Dynamic->Void
+	public static function adapt2 (f :Void->Void, ?onError :Dynamic->Void) :Dynamic->Dynamic->Void
 	{
 		return function (err :Dynamic, ignored :Dynamic) :Void {
 			if (err) {
@@ -30,5 +30,17 @@ class AsyncTools
 				f();
 			}
 		}
+	}
+	
+	/**
+	  * To be used inside a callback:
+	  * if (AsyncTools.returnIfError(err, cb)) return;
+	  */
+	public static function returnIfError (err :Dynamic, cb :Dynamic->Dynamic->Void) :Bool
+	{
+		if (err != null) {
+			cb(err, null);
+		}
+		return err != null;
 	}
 }

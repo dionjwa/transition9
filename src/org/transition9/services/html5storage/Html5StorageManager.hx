@@ -7,7 +7,6 @@ package org.transition9.services.html5storage;
   */
 class Html5StorageManager implements Html5StorageService
 {
-	#if js
 	var _isAvailable :Bool;
 	static var ERR_MSG = "No localStorage.  Did you check first?";
 	
@@ -16,21 +15,28 @@ class Html5StorageManager implements Html5StorageService
 		//Attempt localStorage detection
 		_isAvailable = false;
 		
-		#if modernizr
-		_isAvailable = Modernizr.localstorage;
+		#if js
+			#if modernizr
+			_isAvailable = Modernizr.localstorage;
+			#else
+			org.transition9.util.Log.warn("modernizr is missing, so we cannot safely check for localStorage");
+			#end
 		#else
-		org.transition9.util.Log.warn("modernizr is missing, so we cannot safely check for localStorage");
+		ERR_MSG = "Html5StorageManager only works in the client browser javascript."; 
 		#end
 	}
 	
 	public function isAvailable (cb :Bool->Void) :Void
 	{
-		return cb(_isAvailable);
+		#if js
+		cb(_isAvailable);
+		#end
 	}
 	
 	public function getItem (key :String, cb :Dynamic->Void) :Void
 	{
 		check();
+		#if js
 		var item = LocalStorage.getItem(key);
 		if (item == null) {
 			cb(null);
@@ -43,38 +49,46 @@ class Html5StorageManager implements Html5StorageService
 				cb(null);
 			});
 		}
+		#end
 	}
 	
 	public function setItem (key :String, val :Dynamic, cb :Bool->Void) :Void
 	{
 		check();
+		#if js
 		var itemString = haxe.Serializer.run(val);
 		LocalStorage.setItem(key, itemString);
 		cb(true);
+		#end
 	}
 	
 	public function removeItem (key :String, cb :Bool->Void) :Void
 	{
 		check();
+		#if js
 		LocalStorage.removeItem(key);
 		cb(true);
+		#end
 	}
 	
 	public function getLength(cb :Int->Void) :Void
 	{
 		check();
-		cb(LocalStorage.length); 
+		#if js
+		cb(LocalStorage.length);
+		#end
 	}
 	
 	public function key(index :Int, cb :String->Void) :Void
 	{
 		check();
+		#if js
 		cb(LocalStorage.key(index));
+		#end
 	}
 	
 	inline function check () :Void
 	{
 		org.transition9.util.Preconditions.checkArgument(_isAvailable, ERR_MSG);
 	}
-	#end
 }

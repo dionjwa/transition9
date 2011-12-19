@@ -1,10 +1,8 @@
 package org.transition9.util;
 
-import org.transition9.geom.Vector2;
+import de.polygonal.motor.geom.math.Vec2;
 
-import de.polygonal.motor2.geom.math.XY;
-
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 enum Browser {
 	ANDROID;
@@ -43,17 +41,17 @@ class Device
 	}
 	
 	
-	public static function getScreenDimensions () :XY
+	public static function getScreenDimensions () :Vec2
 	{
 		if (isMobileBrowser) {
 			switch (browser) {
-				case ANDROID: return new Vector2(js.Lib.window.screen.width, js.Lib.window.screen.height);
-				case SAFARI_IOS: return new Vector2(320, 480);
+				case ANDROID: return new Vec2(js.Lib.window.screen.width, js.Lib.window.screen.height);
+				case SAFARI_IOS: return new Vec2(320, 480);
 				default:  throw "I don't know what device this is";
 			}
 		} else {
 			#if js
-			return new Vector2(js.Lib.window.screen.width, js.Lib.window.screen.height);
+			return new Vec2(js.Lib.window.screen.width, js.Lib.window.screen.height);
 			#end
 		}
 		

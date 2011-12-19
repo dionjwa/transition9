@@ -12,30 +12,29 @@ import org.transition9.geom.Geometry;
 import org.transition9.geom.LineSegment;
 import org.transition9.geom.Polygon;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Comparators;
 import org.transition9.ds.Map;
 import org.transition9.ds.Maps;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 import Type;
 
 using org.transition9.geom.Geometry;
 using org.transition9.geom.PolygonTools;
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 /**
- * Static method operating on an iterable of XY objects.
+ * Static method operating on an iterable of Vec2 objects.
  * Designed to be used with the "using" keyword.
  */
 class PolygonTools
 {
 	
-	public static function deepCopy (arr :Array<XY>) :Array<XY>
+	public static function deepCopy (arr :Array<Vec2>) :Array<Vec2>
 	{
-		var a = new Array<XY>();
+		var a = new Array<Vec2>();
 		for (v in arr) {
 			a.push(v.clone());
 		}
@@ -44,25 +43,25 @@ class PolygonTools
 	
 	public static function toPolygon (rect :Rectangle) :Polygon
 	{
-		var arg = new Array<XY>();
-		arg.push(new Vector2(rect.left, rect.top));
-		arg.push(new Vector2(rect.right, rect.top));
-		arg.push(new Vector2(rect.right, rect.bottom));
-		arg.push(new Vector2(rect.left, rect.bottom));
+		var arg = new Array<Vec2>();
+		arg.push(new Vec2(rect.left, rect.top));
+		arg.push(new Vec2(rect.right, rect.top));
+		arg.push(new Vec2(rect.right, rect.bottom));
+		arg.push(new Vec2(rect.left, rect.bottom));
 		
-		// [new Vector2(rect.left, rect.top), new Vector2(rect.right, rect.top),
-			// new Vector2(rect.right, rect.bottom), new Vector2(rect.left, rect.bottom)];
+		// [new Vec2(rect.left, rect.top), new Vec2(rect.right, rect.top),
+			// new Vec2(rect.right, rect.bottom), new Vec2(rect.left, rect.bottom)];
 		return new Polygon(arg);
 	}
 	
 	#if (flash || cpp)
 	public static function convertToPolygon (rect :flash.geom.Rectangle) :Polygon
 	{
-		var arg = new Array<XY>();
-		arg.push(new Vector2(rect.left, rect.top));
-		arg.push(new Vector2(rect.right, rect.top));
-		arg.push(new Vector2(rect.right, rect.bottom));
-		arg.push(new Vector2(rect.left, rect.bottom));
+		var arg = new Array<Vec2>();
+		arg.push(new Vec2(rect.left, rect.top));
+		arg.push(new Vec2(rect.right, rect.top));
+		arg.push(new Vec2(rect.right, rect.bottom));
+		arg.push(new Vec2(rect.left, rect.bottom));
 		
 		return new Polygon(arg);
 	}
@@ -79,7 +78,7 @@ class PolygonTools
 		}
 	}
 	
-	public static function drawPoly (arr :Array<XY>, g :flash.display.Graphics, ?color :Int = 0x000000, ?alpha :Float = 1, ?lineWidth :Float = 1) :Void
+	public static function drawPoly (arr :Array<Vec2>, g :flash.display.Graphics, ?color :Int = 0x000000, ?alpha :Float = 1, ?lineWidth :Float = 1) :Void
 	{
 		g.lineStyle(lineWidth, color, alpha);
 		g.moveTo(arr[arr.length - 1].x, arr[arr.length - 1].y);
@@ -90,7 +89,7 @@ class PolygonTools
 		}
 	}
 	
-	public static function fillPoly (arr :Array<XY>, g :flash.display.Graphics, ?color :Int = 0x000000, ?alpha :Float = 1) :Void
+	public static function fillPoly (arr :Array<Vec2>, g :flash.display.Graphics, ?color :Int = 0x000000, ?alpha :Float = 1) :Void
 	{
 		g.beginFill(color, alpha);
 		g.moveTo(arr[arr.length - 1].x, arr[arr.length - 1].y);
@@ -103,7 +102,7 @@ class PolygonTools
 	}
 	#end
 	
-	public static function isPointInPolygon2 (poly :Array<XY>, p :XY) :Bool
+	public static function isPointInPolygon2 (poly :Array<Vec2>, p :Vec2) :Bool
 	{
 		var polySides = poly.length;
 		var i = polySides - 1;
@@ -123,7 +122,7 @@ class PolygonTools
 
 	}
 	
-	public static function union (poly1 :Array<XY>, poly2 :Array<XY>) :Array<XY>
+	public static function union (poly1 :Array<Vec2>, poly2 :Array<Vec2>) :Array<Vec2>
 	{
 		throw "Not implemented";
 		return null;
@@ -141,8 +140,8 @@ class PolygonTools
 //		 // poly1 = if (Polygon.isClockwisePolygon(poly1)) poly1 else poly1.reverse();
 //		 // poly2 = if (Polygon.isClockwisePolygon(poly2)) poly2 else poly2.reverse();
 
-//		 var arr :Array<XY> = null;
-//		 var vectors2SequentialPairs = function (index :Int, v :XY) :Array<XY> {
+//		 var arr :Array<Vec2> = null;
+//		 var vectors2SequentialPairs = function (index :Int, v :Vec2) :Array<Vec2> {
 //			 var index2 = if (index + 1 >= arr.length) 0 else index + 1;
 //			 return [v, arr[index2]];
 //		 }
@@ -154,7 +153,7 @@ class PolygonTools
 
 // //		trace("poly1VectorPairs=" + poly1VectorPairs.join("|"));
 
-//		 var union = new Array<XY>();
+//		 var union = new Array<Vec2>();
 
 //		 //While the union is too small and isn't closed
 //		 var iterations = 0;
@@ -183,8 +182,8 @@ class PolygonTools
 // //			trace("isCurrentPoly1=" + isCurrentPoly1);
 // //			trace("A B=" + [A, B]);
 
-//			 var closestIntersectionPair :Array<XY> = null;
-//			 var closestIntersection :XY = null;
+//			 var closestIntersectionPair :Array<Vec2> = null;
+//			 var closestIntersection :Vec2 = null;
 //			 var closestIntersectionDistanceToFirstPoint = Math.POSITIVE_INFINITY;
 //			 var vectorPairs = if (isCurrentPoly1) poly2VectorPairs else poly1VectorPairs;
 
@@ -192,9 +191,9 @@ class PolygonTools
 //			 for (pair in vectorPairs) {
 //				 var A2 = pair[0];
 //				 var B2 = pair[1];
-//				 var intersection:XY = LineSegment.lineIntersectLine(A, B, A2, B2);
+//				 var intersection:Vec2 = LineSegment.lineIntersectLine(A, B, A2, B2);
 //				 if (intersection != null) {
-//					 var dist = VectorTools.distance(intersection, A);
+//					 var dist = Vec2Tools.distance(intersection, A);
 //					 if (dist < closestIntersectionDistanceToFirstPoint) {
 //						 closestIntersectionDistanceToFirstPoint = dist;
 //						 closestIntersectionPair = pair;
@@ -250,7 +249,7 @@ class PolygonTools
 	 * Does not check if a point is ON the polygon edge.
 	 *
 	 */
-	public static function isPointInPolygon (arrayOfPolygonPoints :Array<XY>, P :XY) :Bool
+	public static function isPointInPolygon (arrayOfPolygonPoints :Array<Vec2>, P :Vec2) :Bool
 	{
 		return isPointInPolygon2(arrayOfPolygonPoints, P);
 		throw "This method is buggy, use isPointInPolygon2 for now (until I fix it)";
@@ -283,7 +282,7 @@ class PolygonTools
 
 		var width = maxX - minX;
 		var height = maxY - minY;
-		var center = new Vector2(minX + width / 2, minY + height / 2);
+		var center = new Vec2(minX + width / 2, minY + height / 2);
 
 		var angleFromPtoCenter = center.subtract(P).angle();
 		//We're lazy: instead of making sure our ray doesn't intersect a vertex,
@@ -293,8 +292,8 @@ class PolygonTools
 		angleFromPtoCenter += 0.000000123;
 
 		//From P to a point outside the polygon
-		// var point2:XY = XY.fromAngle(angleFromPtoCenter, Math.max(width, height) *2);
-		var point2 = angleFromPtoCenter.angleToVector2(Math.max(width, height) *2);
+		// var point2:Vec2 = Vec2.fromAngle(angleFromPtoCenter, Math.max(width, height) *2);
+		var point2 = angleFromPtoCenter.angleToVec2(Math.max(width, height) *2);
 
 		var polygon = arrayOfPolygonPoints.copy();
 		if(arrayOfPolygonPoints[0] != arrayOfPolygonPoints[ arrayOfPolygonPoints.length - 1]) {
@@ -319,7 +318,7 @@ class PolygonTools
 	 * @return true is intersection occurs
 	 *
 	 */
-	public static function isOverlapping (object1 :Array<XY>, object2 :Array<XY>) :Bool
+	public static function isOverlapping (object1 :Array<Vec2>, object2 :Array<Vec2>) :Bool
 	{
 		for (i in 0...object1.length){
 			for (j in 0...object2.length){
@@ -337,7 +336,7 @@ class PolygonTools
 	/**
 	 * Assumes a convex polygon
 	 */
-	public static function isClockwise (P :Array<XY>) :Bool
+	public static function isClockwise (P :Array<Vec2>) :Bool
 	{
 		var A = P[0];
 		var B = P[1];
@@ -355,7 +354,7 @@ class PolygonTools
 			return isClockwise(differentStartVector);
 		}
 		else {
-			var diff = VectorTools.differenceAngles(angleAB, angleAC);
+			var diff = Vec2Tools.differenceAngles(angleAB, angleAC);
 			return diff > 0;
 		}
 	}
@@ -364,20 +363,20 @@ class PolygonTools
 	 * Pad polygon, i.e. enlarge by <padding>.  This ensures that
 	 * a big fat pathfinder will not hit the walls.  This can be a negative number to unpad.
 	 */
-	static function padPolygon(polygon :Array<XY>, padding :Float) :Void
+	static function padPolygon(polygon :Array<Vec2>, padding :Float) :Void
 	{
-		var padEdge = function ( v1 :XY, v2 :XY, center :XY) :Void
+		var padEdge = function ( v1 :Vec2, v2 :Vec2, center :Vec2) :Void
 		{
 			//Get the normal
-			// var normalAngle = Geometry.normalizeRadians( VectorTools.angleFrom(v1.x, v1.y, v2.x, v2.y) + Math.PI / 2 );
+			// var normalAngle = Geometry.normalizeRadians( Vec2Tools.angleFrom(v1.x, v1.y, v2.x, v2.y) + Math.PI / 2 );
 			var normalAngle = (v1.angleTo(v2) + Math.PI / 2).normalizeRadians();
 			//Create the transform vector from the normal angle and the padding
-			var transform = normalAngle.angleToVector2();
+			var transform = normalAngle.angleToVec2();
 			//Check if the angle is pointing the wrong way (to the center instead of away)
-			var middlePoint:XY = new Vector2( v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
+			var middlePoint:Vec2 = new Vec2( v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
 
 			if(center.distance(middlePoint) > center.distance(middlePoint.add(transform))) {
-				transform = (normalAngle + Math.PI).normalizeRadians().angleToVector2();
+				transform = (normalAngle + Math.PI).normalizeRadians().angleToVec2();
 			}
 			transform.scale( padding );
 			//Change the vertex positions
@@ -385,14 +384,14 @@ class PolygonTools
 			v2.addLocal( transform );
 		}
 
-		var center:XY = get_center(polygon);
+		var center:Vec2 = get_center(polygon);
 		//Go through all edges.
 		for( k in 0...polygon.length - 1) {
 			padEdge( polygon[k], polygon[ k + 1 ], center);
 		}
 	}
 	
-	public static function closestPointOnPolygon (p :Array<XY>, P:XY):XY
+	public static function closestPointOnPolygon (p :Array<Vec2>, P:Vec2):Vec2
 	{
 		var polygon = p.copy();
 		if(p[0] != p[ p.length - 1]) {
@@ -400,9 +399,9 @@ class PolygonTools
 		}
 
 		var distance = Math.POSITIVE_INFINITY;
-		var closestVector :XY = null;
+		var closestVector :Vec2 = null;
 		for(k in 0...polygon.length - 1) {
-			var point:XY = new Vector2();
+			var point:Vec2 = new Vec2();
 			var currentDistance = LineSegment.distToLineSegment(polygon[k], polygon[k + 1], P, point);
 			if( currentDistance < distance) {
 				distance = currentDistance;
@@ -413,7 +412,7 @@ class PolygonTools
 
 	}
 
-	public static function getBounds (p :Array<XY>) :Rectangle
+	public static function getBounds (p :Array<Vec2>) :Rectangle
 	{
 		if (p == null || p.length == 0) {
 			return new Rectangle(0, 0, 0, 0);
@@ -437,14 +436,14 @@ class PolygonTools
 	
 	/**
 	 * Returns true if any points are an edge of the polygon.
-	 * @param P1 Array of XY points, with the first point also last in the array.
+	 * @param P1 Array of Vec2 points, with the first point also last in the array.
 	 */
-	public static function isPolygonEdge(polygon :Array<XY>, P1 :XY, P2 :XY) :Bool
+	public static function isPolygonEdge(polygon :Array<Vec2>, P1 :Vec2, P2 :Vec2) :Bool
 	{
 		for(k in 0...polygon.length - 1) {
 
-			var p1:XY = cast( polygon[k], XY);
-			var p2:XY = cast( polygon[k + 1], XY);
+			var p1:Vec2 = cast( polygon[k], Vec2);
+			var p2:Vec2 = cast( polygon[k + 1], Vec2);
 
 			if((P1.x == p1.x && P1.y == p1.y && P2.x == p2.x && P2.y == p2.y) ||
 				(P2.x == p1.x && P2.y == p1.y && P1.x == p2.x && P1.y == p2.y)) {
@@ -454,10 +453,10 @@ class PolygonTools
 		return false;
 	}
 	
-	public static function closestPoint (p :Array<XY>, P:XY) :XY
+	public static function closestPoint (p :Array<Vec2>, P:Vec2) :Vec2
 	{
 		var distance = Math.POSITIVE_INFINITY;
-		var closestVector :XY = null;
+		var closestVector :Vec2 = null;
 		for (v in p) {
 			var currentDistance = v.distanceSq(P);
 			if( currentDistance < distance) {
@@ -468,10 +467,10 @@ class PolygonTools
 		return closestVector;
 	}
 	
-	public static function furthestPoint (p :Array<XY>, P:XY) :XY
+	public static function furthestPoint (p :Array<Vec2>, P:Vec2) :Vec2
 	{
 		var distance = Math.NEGATIVE_INFINITY;
-		var furthest :XY = null;
+		var furthest :Vec2 = null;
 		for (v in p) {
 			var currentDistance = v.distanceSq(P);
 			if( currentDistance > distance) {
@@ -486,7 +485,7 @@ class PolygonTools
 	 * Warning: the points arg may be modified!
 	 * http://notejot.com/2008/11/convex-hull-in-2d-andrews-algorithm/
 	 */
-	public static function toConvexHull (points :Array<XY>) :Array<XY>
+	public static function toConvexHull (points :Array<Vec2>) :Array<Vec2>
 	{
 		var topHull = new Array<Int>();
 		var bottomHull = new Array<Int>();
@@ -497,7 +496,7 @@ class PolygonTools
 		}
 		else {
 			// lexicographic sort, get rid of special cases
-			var fieldComp :XY -> XY -> Int = Comparators.createFields(["x", "y"]); 
+			var fieldComp :Vec2 -> Vec2 -> Int = Comparators.createFields(["x", "y"]); 
 			points.sort(fieldComp);
 			// points.sortOn(["x", "y"], Array.NUMERIC);
 
@@ -555,7 +554,7 @@ class PolygonTools
 			bottomHull.shift();
 			convexHull = topHull.concat(bottomHull);
 
-			var convexPoints:Array<XY> = Lambda.array(Lambda.map(convexHull, function (idx :Int) :XY {
+			var convexPoints:Array<Vec2> = Lambda.array(Lambda.map(convexHull, function (idx :Int) :Vec2 {
 				return points[idx];
 			}));
 
@@ -566,10 +565,10 @@ class PolygonTools
 		}
 	}
 	
-	static function towardsLeft (origin :XY, p1 :XY, p2 :XY) :Bool
+	static function towardsLeft (origin :Vec2, p1 :Vec2, p2 :Vec2) :Bool
 	{
-		var tmp1 = new Vector2(p1.x - origin.x, p1.y - origin.y);
-		var tmp2 = new Vector2(p2.x - origin.x, p2.y - origin.y);
+		var tmp1 = new Vec2(p1.x - origin.x, p1.y - origin.y);
+		var tmp2 = new Vec2(p2.x - origin.x, p2.y - origin.y);
 
 		if(((tmp1.x * tmp2.y) - (tmp1.y * tmp2.x)) < 0) {
 			return true;
@@ -585,10 +584,10 @@ class PolygonTools
 	 * @return an Array containing all points contained in the other polygon and all intersection points.
 	 *
 	 */
-	public static function getIntersection (p1 :Array<XY>, p2 :Array<XY>) :Array<XY>
+	public static function getIntersection (p1 :Array<Vec2>, p2 :Array<Vec2>) :Array<Vec2>
 	{
-		var containedPoints = new Array<XY>();
-		var v:XY;
+		var containedPoints = new Array<Vec2>();
+		var v:Vec2;
 		var k;
 		var kk;
 
@@ -606,7 +605,7 @@ class PolygonTools
 			}
 		}
 
-		var intersectionPoints = new Array<XY>();
+		var intersectionPoints = new Array<Vec2>();
 		//Create the intersection points
 		for(k in 0...p1.length - 1) {
 			for(kk in 0...p2.length - 1) {
@@ -623,11 +622,11 @@ class PolygonTools
 		return containedPoints;
 	}
 	
-	public static function getPointsWhereLineIntersectsPolygon(polygon:Array<XY>, A:XY, B:XY):Array<XY>
+	public static function getPointsWhereLineIntersectsPolygon(polygon:Array<Vec2>, A:Vec2, B:Vec2):Array<Vec2>
 	{
-		var intersectingPoints = new Array<XY>();
+		var intersectingPoints = new Array<Vec2>();
 		for (i in 0...polygon.length - 1){
-			var point:XY = LineSegment.lineIntersectLine(A, B, polygon[i], polygon[i+1]);
+			var point:Vec2 = LineSegment.lineIntersectLine(A, B, polygon[i], polygon[i+1]);
 			if(point != null) {
 				if(!point.equals(A) && !point.equals(B)) {
 					intersectingPoints.push(point);
@@ -637,7 +636,7 @@ class PolygonTools
 		return intersectingPoints;
 	}
 
-	public static function get_center (arrayOfPolygonPoints :Array<XY>, ?center :XY) :XY
+	public static function get_center (arrayOfPolygonPoints :Array<Vec2>, ?center :Vec2) :Vec2
 	{
 		var minX = Math.POSITIVE_INFINITY;
 		var maxX = Math.NEGATIVE_INFINITY;
@@ -652,7 +651,7 @@ class PolygonTools
 		}
 
 		if(center == null) {
-			center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
+			center = new Vec2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
 		}
 		else {
 			center.x = minX + (maxX - minX) / 2;
@@ -661,22 +660,22 @@ class PolygonTools
 		return center;
 	}
 
-	public static function isCircleIntersecting (polygon :Array<XY>, P :XY, radius :Float) :Bool
+	public static function isCircleIntersecting (polygon :Array<Vec2>, P :Vec2, radius :Float) :Bool
 	{
-		var closestPointOnPolygon:XY = closestPointOnPolygon(polygon, P);
+		var closestPointOnPolygon:Vec2 = closestPointOnPolygon(polygon, P);
 		return closestPointOnPolygon.distance(P) <= radius;
 	}
 
 	/**
-	 * @initialLocations : an Array of XY objects.
+	 * @initialLocations : an Array of Vec2 objects.
 	 * @initialAngle : the angle from the center of the locations in which the sweep starts.
-	 * @radiusFunction : takes a XY and returns a radius. Must be > 0.  Small values mean
+	 * @radiusFunction : takes a Vec2 and returns a radius. Must be > 0.  Small values mean
 	 *				   smaller sweep intervals and thus longer computation time.
 	 */
-	inline public static function sortVectorsBySweep (initialLocations :Array<XY>, initialAngle :Float,
-		radiusFunction :Dynamic->Float) :Array<XY>
+	inline public static function sortVectorsBySweep (initialLocations :Array<Vec2>, initialAngle :Float,
+		radiusFunction :Dynamic->Float) :Array<Vec2>
 	{
-		var v:XY;
+		var v:Vec2;
 		var bounds = initialLocations.getBounds();
 		org.transition9.util.Log.debug(["bounds", bounds]);
 
@@ -684,37 +683,37 @@ class PolygonTools
 
 		org.transition9.util.Log.debug(["maxFormationRadius", maxFormationRadius]);
 
-		var center = new Vector2(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+		var center = new Vec2(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
 
 		//New simpler sorting
 		//Rotate so the angle is zero
-		var vvMap :Map<XY, XY> = Maps.newHashMap(ValueType.TClass(XY));
+		var vvMap :Map<Vec2, Vec2> = Maps.newHashMap(ValueType.TClass(Vec2));
 		for (v in initialLocations) {
 			vvMap.set(v.subtract(center), v);
 		}
-		// initialLocations.forEach(function (v :XY, ignored:Array<Dynamic>) :Void {
+		// initialLocations.forEach(function (v :Vec2, ignored:Array<Dynamic>) :Void {
 		//	 vvMap.put(v.subtract(center), v);
 		// } );
 		// var test = vvMap.keys();
 		// var test2 = Lambda.array(test);
-		var relVs = new Array<XY>();
+		var relVs = new Array<Vec2>();
 		for (v in vvMap.keys()) {
 			relVs.push(v.rotateLocal(initialAngle));
 		}
-		// relVs.forEach(function (v :XY, ignored:Array<Dynamic>) :Void {
+		// relVs.forEach(function (v :Vec2, ignored:Array<Dynamic>) :Void {
 		//	 v.rotateLocal(initialAngle);
 		// });
-		// ArrayUtil.stableSort(relVs, function (v1 :XY, v2 :XY) :Int {
+		// ArrayUtil.stableSort(relVs, function (v1 :Vec2, v2 :Vec2) :Int {
 		//	 return (v1.x > v2.x ? -1 : 1);
 		// });
-		relVs.sort(function (v1 :XY, v2 :XY) :Int {
+		relVs.sort(function (v1 :Vec2, v2 :Vec2) :Int {
 			return (v1.x > v2.x ? -1 : 1);
 		});
 		return Lambda.array(Lambda.map(relVs, vvMap.get));
 		// return relVs.map(Util.adapt(vvMap.get));
 
 		// var smallestRadius:Float = Math.POSITIVE_INFINITY;
-		// initialLocations.forEach(function (v :XY) :Void {
+		// initialLocations.forEach(function (v :Vec2) :Void {
 		//	 var radius:Float = cast( radiusFunction(v), Float);
 		//	 if (radius < smallestRadius) {
 		//		 smallestRadius = radius;
@@ -727,19 +726,19 @@ class PolygonTools
 		// //touch the line, they are added to the squad in that order.  Thus, it gives a
 		// //order from front to back.
 		// var radiusForComputingSqadOrder:Int = Math.max(bounds.width, bounds.height) * Math.SQRT2/2;
-		// var normalP1:XY = XY.fromAngle(initialAngle + Math.PI/4, radiusForComputingSqadOrder);
+		// var normalP1:Vec2 = Vec2.fromAngle(initialAngle + Math.PI/4, radiusForComputingSqadOrder);
 		// normalP1.addLocal(center);
-		// var normalP2:XY = XY.fromAngle(initialAngle - Math.PI/4, radiusForComputingSqadOrder);
+		// var normalP2:Vec2 = Vec2.fromAngle(initialAngle - Math.PI/4, radiusForComputingSqadOrder);
 		// normalP2.addLocal(center);
 		// //The normal line segment is incremented by the transform.
-		// var normalTransformIncrement:XY = XY.fromAngle(initialAngle, -1);
+		// var normalTransformIncrement:Vec2 = Vec2.fromAngle(initialAngle, -1);
 		// //This should be really small in case there are +1 units on the first pass.
 		// var incrementLength:Int = smallestRadius / 4;
 		// normalTransformIncrement.scaleLocal(incrementLength);
 
 		// //The distance the line has moved.
 		// var totalNormalLineSegmentTransformed:Int = 0;
-		// var unitsPlacedInFormation:Set = Sets.newSetOf(XY);//Don't check these locations anymore
+		// var unitsPlacedInFormation:Set = Sets.newSetOf(Vec2);//Don't check these locations anymore
 
 		// var orderOfUnitsInFormation:Array<Dynamic> = new Array();//The order in which to place units in formation
 
@@ -772,10 +771,10 @@ class PolygonTools
 		//	 //Ok more than one unit found.  Order them by proximty to the center
 		//	 else if (unitsFoundThisPass.length > 1) {
 		//		 //Sort
-		//		 unitsFoundThisPass.sort(function (vecA :XY, vecB :XY) :Int {
+		//		 unitsFoundThisPass.sort(function (vecA :Vec2, vecB :Vec2) :Int {
 
-		//			 var distA:Int = VectorTools.distanceSq(vecA, center);
-		//			 var distB:Int = VectorTools.distanceSq(vecB, center);
+		//			 var distA:Int = Vec2Tools.distanceSq(vecA, center);
+		//			 var distB:Int = Vec2Tools.distanceSq(vecB, center);
 		//			 if (distA < distB) {
 		//				 return -1;
 		//			 }

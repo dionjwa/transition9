@@ -12,13 +12,13 @@ import org.transition9.geom.Circle;
 import org.transition9.geom.Rectangle;
 import org.transition9.util.Cloneable;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 interface IBounds<T> 
 	implements Cloneable<T>//, implements ISpatialObject2D
 {
-	public var center(get_center, set_center) : XY;
-	public var topLeft(get_topLeft, set_topLeft) : XY;
+	public var center(get_center, set_center) : Vec2;
+	public var topLeft(get_topLeft, set_topLeft) : Vec2;
 	// public var boundingRect (get_boundingRect, null) :Rectangle;
 	public var boundingCircle (get_boundingCircle, null) :Circle;
 
@@ -26,8 +26,8 @@ interface IBounds<T>
 	public function containsBounds (b :IBounds<Dynamic>) :Bool;
 	public function isWithinDistance(b :IBounds<Dynamic>, d :Float) :Bool;
 	
-	public function containsPoint (v :XY) :Bool;
-	// public function distanceToPoint (v :XY) :Float;
-	// public function getBoundedPoint (v :XY, ?v :XY) :XY;
-	// public function getBoundedPointFromMove (originX :Float, originY :Float, targetX :Float, targetY :Float, ?v :XY) :XY;
+	public function containsPoint (v :Vec2) :Bool;
+	// public function distanceToPoint (v :Vec2) :Float;
+	// public function getBoundedPoint (v :Vec2, ?v :Vec2) :Vec2;
+	// public function getBoundedPointFromMove (originX :Float, originY :Float, targetX :Float, targetY :Float, ?v :Vec2) :Vec2;
 }

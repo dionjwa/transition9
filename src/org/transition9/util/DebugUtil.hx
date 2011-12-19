@@ -12,10 +12,10 @@ import com.pblabs.components.scene2D.BaseSceneLayer;
 import com.pblabs.components.scene2D.SceneUtil;
 import com.pblabs.engine.core.NameManager;
 import com.pblabs.engine.resource.ResourceToken;
-import org.transition9.geom.Vector2;
+import Vec2;
 import org.transition9.ds.Map;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;

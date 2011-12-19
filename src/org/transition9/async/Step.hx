@@ -145,6 +145,8 @@ class Step
 	
 	function callNext (args :Array<Dynamic>) :Void
 	{
+		org.transition9.util.Assert.isNotNull(_chain, ' _chain is null');
+		org.transition9.util.Assert.isTrue(_chain.length > 0);
 		_callId++;
 		if (_groupedCall != null) {
 			_groupedCall.shutdown();
@@ -154,13 +156,13 @@ class Step
 			// _groupedFunctionIndex = _pending = 0;
 			Reflect.callMethod(null, _chain.shift(), args);
 		} catch (e :Dynamic) {
-			callNext([e, null]);
+			trace("Step caught exception: " + e);
+			if (_chain != null && _chain.length > 0) {
+				callNext([e, null]);
+			} else {
+				throw e;
+			}
 		}
-	}
-	
-	function callGroupCallback () :Void
-	{
-		
 	}
 }
 
@@ -208,17 +210,17 @@ class GroupedCall
 				return;
 			}
 			
-			if (err != null) {
+			if (err != null || _err != null) {
 				_pendingResults[index] = null;
 				if (_err == null) {
 					_err = err;
-					haxe.Timer.delay(calledGroupCallback, 0);
 				}
+				// haxe.Timer.delay(calledGroupCallback, 0);
 			} else {
 				_pendingResults[index] = result;
-				if (_pending == 0) {
-					haxe.Timer.delay(calledGroupCallback, 0);
-				}
+			}
+			if (_pending == 0) {
+				haxe.Timer.delay(calledGroupCallback, 0);
 			}
 		}
 	}

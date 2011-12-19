@@ -9,11 +9,10 @@
 package org.transition9.geom;
 
 import org.transition9.geom.LineSegment;
-import org.transition9.geom.Vector2;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 class Geometry
 {
@@ -128,14 +127,14 @@ class Geometry
 	 * @return the closest point to A.
 	 *
 	 */
-	public static function closestPoint(A :Vector2, otherPoints:Array<Dynamic>):Vector2
+	public static function closestPoint(A :Vec2, otherPoints:Array<Dynamic>):Vec2
 	{
 		var closestDistance = Math.POSITIVE_INFINITY;
-		var closestPoint :Vector2 = null;
+		var closestPoint :Vec2 = null;
 
 		for (v in otherPoints)
 		{
-			var d = VectorTools.distanceSq(v, A);
+			var d = Vec2Tools.distanceSq(v, A);
 			if(d < closestDistance) {
 				closestDistance = d;
 				closestPoint = v;
@@ -153,7 +152,7 @@ class Geometry
 	 * @return returns negative if the ray is parallel, else the distance along the ray to the intersection.
 	 *
 	 */
-	public static function distToRayPlaneIntersect(rayOrigin:Vector2, rayHeading:Vector2, planePoint:Vector2, planeNormal:Vector2):Float{
+	public static function distToRayPlaneIntersect(rayOrigin:Vec2, rayHeading:Vec2, planePoint:Vec2, planeNormal:Vec2):Float{
 		var d		= -planeNormal.dot(planePoint);
 		var numer	= planeNormal.dot(rayOrigin) + d;
 		var denom	= planeNormal.dot(rayHeading);
@@ -171,8 +170,8 @@ class Geometry
 	 * @return -1 if point is behind plane. 0 if point is on plane. 1 if point is in front of plane.
 	 *
 	 */
-	public static function whereIsPoint (point :Vector2, pointOnPlane :Vector2,
-		planeNormal :Vector2) :Int
+	public static function whereIsPoint (point :Vec2, pointOnPlane :Vec2,
+		planeNormal :Vec2) :Int
 	{
 		var dir = pointOnPlane.subtract(point);
 
@@ -194,8 +193,8 @@ class Geometry
 	 * @return returns the distance, or -1 if there is no intersection
 	 *
 	 */
-	public static function getRayCircleIntersect (rayOrigin :Vector2, rayHeading :Vector2,
-		circleCenter :Vector2, radius :Float) :Float
+	public static function getRayCircleIntersect (rayOrigin :Vec2, rayHeading :Vec2,
+		circleCenter :Vec2, radius :Float) :Float
 	{
 		var toCircle	= circleCenter.subtract(rayOrigin);
 		var length	   = toCircle.getLength();
@@ -216,8 +215,8 @@ class Geometry
 	 * @return returns true if intersecting else false
 	 *
 	 */
-	public static function doesRayIntersectCircle (rayOrigin :Vector2, rayHeading :Vector2,
-		circleCenter :Vector2, radius :Float) :Bool
+	public static function doesRayIntersectCircle (rayOrigin :Vec2, rayHeading :Vec2,
+		circleCenter :Vec2, radius :Float) :Bool
 	{
 		var toCircle = circleCenter.subtract(rayOrigin);
 		var length		 = toCircle.getLength();
@@ -240,8 +239,8 @@ class Geometry
 	 * @return false if 'P' is within the circle
 	 *
 	 */
-	public static function getTangentPoints (C :Vector2, R :Float, P :Vector2, tangent1 :Vector2,
-		tangent2 :Vector2) :Bool
+	public static function getTangentPoints (C :Vec2, R :Float, P :Vec2, tangent1 :Vec2,
+		tangent2 :Vec2) :Bool
 	{
 		var PmC = P.subtract(C);
 		var sqrLen = PmC.lengthSq();
@@ -270,7 +269,7 @@ class Geometry
 //		 * @return the distance from P -> AB
 //		 *
 //		 */
-//		public static function distToLineSegment (A :Vector2, B :Vector2, P :Vector2) :Number
+//		public static function distToLineSegment (A :Vec2, B :Vec2, P :Vec2) :Number
 //		{
 //			return Math.sqrt(distToLineSegmentSq(A, b, P));
 //		}
@@ -284,26 +283,26 @@ class Geometry
 //	 * @return the distance from P -> AB
 //	 *
 //	 */
-//	public static function distToLineSegmentSq (A:Vector2, B:Vector2, P:Vector2) :Number
+//	public static function distToLineSegmentSq (A:Vec2, B:Vec2, P:Vec2) :Number
 //	{
 //		var dotA:Number = (P.x - A.x)*(B.x - A.x) + (P.y - A.y)*(B.y - A.y);
 //
-//		if (dotA <= 0) returnVectorTools.distanceSq(A, P);
+//		if (dotA <= 0) returnVec2Tools.distanceSq(A, P);
 //
 //		var dotB:Number = (P.x - B.x)*(A.x - B.x) + (P.y - B.y)*(A.y - B.y);
 //
-//		if (dotB <= 0) returnVectorTools.distanceSq(B, P);
+//		if (dotB <= 0) returnVec2Tools.distanceSq(B, P);
 //
 //		// .. Find closest point to P on line segment ...
-//		var point:Vector2 = B.subtract(A);
+//		var point:Vec2 = B.subtract(A);
 //		point.scaleLocal(dotA);
 //		point.scaleLocal(1/(dotA+dotB));
 //		point.addLocal(A);
 //
-//		returnVectorTools.distanceSq(P, point);
+//		returnVec2Tools.distanceSq(P, point);
 //	}
 
-//	public static function distToPolygonEdge(P :Vector2, polygon :Array) :Number
+//	public static function distToPolygonEdge(P :Vec2, polygon :Array) :Number
 //	{
 //		var minDistance :Number = Math.POSITIVE_INFINITY;
 //		var distance :Number;
@@ -314,7 +313,7 @@ class Geometry
 //		return minDistance;
 //	}
 //
-//	public static function normalOfClosestPolygonEdge(P :Vector2, polygon :Array) :Number
+//	public static function normalOfClosestPolygonEdge(P :Vec2, polygon :Array) :Number
 //	{
 //		var minDistance :Number = Math.POSITIVE_INFINITY;
 //		var minDistanceVertexIndex1 :int = 0;
@@ -343,7 +342,7 @@ class Geometry
 //	{
 //		var midpoints :Array = new Array();
 //		for(var i :int = 0; i < polygon.length - 1; i++) {
-//			midpoints.push(Vector2.interpolate(polygon[i], polygon[i + 1], 0.5));
+//			midpoints.push(Vec2.interpolate(polygon[i], polygon[i + 1], 0.5));
 //		}
 //		return midpoints;
 //	}
@@ -351,10 +350,10 @@ class Geometry
 //	public static function polygonFromBoundingBox(rect :Rectangle) :Array
 //	{
 //		var p :Array = new Array();
-//		p.push(new Vector2(rect.x, rect.y));
-//		p.push(new Vector2(rect.x + rect.width, rect.y));
-//		p.push(new Vector2(rect.x + rect.width, rect.y + rect.height));
-//		p.push(new Vector2(rect.x, rect.y  + rect.height));
+//		p.push(new Vec2(rect.x, rect.y));
+//		p.push(new Vec2(rect.x + rect.width, rect.y));
+//		p.push(new Vec2(rect.x + rect.width, rect.y + rect.height));
+//		p.push(new Vec2(rect.x, rect.y  + rect.height));
 //		p.push(p[0]);
 //		return p;
 //	}
@@ -387,16 +386,16 @@ class Geometry
 //		//Create an array of line segments
 //		var sides :Array = [];
 //		for(ii = 0; ii < polygon.length - 1; ii++) {
-//			sides.push([Vector2(polygon[ii]).clone(), Vector2(polygon[ii + 1]).clone()]);
+//			sides.push([Vec2(polygon[ii]).clone(), Vec2(polygon[ii + 1]).clone()]);
 //		}
-//		sides.push([Vector2(polygon[polygon.length - 1]).clone(), Vector2(polygon[0]).clone()]);
+//		sides.push([Vec2(polygon[polygon.length - 1]).clone(), Vec2(polygon[0]).clone()]);
 //
 //		var side :Array;
 //		for each (side in sides) {
-//			var v1 :Vector2 = side[0] as Vector2;
-//			var v2 :Vector2 = side[1] as Vector2;
-//			var normal :Number = VectorTools.simplifyRadian(angleFromVectors(v1, v2) + Math.PI / 2);
-//			var transform :Vector2 = Vector2.fromAngle(normal, padding);
+//			var v1 :Vec2 = side[0] as Vec2;
+//			var v2 :Vec2 = side[1] as Vec2;
+//			var normal :Number = Vec2Tools.simplifyRadian(angleFromVectors(v1, v2) + Math.PI / 2);
+//			var transform :Vec2 = Vec2.fromAngle(normal, padding);
 //			v1.addLocal(transform);
 //			v2.addLocal(transform);
 //		}
@@ -415,7 +414,7 @@ class Geometry
 //
 //
 //
-//		var center :Vector2 = getPolygonCenter(polygon);
+//		var center :Vec2 = getPolygonCenter(polygon);
 //		//Go through all edges.
 //		var anglesToProjectAlong :Array = [];
 //		for(var k :int = 0; k < polygon.length; k++) {
@@ -424,13 +423,13 @@ class Geometry
 ////				continue;
 ////			}
 //
-//			var v1 :Vector2 = polygon[k] as Vector2;
-//			var v2 :Vector2 = k < polygon.length - 1 ? polygon[k + 1] as Vector2 : polygon[0] as Vector2;
-//			var v3 :Vector2 = k > 0 ? polygon[k - 1] as Vector2 : polygon[polygon.length - 1] as Vector2;
+//			var v1 :Vec2 = polygon[k] as Vec2;
+//			var v2 :Vec2 = k < polygon.length - 1 ? polygon[k + 1] as Vec2 : polygon[0] as Vec2;
+//			var v3 :Vec2 = k > 0 ? polygon[k - 1] as Vec2 : polygon[polygon.length - 1] as Vec2;
 //
 //			var anglev1v2 :Number = Geometry.angleFromVectors(v1, v2);
 //			var angleFromP1 :Number =
-//				VectorTools.simplifyRadian(Math.PI + anglev1v2 + differenceAngles(anglev1v2, Geometry.angleFromVectors(v1, v3)) / 2);
+//				Vec2Tools.simplifyRadian(Math.PI + anglev1v2 + differenceAngles(anglev1v2, Geometry.angleFromVectors(v1, v3)) / 2);
 //			anglesToProjectAlong.push(angleFromP1);
 //
 ////			padEdge(polygon[k], polygon[ k + 1 ], center);
@@ -439,22 +438,22 @@ class Geometry
 //		}
 //
 //		for (k = 0; k < anglesToProjectAlong.length; ++k) {
-//			trace("adding to", polygon[k],  Vector2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2), ", length=" + Vector2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2).length);
-//			Vector2(polygon[k]).addLocal(Vector2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2));
+//			trace("adding to", polygon[k],  Vec2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2), ", length=" + Vec2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2).length);
+//			Vec2(polygon[k]).addLocal(Vec2.fromAngle(anglesToProjectAlong[k], padding * Math.SQRT2));
 //		}
 //
 ////
-////		function padEdge(v1 :Vector2, v2 :Vector2, center :Vector2) :void
+////		function padEdge(v1 :Vec2, v2 :Vec2, center :Vec2) :void
 ////		{
 ////			//Get the normal
 ////			var normalAngle :Number = Geometry.normalizeRadians(angleFrom(v1.x, v1.y, v2.x, v2.y) + Math.PI / 2);
 ////			//Create the transform vector from the normal angle and the padding
-////			var transform :Vector2 = Vector2.fromAngle(normalAngle);
+////			var transform :Vec2 = Vec2.fromAngle(normalAngle);
 ////			//Check if the angle is pointing the wrong way (to the center instead of away)
-////			var middlePoint :Vector2 = new Vector2(v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
+////			var middlePoint :Vec2 = new Vec2(v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
 ////
 ////			if(distance(center, middlePoint) > distance(center, middlePoint.clone().addLocal(transform))) {
-////				transform = Vector2.fromAngle(Geometry.normalizeRadians(normalAngle + Math.PI));
+////				transform = Vec2.fromAngle(Geometry.normalizeRadians(normalAngle + Math.PI));
 ////			}
 ////			transform.scaleLocal(padding);
 ////			//Change the vertex positions
@@ -472,7 +471,7 @@ class Geometry
 //	 * @return true if intersection occurs
 //	 *
 //	 */
-//	public static function isLineIntersecting (A:Vector2, B:Vector2, C:Vector2, D:Vector2):Boolean{
+//	public static function isLineIntersecting (A:Vec2, B:Vec2, C:Vec2, D:Vec2):Boolean{
 //		var rTop:Number = (A.y-C.y)*(D.x-C.x)-(A.x-C.x)*(D.y-C.y);
 //		var sTop:Number = (A.y-C.y)*(B.x-A.x)-(A.x-C.x)*(B.y-A.y);
 //		var bot:Number	 = (B.x-A.x)*(D.y-C.y)-(B.y-A.y)*(D.x-C.x);
@@ -495,9 +494,9 @@ class Geometry
 //	//Return intersection of Segment "AB" and Segment "EF" as a Point
 //	//Return null if there is no intersection
 //	//---------------------------------------------------------------
-//	protected function lineIntersectLine(A:Vector2,B:Vector2,E:Vector2,F:Vector2,as_seg:Boolean=true):Vector2
+//	protected function lineIntersectLine(A:Vec2,B:Vec2,E:Vec2,F:Vec2,as_seg:Boolean=true):Vec2
 //	{
-//		var ip:Vector2;
+//		var ip:Vec2;
 //		var a1:Number;
 //		var a2:Number;
 //		var b1:Number;
@@ -516,7 +515,7 @@ class Geometry
 //		if(denom == 0){
 //			return null;
 //		}
-//		ip=new Vector2();
+//		ip=new Vec2();
 //		ip.x=(b1*c2 - b2*c1)/denom;
 //		ip.y=(a2*c1 - a1*c2)/denom;
 //
@@ -545,14 +544,14 @@ class Geometry
 
 //	/**
 //	 * Returns true if any points are an edge of the polygon.
-//	 * @param P1 Array of Vector2 points, with the first point also last in the array.
+//	 * @param P1 Array of Vec2 points, with the first point also last in the array.
 //	 */
-//	public static function isLineOnPolygonEdge(P1 :Vector2, P2 :Vector2, polygon :Array) :Boolean
+//	public static function isLineOnPolygonEdge(P1 :Vec2, P2 :Vec2, polygon :Array) :Boolean
 //	{
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
 //
-//			var p1 :Vector2 = polygon[k] as Vector2;
-//			var p2 :Vector2 = polygon[k + 1] as Vector2;
+//			var p1 :Vec2 = polygon[k] as Vec2;
+//			var p2 :Vec2 = polygon[k + 1] as Vec2;
 //
 //			var distancep1ToEdge :Number = distToLineSegment(polygon[k], polygon[k + 1], P1);
 //			var distancep2ToEdge :Number = distToLineSegment(polygon[k], polygon[k + 1], P2);
@@ -567,14 +566,14 @@ class Geometry
 
 //	/**
 //	 * Returns true if any points are an edge of the polygon.
-//	 * @param P1 Array of Vector2 points, with the first point also last in the array.
+//	 * @param P1 Array of Vec2 points, with the first point also last in the array.
 //	 */
-//	public static function numberVerticesOfPolygonTouchingLine(P1 :Vector2, P2 :Vector2, polygon :Array) :int
+//	public static function numberVerticesOfPolygonTouchingLine(P1 :Vec2, P2 :Vec2, polygon :Array) :int
 //	{
 //		var vertexCount :int = 0;
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
 //
-//			var v :Vector2 = polygon[k] as Vector2;
+//			var v :Vec2 = polygon[k] as Vec2;
 //
 //			if(distToLineSegment(P1, P2, polygon[k]) == 0) {
 //				vertexCount++;
@@ -586,14 +585,14 @@ class Geometry
 
 //	/**
 //	 * Returns true if any points are an edge of the polygon.
-//	 * @param P1 Array of Vector2 points, with the first point also last in the array.
+//	 * @param P1 Array of Vec2 points, with the first point also last in the array.
 //	 */
-//	public static function getVerticesOfPolygonTouchingLine(P1 :Vector2, P2 :Vector2, polygon :Array) :Array
+//	public static function getVerticesOfPolygonTouchingLine(P1 :Vec2, P2 :Vec2, polygon :Array) :Array
 //	{
 //		var vertices :Array = new Array();
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
 //
-//			var v :Vector2 = polygon[k] as Vector2;
+//			var v :Vec2 = polygon[k] as Vec2;
 //
 //			if(distToLineSegment(P1, P2, polygon[k]) == 0) {
 //				vertices.push(v);
@@ -613,7 +612,7 @@ class Geometry
 //	 * @return -1 if no intersection occurs, else returns the distance
 //	 *
 //	 */
-//	public static function lineIntersection(A:Vector2, B :Vector2, C :Vector2, D :Vector2, point :Vector2):Number{
+//	public static function lineIntersection(A:Vec2, B :Vec2, C :Vec2, D :Vec2, point :Vec2):Number{
 //		var rTop:Number = (A.y-C.y)*(D.x-C.x)-(A.x-C.x)*(D.y-C.y);
 //		var sTop:Number = (A.y-C.y)*(B.x-A.x)-(A.x-C.x)*(B.y-A.y);
 //		var rBot:Number = (B.x-A.x)*(D.y-C.y)-(B.y-A.y)*(D.x-C.x);
@@ -648,9 +647,9 @@ class Geometry
 //	//Return null if there is no intersection
 //	//Replacement for lineIntersection, which does not work
 //	//---------------------------------------------------------------
-//	public static function lineIntersectLine(A:Vector2,B:Vector2,E:Vector2,F:Vector2,as_seg:Boolean=true):Vector2
+//	public static function lineIntersectLine(A:Vec2,B:Vec2,E:Vec2,F:Vec2,as_seg:Boolean=true):Vec2
 //	{
-//		var ip:Vector2;
+//		var ip:Vec2;
 //		var a1:Number;
 //		var a2:Number;
 //		var b1:Number;
@@ -669,7 +668,7 @@ class Geometry
 //		if(denom == 0){
 //			return null;
 //		}
-//		ip=new Vector2();
+//		ip=new Vec2();
 //		ip.x=(b1*c2 - b2*c1)/denom;
 //		ip.y=(a2*c1 - a1*c2)/denom;
 //
@@ -721,7 +720,7 @@ class Geometry
 //	 * @return true if intersection occurs
 //	 *
 //	 */
-//	public static function isLineIntersectingPolygon(A:Vector2, B:Vector2, object:Array):Boolean{
+//	public static function isLineIntersectingPolygon(A:Vec2, B:Vec2, object:Array):Boolean{
 //		for (var i:int=0; i<object.length - 1; i++){
 //			if(isLineIntersecting(A,B,object[i],object[i+1])) return true;
 //		}
@@ -738,7 +737,7 @@ class Geometry
 //	 * @return true if intersection or enclosure occurs
 //	 *
 //	 */
-//	public static function isSegmentOverlappingPolygon (A :Vector2, B :Vector2, object:Array) :Boolean{
+//	public static function isSegmentOverlappingPolygon (A :Vec2, B :Vec2, object:Array) :Boolean{
 //		for (var i:int=0; i<object.length - 1; i++){
 //			if(isLineIntersecting(A,B,object[i],object[i+1])) return true;
 //		}
@@ -751,11 +750,11 @@ class Geometry
 //		return false;
 //	}
 
-//	public static function getPointsWhereLineIntersectsPolygon(A:Vector2, B:Vector2, polygon:Array):Array
+//	public static function getPointsWhereLineIntersectsPolygon(A:Vec2, B:Vec2, polygon:Array):Array
 //	{
 //		var intersectingPoints :Array = new Array();
 //		for (var i:int = 0; i < polygon.length - 1; i++){
-//			var point :Vector2 = lineIntersectLine(A, B, polygon[i], polygon[i+1]);
+//			var point :Vec2 = lineIntersectLine(A, B, polygon[i], polygon[i+1]);
 //			if(point != null) {
 //				if(!point.equals(A) && !point.equals(B)) {
 //					intersectingPoints.push(point);
@@ -774,8 +773,8 @@ class Geometry
 	 * @return true if circles are overlapping.
 	 *
 	 */
-	public static function isCircleOverlapping(circle1:Vector2, radius1:Float, circle2:Vector2, radius2:Float):Bool{
-		var distSq =VectorTools.distanceSq(circle1, circle2);
+	public static function isCircleOverlapping(circle1:Vec2, radius1:Float, circle2:Vec2, radius2:Float):Bool{
+		var distSq =Vec2Tools.distanceSq(circle1, circle2);
 		 var range = radius1 + radius2;
 		 if(distSq < range * range){
 			 return true;
@@ -795,15 +794,15 @@ class Geometry
 	 * @return false if no overlap is found.
 	 *
 	 */
-	public static function getCircleIntersectionPoints (circle1:Vector2, radius1:Float, circle2:Vector2, radius2:Float, point1:Vector2, point2:Vector2):Bool{
+	public static function getCircleIntersectionPoints (circle1:Vec2, radius1:Float, circle2:Vec2, radius2:Float, point1:Vec2, point2:Vec2):Bool{
 		if(!isCircleOverlapping(circle1,radius1,circle2,radius2)) return false;
 
-		var dist = VectorTools.distance(circle1, circle2);
+		var dist = Vec2Tools.distance(circle1, circle2);
 
 		var a	= (radius1 - radius2 + (dist*dist)) / (2 * dist);
 		var b	= (radius2 - radius1 + (dist*dist)) / (2 * dist);
 
-		var p2:Vector2 = new Vector2();
+		var p2:Vec2 = new Vec2();
 		p2.x = circle1.x + a * (circle2.x - circle1.x) / dist;
 		p2.y = circle1.y + a * (circle2.y - circle1.y) / dist;
 
@@ -827,7 +826,7 @@ class Geometry
 	 * @return the area of the union, or 0 if no overlap occurs
 	 *
 	 */
-	public static function getCircleIntersectionArea(circle1:Vector2, radius1:Float, circle2:Vector2, radius2:Float):Float{
+	public static function getCircleIntersectionArea(circle1:Vec2, radius1:Float, circle2:Vec2, radius2:Float):Float{
 		if(!isCircleOverlapping(circle1,radius1,circle2,radius2)) return 0; // no overlap
 
 		var dist = Math.sqrt((circle1.x-circle2.x) * (circle1.x-circle2.x) + (circle1.y-circle2.y) * (circle1.y-circle2.y));
@@ -859,7 +858,7 @@ class Geometry
 	 * @return true if the point is within the circle
 	 *
 	 */
-	public static function isPointInCircle(point:Vector2, circle:Vector2, radius:Float):Bool{
+	public static function isPointInCircle(point:Vec2, circle:Vec2, radius:Float):Bool{
 		var distSq = point.subtract(circle).lengthSq();
 		 if(distSq < (radius * radius)) return true;
 
@@ -875,7 +874,7 @@ class Geometry
 	 * @return true if circle overlaps the line segment
 	 *
 	 */
-	public static function isCircleOverlappingSegment(A:XY, B:XY, circle:XY, radius:Float):Bool{
+	public static function isCircleOverlappingSegment(A:Vec2, B:Vec2, circle:Vec2, radius:Float):Bool{
 
 		var distSq = LineSegment.distToLineSegmentSq(A,B,circle);
 		if (distSq < radius * radius) return true;
@@ -889,9 +888,9 @@ class Geometry
 	 * @return true if point is contained within the rectangle
 	 *
 	 */
-	public static function isPointInsideRotatedRect(A:Vector2, locX :Float, locY :Float, width :Float, height :Float, angle :Float):Bool
+	public static function isPointInsideRotatedRect(A:Vec2, locX :Float, locY :Float, width :Float, height :Float, angle :Float):Bool
 	{
-		var relativePoint:Vector2 = new Vector2(A.x - locX, A.y - locY);
+		var relativePoint:Vec2 = new Vec2(A.x - locX, A.y - locY);
 		if(angle != 0) {
 			relativePoint.rotateLocal(-angle);
 		}
@@ -901,7 +900,7 @@ class Geometry
 			   relativePoint.y >= -height/2;
 	}
 
-	public static function isPointInsideRect(A:Vector2, x :Float, y :Float, w :Float, h:Float):Bool
+	public static function isPointInsideRect(A:Vec2, x :Float, y :Float, w :Float, h:Float):Bool
 	{
 		return A.x >= x &&
 			   A.x <= x + w &&
@@ -920,17 +919,17 @@ class Geometry
 	 * @return false if the two do not intersect.
 	 *
 	 */
-	public static function getLineCircleClosestIntersection (A:Vector2, B:Vector2, circle:Vector2, radius:Float, intersectionPoint:Vector2):Bool
+	public static function getLineCircleClosestIntersection (A:Vec2, B:Vec2, circle:Vec2, radius:Float, intersectionPoint:Vec2):Bool
 	{
 		   throw "Not implemented";
 		   return false;
-//		var toBNorm:Vector2 = B.subtract(A).normalize();
+//		var toBNorm:Vec2 = B.subtract(A).normalize();
 //
-//		var localPos:Vector2 = Transformations.pointToLocalSpace(circle,toBNorm,toBNorm.getPerp(),A);
+//		var localPos:Vec2 = Transformations.pointToLocalSpace(circle,toBNorm,toBNorm.getPerp(),A);
 //
 //		var ipFound:Bool = false;
 //
-//		if((localPos.x + radius >= 0) && (localPos.x-radius) <=VectorTools.distanceSq(B, A)){
+//		if((localPos.x + radius >= 0) && (localPos.x-radius) <=Vec2Tools.distanceSq(B, A)){
 //			if(Math.abs(localPos.y) < radius){
 //				var a = localPos.x;
 //				var b = localPos.y;
@@ -957,7 +956,7 @@ class Geometry
 //	 * @return the distance from P -> AB
 //	 *
 //	 */
-//	public static function distToLineSegment (A :Vector2, B :Vector2, P :Vector2, closestPoint :Vector2 = null) :Number
+//	public static function distToLineSegment (A :Vec2, B :Vec2, P :Vec2, closestPoint :Vec2 = null) :Number
 //	{
 //
 //
@@ -983,7 +982,7 @@ class Geometry
 //		}
 //
 //		// .. Find closest point to P on line segment ...
-//		var point:Vector2 = B.subtract(A);
+//		var point:Vec2 = B.subtract(A);
 //		point.scaleLocal(dotA);
 //		point.scale(1 / (dotA+dotB));
 //		point.addLocal(A);
@@ -1005,7 +1004,7 @@ class Geometry
 //	 * @return the distance from P -> AB
 //	 *
 //	 */
-//	public static function closestPointOnPolygon(P:Vector2, arrayOfPolygonPoints :Array):Vector2
+//	public static function closestPointOnPolygon(P:Vec2, arrayOfPolygonPoints :Array):Vec2
 //	{
 //		var polygon :Array = arrayOfPolygonPoints.slice();
 //		if(arrayOfPolygonPoints[0] != arrayOfPolygonPoints[ arrayOfPolygonPoints.length - 1]) {
@@ -1013,9 +1012,9 @@ class Geometry
 //		}
 //
 //		var distance :Number = Math.POSITIVE_INFINITY;
-//		var closestVector :Vector2;
+//		var closestVector :Vec2;
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
-//			var point :Vector2 = new Vector2();
+//			var point :Vec2 = new Vec2();
 //			var currentDistance :Number = Geometry.distToLineSegment(polygon[k], polygon[k + 1], P, point);
 //			if( currentDistance < distance) {
 //				distance = currentDistance;
@@ -1026,20 +1025,20 @@ class Geometry
 //
 //	}
 //
-//	public static function isCircleIntersectingPolygon(P :Vector2, radius :Number, polygon :Array) :Boolean
+//	public static function isCircleIntersectingPolygon(P :Vec2, radius :Number, polygon :Array) :Boolean
 //	{
-//		var closestPointOnPolygon :Vector2 = closestPointOnPolygon(P, polygon);
+//		var closestPointOnPolygon :Vec2 = closestPointOnPolygon(P, polygon);
 //		return distance(closestPointOnPolygon, P) <= radius;
 //	}
 
-//	public static function getPolygonCenter(arrayOfPolygonPoints :Array, center :Vector2 = null):Vector2
+//	public static function getPolygonCenter(arrayOfPolygonPoints :Array, center :Vec2 = null):Vec2
 //	{
 //		var minX :Number = Math.POSITIVE_INFINITY;
 //		var maxX :Number = Math.NEGATIVE_INFINITY;
 //		var minY :Number = Math.POSITIVE_INFINITY;
 //		var maxY :Number = Math.NEGATIVE_INFINITY;
 //
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			minX = Math.min(minX, v.x);
 //			maxX = Math.max(maxX, v.x);
 //			minY = Math.min(minY, v.y);
@@ -1047,7 +1046,7 @@ class Geometry
 //		}
 //
 //		if(center == null) {
-//			center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
+//			center = new Vec2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
 //		}
 //		else {
 //			center.x = minX + (maxX - minX) / 2;
@@ -1060,7 +1059,7 @@ class Geometry
 //	public static function maxY(arrayOfPolygonPoints :Array) :Number
 //	{
 //		var maxY :Number = Math.NEGATIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			maxY = Math.max(maxY, v.y);
 //		}
 //		return maxY;
@@ -1070,7 +1069,7 @@ class Geometry
 //	public static function minY(arrayOfPolygonPoints :Array) :Number
 //	{
 //		var minY :Number = Math.POSITIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			minY = Math.min(minY, v.y);
 //		}
 //		return minY;
@@ -1079,7 +1078,7 @@ class Geometry
 //	{
 //		var maxY :Number = Math.NEGATIVE_INFINITY;
 //		var minY :Number = Math.POSITIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			maxY = Math.max(maxY, v.y);
 //			minY = Math.min(minY, v.y);
 //		}
@@ -1090,7 +1089,7 @@ class Geometry
 //	{
 //		var maxX :Number = Math.NEGATIVE_INFINITY;
 //		var minX :Number = Math.POSITIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			maxX = Math.max(maxX, v.x);
 //			minX = Math.min(minX, v.x);
 //		}
@@ -1100,7 +1099,7 @@ class Geometry
 //	public static function maxX(arrayOfPolygonPoints :Array) :Number
 //	{
 //		var maxX :Number = Math.NEGATIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			maxX = Math.max(maxX, v.x);
 //		}
 //		return maxX;
@@ -1109,7 +1108,7 @@ class Geometry
 //	public static function minX(arrayOfPolygonPoints :Array) :Number
 //	{
 //		var minX :Number = Math.POSITIVE_INFINITY;
-//		for each (var v :Vector2 in arrayOfPolygonPoints) {
+//		for each (var v :Vec2 in arrayOfPolygonPoints) {
 //			minX = Math.min(minX, v.x);
 //		}
 //		return minX;
@@ -1216,10 +1215,10 @@ class Geometry
 //	 /**
 //	 * Returns the closest vertex of the polygon (an array of points) to P
 //	 */
-//	public static function getClosestVertex(P :Vector2, polygon :Array) :Vector2
+//	public static function getClosestVertex(P :Vec2, polygon :Array) :Vec2
 //	{
 //		var distance :Number = Math.POSITIVE_INFINITY;
-//		var closestVector :Vector2;
+//		var closestVector :Vec2;
 //		for(var k :int = 0; k < polygon.length; k++) {
 //			var currentDistance :Number = Geometry.distance(P, polygon[k]);
 //			if( currentDistance < distance) {
@@ -1233,13 +1232,13 @@ class Geometry
 //	 /**
 //	 * Returns the closest vertex of the polygon (an array of points) to P
 //	 */
-//	public static function getVerticesInOrderOfDistanceToPoint(P :Vector2, polygon :Array) :Array
+//	public static function getVerticesInOrderOfDistanceToPoint(P :Vec2, polygon :Array) :Array
 //	{
 //		var sortedArray :Array = polygon.slice();
 //
-//		sortedArray.sort(function compareFunction(v1 :Vector2, v2 :Vector2) :int  {
-//		   var d1 :Number =VectorTools.distanceSq(v1, P);
-//		   var d2 :Number =VectorTools.distanceSq(v2, P);
+//		sortedArray.sort(function compareFunction(v1 :Vec2, v2 :Vec2) :int  {
+//		   var d1 :Number =Vec2Tools.distanceSq(v1, P);
+//		   var d2 :Number =Vec2Tools.distanceSq(v2, P);
 //		   if(d1 < d2) { return -1; }
 //		   else if(d1 > d2) { return 1;}
 //		   return 0;
@@ -1251,9 +1250,9 @@ class Geometry
 	/**
 	 * Returns true if all the given points are equal to one of the polygon points.
 	 */
-//	public static function isPolygonVertex (polygon :Array, P :Vector2) :Boolean
+//	public static function isPolygonVertex (polygon :Array, P :Vec2) :Boolean
 //	{
-//		for each (var polygonPoint :Vector2 in polygon) {
+//		for each (var polygonPoint :Vec2 in polygon) {
 //			if(polygonPoint.x == P.x && polygonPoint.y == P.y) {
 //				return true;
 //			}
@@ -1261,11 +1260,11 @@ class Geometry
 //		return false;
 //	}
 
-//	public static function isPointsEqualToPolygonEdge(A :Vector2, B :Vector2, polygon :Array) :Boolean
+//	public static function isPointsEqualToPolygonEdge(A :Vec2, B :Vec2, polygon :Array) :Boolean
 //	{
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
-//			var v1 :Vector2 = polygon[k] as Vector2;
-//			var v2 :Vector2 = polygon[k + 1] as Vector2;
+//			var v1 :Vec2 = polygon[k] as Vec2;
+//			var v2 :Vec2 = polygon[k + 1] as Vec2;
 //			if((A.equals(v1) && B.equals(v2)) || (A.equals(v2) && B.equals(v1))) {
 //				return true;
 //			}
@@ -1273,7 +1272,7 @@ class Geometry
 //		return false;
 //	}
 
-//	public static function isPointOnPolygonEdge(P :Vector2, polygon :Array) :Boolean
+//	public static function isPointOnPolygonEdge(P :Vec2, polygon :Array) :Boolean
 //	{
 //		for(var k :int = 0; k < polygon.length - 1; k++) {
 //			if(distToLineSegment(polygon[k], polygon[k + 1], P) == 0) {
@@ -1309,19 +1308,19 @@ class Geometry
 //	public static function getIntersectionBoundingBox(p1 :Array, p2 :Array) :Array
 //	{
 //		var containedPoints :Array = new Array();
-//		var v :Vector2;
+//		var v :Vec2;
 //		var k :int;
 //		var kk :int;
 //
 //		//Get the vertices within the other polygon
 //		for(k = 0; k < p1.length - 1; k++) {
-//			v = p1[k] as Vector2;
+//			v = p1[k] as Vec2;
 //			if(Geometry.isPointInPolygon(v, p2) && !Lambda.has(containedPoints, v) && v != null) {
 //				containedPoints.push(v);
 //			}
 //		}
 //		for(k = 0; k < p2.length - 1; k++) {
-//			v = p2[k] as Vector2;
+//			v = p2[k] as Vec2;
 //			if(Geometry.isPointInPolygon(v, p1) && !Lambda.has(containedPoints, v) && v != null) {
 //				containedPoints.push(v);
 //			}
@@ -1332,7 +1331,7 @@ class Geometry
 //		for(k = 0; k < p1.length - 1; k++) {
 //			for(kk = 0; kk < p2.length - 1; kk++) {
 //				if(Geometry.isLineIntersecting(p1[k], p1[k + 1], p2[kk], p2[kk + 1])) {
-//					var intersectingPoint :Vector2 = Geometry.lineIntersectLine(p1[k], p1[k + 1], p2[kk], p2[kk + 1]);
+//					var intersectingPoint :Vec2 = Geometry.lineIntersectLine(p1[k], p1[k + 1], p2[kk], p2[kk + 1]);
 //					if(intersectingPoint != null) {
 //						intersectionPoints.push(intersectingPoint);
 //					}
@@ -1346,7 +1345,7 @@ class Geometry
 
 //	public static function makeAllPointsLessThanX(points :Array, X :Number) :void
 //	{
-//		points.forEach(function(point :Vector2, ...ignored) :void {
+//		points.forEach(function(point :Vec2, ...ignored) :void {
 //			  if(point.x > X) {
 //				  point.x = X;
 //			  }
@@ -1354,7 +1353,7 @@ class Geometry
 //	}
 //	public static function makeAllPointsMoreThanX(points :Array, X :Number) :void
 //	{
-//		points.forEach(function(point :Vector2, ...ignored) :void {
+//		points.forEach(function(point :Vec2, ...ignored) :void {
 //			  if(point.x < X) {
 //				  point.x = X;
 //			  }
@@ -1364,27 +1363,27 @@ class Geometry
 //	/**
 //	 * Same as <code>distance</code> but avoids the square root.
 //	 * Use this any time the exact distance isn't exactly required.
-//	 * @param v1 The first Vector2 to test distance with.
-//	 * @param v2 The second Vector2 to test distance with.
+//	 * @param v1 The first Vec2 to test distance with.
+//	 * @param v2 The second Vec2 to test distance with.
 //	 * @return The resulting distance * distance between
 //	 *
 //	 */
-//	public static functionVectorTools.distanceSq (v1 :Vector2, v2 :Vector2) :Number
+//	public static functionVec2Tools.distanceSq (v1 :Vec2, v2 :Vec2) :Number
 //	{
 //		var xSep:Number = v1.x - v2.x;
 //		var ySep:Number = v1.y - v2.y;
 //		return ySep*ySep + xSep*xSep;
 //	}
 //
-//	public static function distance (vector1 :Vector2, vector2 :Vector2) :Number
+//	public static function distance (vector1 :Vec2, vector2 :Vec2) :Number
 //	{
 //		var xSep:Number = vector1.x - vector2.x;
 //		var ySep:Number = vector1.y - vector2.y;
 //		return Math.sqrt(ySep*ySep + xSep*xSep);
 //	}
 
-	public static function bezier (v1 :Vector2, v2 :Vector2, v3 :Vector2, t :Float,
-		?v :Vector2 = null) :Vector2
+	public static function bezier (v1 :Vec2, v2 :Vec2, v3 :Vec2, t :Float,
+		?v :Vec2 = null) :Vec2
 	{
 		var fac1 = Math.pow(1 - t, 2);
 		var fac2 = 2 * t * (1 - t);
@@ -1392,7 +1391,7 @@ class Geometry
 		var x = fac1 * v1.x + fac2 * v2.x + fac3 * v3.x;
 		var y = fac1 * v1.y + fac2 * v2.y + fac3 * v3.y;
 		if (v == null) {
-			return new Vector2(x, y);
+			return new Vec2(x, y);
 		} else {
 			v.x = x;
 			v.y = y;

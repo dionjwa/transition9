@@ -10,15 +10,14 @@ package org.transition9.geom;
 
 import org.transition9.geom.CircleUtil;
 import org.transition9.geom.Geometry;
-import org.transition9.geom.Vector2;
 import org.transition9.util.Cloneable;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 class Circle
 	implements Cloneable<Circle>
 {
-	public var center :XY;
+	public var center :Vec2;
 	public var radius :Float;
 	public var x (get_x, set_x) :Float;
 	public var y (get_y, set_y) :Float;
@@ -26,7 +25,7 @@ class Circle
 	public function new (?radius :Float = 0, ?x :Float = 0, ?y :Float= 0)
 	{
 		this.radius = radius;
-		this.center = new Vector2(x, y);
+		this.center = new Vec2(x, y);
 	}
 	
 	public function distance (other :Circle) :Float

@@ -6,7 +6,11 @@ import org.transition9.async.AsyncLambda;
 
 import org.transition9.rtti.MetaUtil;
 
+#if js
 import js.Lib;
+#elseif flash
+import flash.Lib;
+#end
 
 using StringTools;
 
@@ -20,6 +24,10 @@ class AsyncTestTools
 	
 	public static function runTestsOn (testClasses :Array<Class<Dynamic>>) :Void
 	{
+		#if js
+		haxe.Firebug.redirectTraces();
+		#end
+		
 		var allresults = [];
 		AsyncLambda.iter(testClasses, function (cls :Class<Dynamic>, elementDone :Void->Void) :Void {
 			AsyncTestTools.doTests(cls, function (results :TestResults) {
@@ -36,17 +44,15 @@ class AsyncTestTools
 				}
 			}
 			
-			Lib.print(!allok ? "TESTS FAILED" : "Tests Completed OK");
+			print(!allok ? "TESTS FAILED" : "Tests Completed OK");
 			
-			// Lib.print("TESTS FAILED");
-		
-			// Lib.print("\nTests Complete\n");
 			for (result in allresults) {
-				Lib.print("    " + (result.testsPassed == result.totalTests ? "OK   " : "FAIL   ") +  Type.getClassName(result.cls) + "...passed " + result.testsPassed + " / " + result.totalTests);	
+				print("    " + (result.testsPassed == result.totalTests ? "OK   " : "FAIL   ") +  Type.getClassName(result.cls) + "...passed " + result.testsPassed + " / " + result.totalTests);
 			}
 			
-			// testsComplete(testResults);
+			#if nodejs
 			untyped __js__('process.exit(0)');
+			#end
 		});
 	}
 	
@@ -68,19 +74,12 @@ class AsyncTestTools
 			}
 		}
 		
-		// trace('syncTestQueue=' + syncTestQueue);
-		// trace('asyncTestQueue=' + asyncTestQueue);
-		
 		var totalTests :Int = syncTestQueue.length + asyncTestQueue.length;
-		// var finishedTests :Int = 0;
 		
 		var testResults = new TestResults(cls, totalTests);
 		
 		//This is called when all tests have finished or timed out
 		var onFinish = function (err) :Void {
-			
-			// Lib.print("\nTests Complete\n");
-			// Lib.print("    " + className + "...passed " + finishedTests + " / " + totalTests);
 			testsComplete(testResults);
 		}
 		
@@ -90,7 +89,7 @@ class AsyncTestTools
 				Reflect.callMethod(inst, Reflect.field(inst, syncTestName), []);
 				testResults.testsPassed++;
 			} catch (e :Dynamic) {
-				Lib.print("    " + className + "::" + syncTestName + " Error: " + Std.string(e) + "\n" + haxe.Stack.toString(haxe.Stack.exceptionStack()));
+				print("    " + className + "::" + syncTestName + " Error: " + Std.string(e) + "\n" + haxe.Stack.toString(haxe.Stack.exceptionStack()));
 			}
 		}
 		
@@ -128,7 +127,7 @@ class AsyncTestTools
 				haxe.Timer.delay(function () {
 					if (!finished) {
 						timedOut = true;
-						Lib.print("    " + className + "::" + asyncFieldName + " TIMEDOUT");
+						print("    " + className + "::" + asyncFieldName + " TIMEDOUT");
 						onTestFinish();
 					}
 				}, maxTime);
@@ -146,7 +145,7 @@ class AsyncTestTools
 				try {
 					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback]);
 				} catch (e :Dynamic) {
-					Lib.print("    " + className + "::" + asyncFieldName + " Error: " + Std.string(e));
+					print("    " + className + "::" + asyncFieldName + " Error: " + Std.string(e));
 					if (!finished) {
 						finished = true;
 						onTestFinish();
@@ -159,6 +158,16 @@ class AsyncTestTools
 		
 		AsyncLambda.iter(asyncTestQueue, doAsyncCall, onFinish);
 	}
+	
+	public static function print (s :String) :Void
+	{
+		#if (js && nodejs)
+		Lib.print(s);
+		#else
+		trace(s);
+		#end
+	}
+	
 }
 
 class TestResults

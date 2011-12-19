@@ -11,13 +11,13 @@ package org.transition9.geom;
 import org.transition9.util.Cloneable;
 import org.transition9.util.Equalable;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 /**
  * Basic 2D vector implementation.
  */
-class Vector2 extends XY,
-	implements Cloneable<Vector2>, implements Equalable<Vector2>
+class Vector2 extends Vec2,
+	implements Cloneable<Vec2>, implements Equalable<Vec2>
  {
 	
 	public var angle(get_angle, null) : Float;
@@ -27,18 +27,18 @@ class Vector2 extends XY,
 	/**
 	 * Infinite vector - often the result of normalizing a zero vector.
 	 */
-	public static var INFINITE:Vector2 = new Vector2(Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY);
+	public static var INFINITE:Vec2 = new Vec2(Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY);
 
 	/**
-	 * Creates a new Vector2 pointing from s to t.
+	 * Creates a new Vec2 pointing from s to t.
 	 */
-	public static function toVector2s (s :Vector2, t :Vector2) :Vector2
+	public static function toVec2s (s :Vec2, t :Vec2) :Vec2
 	{
-		return new Vector2(t.x - s.x, t.y - s.y);
+		return new Vec2(t.x - s.x, t.y - s.y);
 	}
 	
 	/**
-	 * Constructs a Vector2 from the given values.
+	 * Constructs a Vec2 from the given values.
 	 */
 	public function new (?x :Float = 0, ?y :Float = 0)
 	{
@@ -58,15 +58,15 @@ class Vector2 extends XY,
 	}
 
 	/**
-	 * Returns a copy of this Vector2.
+	 * Returns a copy of this Vec2.
 	 */
-	public function clone () :Vector2
+	public function clone () :Vec2
 	{
-		return new Vector2(x, y);
+		return new Vec2(x, y);
 	}
 
 	/**
-	 * Returns the angle represented by this Vector2, in radians.
+	 * Returns the angle represented by this Vec2, in radians.
 	 */
 	inline function get_angle ():Float
 	{
@@ -120,7 +120,7 @@ class Vector2 extends XY,
 	 * Normalizes this vector in place.
 	 * Returns a reference to 'this', for chaining.
 	 */
-	public function normalizeLocal () :Vector2
+	public function normalizeLocal () :Vec2
 	{
 		var lengthInverse:Float = 1 / this.length;
 
@@ -133,7 +133,7 @@ class Vector2 extends XY,
 	/**
 	 * Returns a normalized copy of the vector.
 	 */
-	public function normalize () :Vector2
+	public function normalize () :Vec2
 	{
 		return clone().normalizeLocal();
 	}
@@ -143,19 +143,19 @@ class Vector2 extends XY,
 	 * If ccw = true, the perpendicular vector is rotated 90 degrees counter-clockwise from this
 	 * vector, otherwise it's rotated 90 degrees clockwise.
 	 */
-	public function getPerp (?ccw :Bool = true) :Vector2
+	public function getPerp (?ccw :Bool = true) :Vec2
 	{
 		if (ccw) {
-			return new Vector2(-y, x);
+			return new Vec2(-y, x);
 		} else {
-			return new Vector2(y, -x);
+			return new Vec2(y, -x);
 		}
 	}
 
 	/**
 	 * Inverts the vector.
 	 */
-	public function invertLocal () :Vector2
+	public function invertLocal () :Vec2
 	{
 		x = -x;
 		y = -y;
@@ -166,7 +166,7 @@ class Vector2 extends XY,
 	/**
 	 * Returns a copy of the vector, inverted.
 	 */
-	public function invert () :Vector2
+	public function invert () :Vec2
 	{
 	   return clone().invertLocal();
 	}
@@ -174,22 +174,22 @@ class Vector2 extends XY,
 	/**
 	 * Returns true if this vector is equal to v.
 	 */
-	public function equals (v :Vector2) :Bool
+	public function equals (v :Vec2) :Bool
 	{
 		return if (v != null) x == v.x && y == v.y else false;
 	}
 	
 	/**
-	 * Returns true if the components of v are equal to the components of this Vector2,
+	 * Returns true if the components of v are equal to the components of this Vec2,
 	 * within the given epsilon.
 	 */
-	public function similar (v :Vector2, epsilon :Float) :Bool
+	public function similar (v :Vec2, epsilon :Float) :Bool
 	{
 		return ((Math.abs(x - v.x) <= epsilon) && (Math.abs(y - v.y) <= epsilon));
 	}
 
 	#if debug
-	/** Returns a string representation of the Vector2. */
+	/** Returns a string representation of the Vec2. */
 	public function toString () :String
 	{
 		// return "[" + org.transition9.util.NumberUtil.toFixed(x, 3) + ", " + org.transition9.util.NumberUtil.toFixed(y, 3) + "]";

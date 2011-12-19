@@ -12,7 +12,6 @@ import org.transition9.geom.Circle;
 import org.transition9.geom.LineSegment;
 import org.transition9.geom.Polygon;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.BoundsForwarding;
 import org.transition9.geom.bounds.BoundsLine;
@@ -22,19 +21,19 @@ import org.transition9.geom.bounds.IBounds;
 import org.transition9.util.MathUtil;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 using Lambda;
 
 using org.transition9.geom.CircleUtil;
 using org.transition9.geom.PolygonTools;
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 {
 	/** Don't modify this outside of the Bounds.  The cached bounds will be wrong*/   
 	public var polygon(get_polygon, null) : org.transition9.geom.Polygon;
-	public var offset :XY;
+	public var offset :Vec2;
 	
 	public function new (polygon :Polygon)
 	{
@@ -50,12 +49,12 @@ class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 		this.center = center;
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
 		return _boundsCircle.center.clone();
 	}
 	
-	override function set_center (val :XY) :XY
+	override function set_center (val :Vec2) :Vec2
 	{
 		// var c = get_center();
 		// var dx = val.x - c.x;
@@ -103,7 +102,7 @@ class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 		return new BoundsPolygon(_polygon.clone());
 	}
 
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		if (!_polygon.boundingBox.contains(v.x, v.y)) {
 			return false;
@@ -147,7 +146,7 @@ class BoundsPolygon extends AbstractBounds<BoundsPolygon>
 		return false;
 	}
 
-	override public function distanceToPoint (v :XY) :Float
+	override public function distanceToPoint (v :Vec2) :Float
 	{
 		return _polygon.distToPolygonEdge(v);
 	}

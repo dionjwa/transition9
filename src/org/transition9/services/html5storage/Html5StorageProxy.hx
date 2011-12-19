@@ -1,6 +1,6 @@
 package org.transition9.services.html5storage;
 
-class Html5StorageProxy extends haxe.remoting.Proxy<com.pblabs.services.html5storage.Html5StorageService>,
-	implements com.pblabs.services.html5storage.Html5StorageService
+class Html5StorageProxy extends haxe.remoting.Proxy<org.transition9.services.html5storage.Html5StorageService>,
+	implements org.transition9.services.html5storage.Html5StorageService
 {
 }

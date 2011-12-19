@@ -1,0 +1,25 @@
+
+<project name="transition9" default="build" basedir=".">
+        <description>
+		Useful build tasks for projects using the transition9 library. 
+	</description>
+        <dirname property="transition9.basedir" file="${ant.file.transition9}"/>
+        <property file="${transition9.basedir}/etc/build.properties"/>
+        
+        <target name="buildresources" description="Creates the swf and resources.xml from resource folders">
+                <echo message="${transition9.basedir}/bin/buildresources.py ${basedir}/etc/build.properties"/>
+                <exec executable="${transition9.basedir}/bin/buildresources.py" >
+                                <arg value="${basedir}/etc/build.properties"/>
+                </exec>
+        </target>
+        
+        <target name="updatejslibs" description="Downloads latest versions of js libs">
+                <exec executable="wget" >
+                	<arg value="-O"/>
+                	<arg value="lib/js/modernizr.js"/>
+			<arg value="https://raw.github.com/Modernizr/Modernizr/master/modernizr.js"/>
+                </exec>
+        </target>
+        
+        
+</project>

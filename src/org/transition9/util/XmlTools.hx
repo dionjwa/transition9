@@ -20,6 +20,14 @@ class XmlTools
 	{
 		if (xml == null) return null;
 		
+		#if flash
+		var clonedXml = Xml.parse(xml.toString());
+		if (xml.nodeType != Xml.Document) {
+			clonedXml = clonedXml.ensureNotDocument();
+		}
+		return clonedXml;
+		#end
+		
 		//Create
 		var newXml = switch (xml.nodeType) {
 			case Xml.CData: Xml.createCData(xml.nodeValue);

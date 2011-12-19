@@ -11,7 +11,6 @@ package org.transition9.geom.bounds;
 import org.transition9.geom.Circle;
 import org.transition9.geom.Geometry;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.Vector2;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.BoundsLine;
 import org.transition9.geom.bounds.BoundsPolygon;
@@ -19,9 +18,9 @@ import org.transition9.geom.bounds.BoundsUtil;
 import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 
 class BoundsPoint extends AbstractBounds<BoundsPoint>
 {
@@ -32,15 +31,15 @@ class BoundsPoint extends AbstractBounds<BoundsPoint>
 		super();
 		_boundsRect = new Rectangle(x, y, 0, 0);
 		_boundsCircle = new Circle(0, x, y);
-		set_center(new Vector2(x, y));
+		set_center(new Vec2(x, y));
 	}
 
-	override function get_center ():XY
+	override function get_center ():Vec2
 	{
 		return _center;
 	}
 
-	override function set_center (v :XY) :XY
+	override function set_center (v :Vec2) :Vec2
 	{
 		_center = v;
 		_boundsRect.x = _center.x;
@@ -55,7 +54,7 @@ class BoundsPoint extends AbstractBounds<BoundsPoint>
 		return new BoundsPoint(_center.x, _center.y);
 	}
 
-	override public function containsPoint (v :XY) :Bool
+	override public function containsPoint (v :Vec2) :Bool
 	{
 		return v.equals(_center);
 	}
@@ -81,7 +80,7 @@ class BoundsPoint extends AbstractBounds<BoundsPoint>
 		return Math.NaN;
 	}
 
-	override public function distanceToPoint (v :XY) :Float
+	override public function distanceToPoint (v :Vec2) :Float
 	{
 		return _center.distance(v);
 	}
@@ -102,7 +101,7 @@ class BoundsPoint extends AbstractBounds<BoundsPoint>
 		return false;
 	}
 
-	override public function getBoundedPoint (v :XY, ?v :XY) :XY
+	override public function getBoundedPoint (v :Vec2, ?v :Vec2) :Vec2
 	{
 		if (v != null) {
 			v.x = _center.x;
@@ -114,7 +113,7 @@ class BoundsPoint extends AbstractBounds<BoundsPoint>
 	}
 
 	override public function getBoundedPointFromMove (originX :Float, originY :Float,
-		targetX :Float, targetY :Float, ?v :XY) :XY
+		targetX :Float, targetY :Float, ?v :Vec2) :Vec2
 	{
 		return _center;
 	}

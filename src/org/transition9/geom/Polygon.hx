@@ -11,17 +11,17 @@ package org.transition9.geom;
 import org.transition9.geom.Circle;
 import org.transition9.geom.LineSegment;
 import org.transition9.geom.Rectangle;
-import org.transition9.geom.VectorTools;
+import org.transition9.geom.Vec2Tools;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Assert;
 import org.transition9.util.Cloneable;
 import org.transition9.util.NumberUtil;
 
-import de.polygonal.motor2.geom.math.XY;
+import de.polygonal.motor.geom.math.Vec2;
 
 using org.transition9.geom.CircleUtil;
 using org.transition9.geom.PolygonTools;
-using org.transition9.geom.VectorTools;
+using org.transition9.geom.Vec2Tools;
 using org.transition9.geom.Geometry;
 
 class Polygon
@@ -29,9 +29,9 @@ class Polygon
  {
 	public var boundingBox(getBoundingBox, null) : Rectangle;
 	public var boundingCircle(getBoundingCircle, null) : Circle;
-	public var center(get_center, set_center) : XY;
+	public var center(get_center, set_center) : Vec2;
 	public var edges(getEdges, null) : Array<LineSegment>;
-	public var vertices(getVertices, null) : Array<XY>;
+	public var vertices(getVertices, null) : Array<Vec2>;
 
 	public static function createPolygon (sides :Int, radius :Float) :Polygon
 	{
@@ -39,15 +39,15 @@ class Polygon
 			throw "A polygon needs at least 3 sides";
 		}
 
-		var vertices:Array<XY> = [];
+		var vertices:Array<Vec2> = [];
 		for (ii in 0...sides) {
 			var angle = ((Math.PI*2) / sides) * ii;
-			vertices.push(angle.angleToVector2(radius));
+			vertices.push(angle.angleToVec2(radius));
 		}
 		return new Polygon(vertices);
 	}
 
-	public function new (vertices :Array<XY>) //<XY>
+	public function new (vertices :Array<Vec2>) //<Vec2>
 	{
 		if (vertices == null || vertices.length < 3) {
 			throw "Cannot create a polygon with < 3 vertices=" + vertices + " " + org.transition9.util.Log.getStackTrace();
@@ -68,7 +68,7 @@ class Polygon
 	}
 
 	//Don't modify!
-	public function getVertices ():Array<XY>
+	public function getVertices ():Array<Vec2>
 	{
 		return _vertices;
 	}
@@ -82,14 +82,14 @@ class Polygon
 		return new Polygon(vert);
 	}
 
-	public function closestEdge (P :XY) :LineSegment
+	public function closestEdge (P :Vec2) :LineSegment
 	{
 		var smallestDistance = Math.POSITIVE_INFINITY;
 		var distance:Float;
 		var closestLine:LineSegment = null;
 		for (line in _edges) {
 			distance = line.dist(P);
-			var closestPoint = new Vector2();
+			var closestPoint = new Vec2();
 			if (distance < smallestDistance) {
 				smallestDistance = distance;
 				closestLine = line;
@@ -98,14 +98,14 @@ class Polygon
 		return closestLine;
 	}
 
-	public function closestPoint (v :XY) :XY
+	public function closestPoint (v :Vec2) :Vec2
 	{
 		return _vertices.closestPoint(v);
 	}
 
-	public function closestPointOnPerimeter (v :XY) :XY
+	public function closestPointOnPerimeter (v :Vec2) :Vec2
 	{
-		var p :XY = null;
+		var p :Vec2 = null;
 		var closestDistanceSq = Math.POSITIVE_INFINITY;
 		var i = 1;
 		for (line in _edges) {
@@ -169,7 +169,7 @@ class Polygon
 		return Math.sqrt(closestDistance);
 	}
 
-	public function distToPolygonEdge (P :XY) :Float
+	public function distToPolygonEdge (P :Vec2) :Float
 	{
 		var closestDistance = Math.POSITIVE_INFINITY;
 		var distance:Float;
@@ -206,7 +206,7 @@ class Polygon
 		for (i in 1...vertices.length) {
 			g.lineTo(vertices[i].x, vertices[i].y);
 		}
-		// vertices.slice(1).forEach(Util.adapt(function (v :XY) :Void {
+		// vertices.slice(1).forEach(Util.adapt(function (v :Vec2) :Void {
 		//	 g.lineTo(v.x, v.y);
 		// }));
 
@@ -215,13 +215,13 @@ class Polygon
 	}
 	#end
 
-	public function getClosestPoint (P :XY) :XY
+	public function getClosestPoint (P :Vec2) :Vec2
 	{
 		var distanceSq = Math.POSITIVE_INFINITY;
-		var closestVector :XY = null;
+		var closestVector :Vec2 = null;
 		for (edge in _edges) {
-			var v:XY = edge.closestPointTo(P);
-			var d = VectorTools.distanceSq(P, v);
+			var v:Vec2 = edge.closestPointTo(P);
+			var d = Vec2Tools.distanceSq(P, v);
 			if (d < distanceSq) {
 				distanceSq = d;
 				closestVector = v;
@@ -232,7 +232,7 @@ class Polygon
 
 	public function getIntersectionPolygon (p :Polygon) :Polygon
 	{
-		var vs:Array<XY> = _vertices.getIntersection(p.vertices);
+		var vs:Array<Vec2> = _vertices.getIntersection(p.vertices);
 //		vs = convexHullFromPoints(vs);
 		if (vs != null && vs.length > 2) {
 			return new Polygon(vs);
@@ -241,24 +241,24 @@ class Polygon
 	}
 
 //	public function getIntersectionPoints (line :LineSegment) :Array
-	public function getIntersectionPoints (v1 :XY, v2 :XY) :Array<XY>
+	public function getIntersectionPoints (v1 :Vec2, v2 :Vec2) :Array<Vec2>
 	{
-		var points:Array<XY> = [];
+		var points:Array<Vec2> = [];
 		for (edge in _edges) {
-			var v:XY = edge.intersectionPointLinePoints(v1, v2);
+			var v:Vec2 = edge.intersectionPointLinePoints(v1, v2);
 			points.push(v);
 		}
 		// ArrayUtil.removeAll(points, null);
 		return points;
 	}
 
-	public function isCircleIntersecting (P :XY, radius :Float) :Bool
+	public function isCircleIntersecting (P :Vec2, radius :Float) :Bool
 	{
-		var closestPointOnPolygon:XY = getClosestPoint(P);
-		return VectorTools.distance(closestPointOnPolygon, P) <= radius;
+		var closestPointOnPolygon:Vec2 = getClosestPoint(P);
+		return Vec2Tools.distance(closestPointOnPolygon, P) <= radius;
 	}
 
-	public function isEdge (A :XY, B :XY) :Bool
+	public function isEdge (A :Vec2, B :Vec2) :Bool
 	{
 		for (ii in 0..._vertices.length) {
 			if (A.equals(_vertices[ii])) {
@@ -341,8 +341,8 @@ class Polygon
 	/**
 	 * Returns true if any two edges of two polygons intersect, or if any points of one
 	 * polygon are inside the other polygon.
-	 * @param P1 Array of XY points, with the first point also last in the array.
-	 * @param P2 Array of XY points, with the first point also last in the array.
+	 * @param P1 Array of Vec2 points, with the first point also last in the array.
+	 * @param P2 Array of Vec2 points, with the first point also last in the array.
 	 */
 	public function isIntersection (polygon :Polygon) :Bool
 	{
@@ -354,7 +354,7 @@ class Polygon
 			return true;
 		}
 
-//		var v :XY;
+//		var v :Vec2;
 //		for each (v in P1) {
 //			if (isPointInPolygon2(v, P2)) {
 //				return true;
@@ -374,7 +374,7 @@ class Polygon
 		return isPointInside(line.a) && isPointInside(line.b);
 	}
 
-	public function isLineIntersecting (v1 :XY, v2 :XY) :Bool
+	public function isLineIntersecting (v1 :Vec2, v2 :Vec2) :Bool
 	{
 		for (line in _edges) {
 
@@ -401,9 +401,9 @@ class Polygon
 
 	/**
 	 * Returns true if any points are an edge of the polygon.
-	 * @param P1 Array of XY points, with the first point also last in the array.
+	 * @param P1 Array of Vec2 points, with the first point also last in the array.
 	 */
-	public function isLineOnPolygonEdge(P1 :XY, P2 :XY) :Bool
+	public function isLineOnPolygonEdge(P1 :Vec2, P2 :Vec2) :Bool
 	{
 		for (edge in _edges) {
 			if (edge.dist(P1) == 0 && edge.dist(P2) == 0) {
@@ -418,13 +418,13 @@ class Polygon
 		return isLineIntersecting(line.a, line.b) || isLineEnclosed(line);
 	}
 
-	public function isPointInside (P :XY) :Bool
+	public function isPointInside (P :Vec2) :Bool
 	{
 		return _vertices.isPointInPolygon(P);
 		// return isPointInPolygon2(P, _vertices);
 	}
 
-	public function isPointOnEdge (P :XY) :Bool
+	public function isPointOnEdge (P :Vec2) :Bool
 	{
 		for (line in _edges) {
 			if (line.dist(P) == 0) {
@@ -434,7 +434,7 @@ class Polygon
 		return false;
 	}
 
-	public function isPointsAnEdge (p1 :XY, p2 :XY) :Bool
+	public function isPointsAnEdge (p1 :Vec2, p2 :Vec2) :Bool
 	{
 		for (edge in _edges) {
 			if (edge.equalToPoints(p1, p2)) {
@@ -444,7 +444,7 @@ class Polygon
 		return false;
 	}
 
-	public function isPolygonVertex (P :XY) :Bool
+	public function isPolygonVertex (P :Vec2) :Bool
 	{
 		for (polygonPoint in _vertices) {
 			if(polygonPoint.x == P.x && polygonPoint.y == P.y) {
@@ -521,7 +521,7 @@ class Polygon
 		//Move each line in the direction of the line normal (anti-clockwise).
 		for (line in lines) {
 			var normal = line.normalVector;
-			var transform = normal.angle().angleToVector2(padding);
+			var transform = normal.angle().angleToVec2(padding);
 			line.a.addLocal(transform);
 			line.b.addLocal(transform);
 		}
@@ -529,7 +529,7 @@ class Polygon
 		//Add the first line to the end
 		lines.push(lines[0]);
 		//Go though the line pairs and get the intersections as the new polygon vertices
-		var newVertices:Array<XY> = [];
+		var newVertices:Array<Vec2> = [];
 		for (ii in 0...lines.length - 1) {
 			var line1 = lines[ii];
 			var line2 = lines[ii + 1];
@@ -576,7 +576,7 @@ class Polygon
 		return this;
 	}
 	
-	public function rotateLocal (angle :Float, ?rotationPoint :XY) :Polygon
+	public function rotateLocal (angle :Float, ?rotationPoint :Vec2) :Polygon
 	{
 		if (angle == 0) {
 			return this;
@@ -588,7 +588,7 @@ class Polygon
 		return this;
 	}
 	
-	public function rotate (angle :Float, ?rotationPoint :XY) :Polygon
+	public function rotate (angle :Float, ?rotationPoint :Vec2) :Polygon
 	{
 		return clone().rotateLocal(angle, rotationPoint);
 	}
@@ -615,7 +615,7 @@ class Polygon
 			return new Polygon([]);
 		}
 
-		var points:Array<XY> = _vertices.union(p.vertices);
+		var points:Array<Vec2> = _vertices.union(p.vertices);
 		if (points != null && points.length > 2) {
 			return new Polygon(points);
 		}
@@ -639,7 +639,7 @@ class Polygon
 		return _boundCircle;
 	}
 	
-	inline function get_center () :XY
+	inline function get_center () :Vec2
 	{
 		if (_center == null) {
 			_center = _vertices.get_center();
@@ -647,7 +647,7 @@ class Polygon
 		return _center;
 	}
 	
-	function set_center (val :XY) :XY
+	function set_center (val :Vec2) :Vec2
 	{
 		getBoundingBox().center = val;
 		
@@ -667,8 +667,8 @@ class Polygon
 	}
 	
 	var _edges :Array<LineSegment>;
-	var _vertices :Array<XY>;
+	var _vertices :Array<Vec2>;
 	var _bounds :Rectangle;
 	var _boundCircle :Circle;
-	var _center :XY;
+	var _center :Vec2;
 }

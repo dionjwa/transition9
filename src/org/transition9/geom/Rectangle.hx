@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import de.polygonal.motor2.geom.math.XY;
-using org.transition9.geom.VectorTools;
+import de.polygonal.motor.geom.math.Vec2;
+using org.transition9.geom.Vec2Tools;
 
 class Rectangle
 {
@@ -43,26 +43,26 @@ class Rectangle
    function get_bottom() { return y+height; }
    function set_bottom(b:Float) { height = b-y; return b;}
 
-   public var topLeft(get_topLeft,set_topLeft) : XY;
-   function get_topLeft() { return new Vector2(x,y); }
-   function set_topLeft(p:XY) { x=p.x;y=p.y; return p.clone(); }
+   public var topLeft(get_topLeft,set_topLeft) : Vec2;
+   function get_topLeft() { return new Vec2(x,y); }
+   function set_topLeft(p:Vec2) { x=p.x;y=p.y; return p.clone(); }
 
-   public var size(get_topLeft,set_topLeft) : XY;
-   function get_size() { return new Vector2(width,height); }
-   function set_size(p:XY) { width=p.x;height=p.y; return p.clone(); }
+   public var size(get_topLeft,set_topLeft) : Vec2;
+   function get_size() { return new Vec2(width,height); }
+   function set_size(p:Vec2) { width=p.x;height=p.y; return p.clone(); }
 
-   public var bottomRight(get_bottomRight,set_bottomRight) : XY;
-   function get_bottomRight() { return new Vector2(x+width,y+height); }
-   function set_bottomRight(p:XY)
+   public var bottomRight(get_bottomRight,set_bottomRight) : Vec2;
+   function get_bottomRight() { return new Vec2(x+width,y+height); }
+   function set_bottomRight(p:Vec2)
    {
 	  width = p.x-x;
 	  height = p.y-y;
 	  return p.clone();
    }
    
-   public var center (get_center, set_center) :XY;
-   function get_center() { return new Vector2(x+width / 2,y+height / 2); }
-   function set_center(p:XY)
+   public var center (get_center, set_center) :Vec2;
+   function get_center() { return new Vec2(x+width / 2,y+height / 2); }
+   function set_center(p:Vec2)
    {
    	   x = p.x - width / 2;
    	   y = p.y - height / 2;
@@ -77,7 +77,7 @@ class Rectangle
    {
 	  return inX>=x && inY>=y && inX<right && inY<bottom;
    }
-   public function containsPoint(point : XY) : Bool
+   public function containsPoint(point : Vec2) : Bool
    {
 	  return contains(point.x,point.y);
    }
@@ -95,7 +95,7 @@ class Rectangle
 	  x-=dx; width+=dx*2;
 	  y-=dy; height+=dy*2;
    }
-   public function inflatePoint(point : XY) : Void
+   public function inflatePoint(point : Vec2) : Void
    {
 	  inflate(point.x,point.y);
    }
@@ -142,7 +142,7 @@ class Rectangle
 	  y+=dy;
    }
 
-   public function offsetPoint(point : XY) : Void
+   public function offsetPoint(point : Vec2) : Void
    {
 	  x+=point.x;
 	  y+=point.y;

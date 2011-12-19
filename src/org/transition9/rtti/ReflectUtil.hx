@@ -240,7 +240,7 @@ class ReflectUtil
 		
 		var rtti = ReflectUtil.getRttiTypeTree(cls);
 		if (rtti == null) {
-			trace("No rtti type tree for " + Type.getClassName(cls));
+			throw("No rtti type tree for " + Type.getClassName(cls));
 		}
 		switch(rtti) {
 			case TClassdecl(typeInfo):
