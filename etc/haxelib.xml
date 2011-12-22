@@ -1,7 +1,7 @@
 <project name="transition9" url="https://github.com/dionjwa/transition9" license="BSD">
         <user name="dionjwa"/>
         <description>A collection of tools, including async utilities for Node.js.</description>
-        <version name="0.3">Refactoring.</version>
+        <version name="0.4">Refactoring.</version>
         <depends name="polygonal"/>
         <tag v="nodejs"/>
         <tag v="asynchronous"/>

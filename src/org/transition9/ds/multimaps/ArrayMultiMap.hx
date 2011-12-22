@@ -17,7 +17,7 @@ import Type;
 using org.transition9.util.ArrayUtil;
 
 class ArrayMultiMap<K, V> extends AbstractMultiMap<K, V>,
-	implements MultiMap<K, V>
+	implements MultiMap<K, V>, implements haxe.rtti.Infos
 {
 	public static function create <K, V>(keyType :ValueType) :ArrayMultiMap<K, V>
 	{

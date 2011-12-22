@@ -35,9 +35,7 @@ class ReflectUtil
 	inline public static function tinyName (cls :Class<Dynamic>) :String
 	{
 		#if debug
-		// org.transition9.util.Assert.isNotNull(cls);
 		var name = Type.getClassName(cls);
-		// org.transition9.util.Assert.isNotNull(name, "null class name from class object");
 		var tokens = name.split(".");
 		return tokens[tokens.length - 1];
 		#else
@@ -200,11 +198,9 @@ class ReflectUtil
 				case CClass(name, params):
 				return Type.resolveClass(name);
 				default:
-				// Log.error(getClassName(cls) + "." + field + " is not a class var");
 				return null;
 			}
 		}
-		// Log.error("No rtti for " + getClassName(cls));
 		return null;
 	}
 	
@@ -230,24 +226,25 @@ class ReflectUtil
 	
 	static function processGetterSetterMeta (cls :Class<Dynamic>) :Void
 	{
-		var className = Type.getClassName(cls);
-		if (getters.get(className) != null) {
+		if (getters.get(Type.getClassName(cls)) != null) {
 			return;
 		}
+		var className = Type.getClassName(cls);
 		
 		getters.set(className, new Hash());
 		setters.set(className, new Hash());
 		
 		var rtti = ReflectUtil.getRttiTypeTree(cls);
 		if (rtti == null) {
-			throw("No rtti type tree for " + Type.getClassName(cls));
+			org.transition9.util.Log.info("No rtti type tree for " + Type.getClassName(cls));
+			return;
 		}
 		switch(rtti) {
 			case TClassdecl(typeInfo):
 			
 				//Recurse into super classes.
-				if (typeInfo.superClass != null) {
-					processGetterSetterMeta(Type.resolveClass(typeInfo.superClass.path));
+				if (Type.getSuperClass(cls) != null) {
+					processGetterSetterMeta(Type.getSuperClass(cls));
 				}
 			
 				for (fieldMeta in typeInfo.fields) {

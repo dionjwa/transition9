@@ -12,14 +12,13 @@ import com.pblabs.components.scene2D.BaseSceneLayer;
 import com.pblabs.components.scene2D.SceneUtil;
 import com.pblabs.engine.core.NameManager;
 import com.pblabs.engine.resource.ResourceToken;
-import Vec2;
-import org.transition9.ds.Map;
 
 import de.polygonal.motor.geom.math.Vec2;
 
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Graphics;
+import flash.display.Shape;
 import flash.display.Sprite;
 
 import flash.geom.Rectangle;
@@ -29,6 +28,9 @@ import flash.utils.Dictionary;
 import hsl.avm2.translating.AVM2Signaler;
 
 import hsl.haxe.Signaler;
+
+import org.transition9.ds.Map;
+import org.transition9.rtti.ReflectUtil;
 
 using com.pblabs.engine.util.PBUtil;
 
@@ -74,6 +76,15 @@ class DebugUtil
 	}
 	
 	public static function drawBoundingRect (disp :DisplayObject, drawLayer :Sprite, ?color :Int =
+		0x000000, ?alpha :Float = 1, lineThickness :Float = 1) :Void
+	{
+		var bounds :Rectangle = disp.getBounds(drawLayer);
+		var g :Graphics = drawLayer.graphics;
+		g.lineStyle(lineThickness, color, alpha);
+		g.drawRect(bounds.left, bounds.top, bounds.width, bounds.height);
+	}
+	
+	public static function drawBoundingRectShape (disp :DisplayObject, drawLayer :Shape, ?color :Int =
 		0x000000, ?alpha :Float = 1, lineThickness :Float = 1) :Void
 	{
 		var bounds :Rectangle = disp.getBounds(drawLayer);

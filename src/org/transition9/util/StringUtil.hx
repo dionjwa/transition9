@@ -86,18 +86,12 @@ class StringUtil
 			default://Keep going
 		}
 		
-		
 		var s :StringBuf = new StringBuf();
 		var clsName = "";
 		
-		var isDynamic = Reflect.fields(obj) != null && Reflect.fields(obj).length > 0;
-		
-		fields = fields == null && isDynamic ? Reflect.fields(obj) : fields;
 		try {
-			if (!isDynamic) {
-				clsName = Type.getClass(obj) != null ? ReflectUtil.tinyClassName(obj) : "Dynamic";
-				fields = fields == null && Type.getClass(obj) != null ? Type.getInstanceFields(Type.getClass(obj)) : fields;
-			}
+			clsName = Type.getClass(obj) != null ? ReflectUtil.tinyClassName(obj) : "Dynamic";
+			fields = fields == null && Type.getClass(obj) != null ? Type.getInstanceFields(Type.getClass(obj)) : fields;
 		} catch (e :Dynamic) {
 			clsName = "Dynamic";
 		}
@@ -106,7 +100,7 @@ class StringUtil
 		fields = fields == null ? [] : fields;
 		for (f in fields) {
 			if (!Reflect.isFunction(Reflect.field(obj, f))) {
-				s.add(", " + f + "=" + (isDynamic ? ReflectUtil.field(obj, f) : ReflectUtil.field(obj, f)));
+				s.add(", " + f + "=" + ReflectUtil.field(obj, f));
 			}
 		}
 		s.add("]");
