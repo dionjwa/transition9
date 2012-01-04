@@ -215,7 +215,7 @@ class Maps
 		} else if (Std.is(k, Hashable)) {
 			untyped return new HashableMap<K, V>();
 		} 
-		else if (Std.is(k, org.transition9.ds.Hashable)) {
+		else if (Std.is(k, de.polygonal.ds.Hashable)) {
 			untyped return new org.transition9.ds.maps.PolygonalHashableMap<K, V>();
 		} else {
 			if (IS_OBJECT_DICTIONARY) {
@@ -232,4 +232,9 @@ class Maps
 			}
 		}
 	}
+	
+	// static function hasKeyField (cls :Class<Dynamic>) :Bool
+	// {
+		
+	// }
 }
