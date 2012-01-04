@@ -40,14 +40,15 @@ class Html5StorageManager implements Html5StorageService
 		var item = LocalStorage.getItem(key);
 		if (item == null) {
 			cb(null);
-		}
-		try {
-			cb(haxe.Unserializer.run(item));
-		} catch (e :Dynamic) {
-			org.transition9.util.Log.error("Error unserializing " + key + ", so removing the item. e=" + e);
-			removeItem(key, function (_) :Void {
-				cb(null);
-			});
+		} else {
+			try {
+				cb(haxe.Unserializer.run(item));
+			} catch (e :Dynamic) {
+				org.transition9.util.Log.error("Error unserializing " + key + ", so removing the item. e=" + e);
+				removeItem(key, function (_) :Void {
+					cb(null);
+				});
+			}
 		}
 		#end
 	}
