@@ -2,7 +2,10 @@ package org.transition9.util.svg;
 
 import org.transition9.util.StringUtil;
 import org.transition9.util.svg.SvgReplace;
+
 using org.transition9.util.XmlTools;
+
+using StringTools;
 
 /**
   * Caches important bits about the Svg data to avoid expensive repeated processing.
@@ -10,6 +13,11 @@ using org.transition9.util.XmlTools;
 class SvgData
 	implements org.transition9.ds.Hashable, implements Cloneable<SvgData>
 {
+	public static function fromXml (xml :Xml) :SvgData
+	{
+		return new SvgData(null, null, null, xml);
+	}
+	
 	public var id (default, null):String;
 	var _replacements :SvgReplacements;
 	public var data (get_data, null):String;
@@ -48,17 +56,22 @@ class SvgData
 		
 		_data = data;
 		
-		#if js
 		if (_data != null) {
+			#if js
 			/** SVG documents added to the dom via innerHTML are *not* allowed to have any preamble. */
 			_data = cleanSvgForInnerHtml(_data);
+			#elseif flash
+			// _data = _data.replace('xmlns:svg="http://www.w3.org/2000/svg"', "");
+			#end
 		}
-		#end
 		
 		this.id = id;
 		_replacements = new SvgReplacements(replacements);
 		if (xml != null && replacements == null) {
 			_xml = xml.ensureNotDocument();
+			#if flash
+			// _xml = _xml.removeNamespace("svg"); 
+			#end
 			#if js
 			removeJunk(_xml);
 			#end
