@@ -8,7 +8,6 @@
  ******************************************************************************/
 package org.transition9.util;
 
-import com.pblabs.engine.serialization.ISerializable;
 import org.transition9.util.Comparators;
 import org.transition9.util.Equalable;
 import org.transition9.util.Preconditions;

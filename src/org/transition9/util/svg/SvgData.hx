@@ -1,11 +1,13 @@
 package org.transition9.util.svg;
 
+import de.polygonal.ds.Cloneable;
+
 import org.transition9.util.StringUtil;
 import org.transition9.util.svg.SvgReplace;
 
-using org.transition9.util.XmlTools;
-
 using StringTools;
+
+using org.transition9.util.XmlTools;
 
 /**
   * Caches important bits about the Svg data to avoid expensive repeated processing.

@@ -20,13 +20,13 @@ class XmlTools
 	{
 		if (xml == null) return null;
 		
-		#if flash
-		var clonedXml = Xml.parse(xml.toString());
-		if (xml.nodeType != Xml.Document) {
-			clonedXml = clonedXml.ensureNotDocument();
-		}
-		return clonedXml;
-		#end
+		// #if flash
+		// var clonedXml = Xml.parse(xml.toString());
+		// if (xml.nodeType != Xml.Document) {
+		// 	clonedXml = clonedXml.ensureNotDocument();
+		// }
+		// return clonedXml;
+		// #end
 		
 		//Create
 		var newXml = switch (xml.nodeType) {
@@ -71,6 +71,7 @@ class XmlTools
 		for (e in xml.elements()) {
 			if (e.nodeName == elementName) {
 				if (attribute != null) {
+					// trace('e.get(attribute)=' + e.get(attribute));
 					if (e.get(attribute) == attributeValue) {
 						return e;
 					}

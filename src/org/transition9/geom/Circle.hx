@@ -10,7 +10,7 @@ package org.transition9.geom;
 
 import org.transition9.geom.CircleUtil;
 import org.transition9.geom.Geometry;
-import org.transition9.util.Cloneable;
+import de.polygonal.ds.Cloneable;
 
 import de.polygonal.motor.geom.math.Vec2;
 

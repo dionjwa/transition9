@@ -40,7 +40,6 @@ class Device
 		browser == Browser.SAFARI_IOS || browser == Browser.ANDROID;//TODO: Android browsers.  How to detect?
 	}
 	
-	
 	public static function getScreenDimensions () :Vec2
 	{
 		if (isMobileBrowser) {

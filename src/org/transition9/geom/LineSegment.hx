@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.transition9.geom;
 
-import org.transition9.util.Cloneable;
-import org.transition9.util.Equalable;
-
 import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.ds.Cloneable;
+
+import org.transition9.util.Equalable;
 
 using org.transition9.geom.LineSegmentTools;
 using org.transition9.geom.Vec2Tools;
