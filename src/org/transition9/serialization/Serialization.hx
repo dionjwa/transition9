@@ -30,25 +30,25 @@ class Serialization
 		/** Convert to base64 encoded String */
 	public static function encode (bytes :haxe.io.BytesData) :String
 	{
-		#if flash
-		//It's fast.  Polygonal?
-	    return jpauclair.Base64.encode(bytes);
-	    #else
+		// #if flash
+		// //It's fast.  Polygonal?
+	    // return jpauclair.Base64.encode(bytes);
+	    // #else
 	    throw "What is the Base64 encoder for this platform?";
 	    return null;
-	    #end
+	    // #end
 	}
 	
 	/** Convert from base64 encoded String */
 	public static function decode (base64Encoded :String) :haxe.io.BytesData
 	{
-		#if flash
-		//It's fast.  Polygonal?
-	    return jpauclair.Base64.decode(base64Encoded);
-	    #else
+		// #if flash
+		// //It's fast.  Polygonal?
+	    // return jpauclair.Base64.decode(base64Encoded);
+	    // #else
 	    throw "What is the Base64 encoder for this platform?";
 	    return null;
-	    #end
+	    // #end
 	}
 	
 	// #if polygonal
