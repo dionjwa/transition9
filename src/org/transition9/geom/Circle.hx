@@ -12,7 +12,7 @@ import org.transition9.geom.CircleUtil;
 import org.transition9.geom.Geometry;
 import de.polygonal.ds.Cloneable;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 class Circle
 	implements Cloneable<Circle>

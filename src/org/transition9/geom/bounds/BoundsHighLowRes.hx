@@ -12,7 +12,7 @@ import org.transition9.geom.Circle;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 /**
  * For using computationally lighter bounds first

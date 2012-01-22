@@ -12,8 +12,7 @@ import com.pblabs.engine.serialization.Serializer;
 import org.transition9.ds.Map;
 import org.transition9.ds.Maps;
 
-import de.polygonal.motor.geom.math.Vec2;
-import de.polygonal.motor.geom.math.XY;
+import de.polygonal.core.math.Vec2;
 
 using Lambda;
 
@@ -39,18 +38,18 @@ class Vec2Tools
 	public static inline var ZERO :Vec2 = new Vec2(); //0.017453293;
 	public static inline var PI2 :Float = Math.PI * 2;
 
-	inline public static function distance (a :XY, b :XY) :Float
+	inline public static function distance (a :Vec2, b :Vec2) :Float
 	{
 		return Math.sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
 	}
 	
-	inline public static function distanceSq (a :XY, b :XY) :Float
+	inline public static function distanceSq (a :Vec2, b :Vec2) :Float
 	{
 		return  (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
 	}
 	
 	//Returns the angle between two points
-	public static function calcAngle (p1 :XY, p2 :XY) :Float
+	public static function calcAngle (p1 :Vec2, p2 :Vec2) :Float
 	{
 		var angle = Math.atan((p2.y - p1.y) / (p2.x - p1.x));
 
@@ -88,7 +87,7 @@ class Vec2Tools
 	/**
 	 * Returns the angle (radians) from v1 to v2.
 	 */
-	inline public static function angleTo (v1 :XY, v2 :XY) :Float
+	inline public static function angleTo (v1 :Vec2, v2 :Vec2) :Float
 	{
 		return getAngle(v1.x, v1.y, v2.x, v2.y);
 	}
@@ -98,22 +97,22 @@ class Vec2Tools
 		return Math.atan2(y2 - y1, x2 - x1);
 	}
 	
-	inline public static function getMidpoint (v1 :XY, v2 :XY) :Vec2
+	inline public static function getMidpoint (v1 :Vec2, v2 :Vec2) :Vec2
 	{
 		return new Vec2(v1.x + (v2.x - v1.x) / 2, v1.y + (v2.y - v1.y) / 2);
 	}
 	
-	inline public static function lengthSq (v1 :XY) :Float
+	inline public static function lengthSq (v1 :Vec2) :Float
 	{
 		return v1.x*v1.x + v1.y*v1.y;
 	}
 	
-	inline public static function length (v1 :XY) :Float
+	inline public static function length (v1 :Vec2) :Float
 	{
 		return Math.sqrt(lengthSq(v1));
 	}
 	
-	inline public static function isEqual (v1 :XY, v2 :XY) :Bool
+	inline public static function isEqual (v1 :Vec2, v2 :Vec2) :Bool
 	{
 		return v1.x == v2.x && v1.y == v2.y;    
 	}
@@ -190,7 +189,7 @@ class Vec2Tools
 		return simplifyRadian(-diff);
 	}
 	
-	public static function clone (xy :XY) :Vec2
+	public static function clone (xy :Vec2) :Vec2
 	{
 		return new Vec2(xy.x, xy.y);    
 	}
@@ -198,7 +197,7 @@ class Vec2Tools
 	/**
 	 * Returns true if this vector is equal to v.
 	 */
-	public static function equals (v1 :XY, v2 :XY) :Bool
+	public static function equals (v1 :Vec2, v2 :Vec2) :Bool
 	{
 		return if (v1 != null && v2 != null) v1.x == v2.x && v1.y == v2.y else false;
 	}
@@ -206,7 +205,7 @@ class Vec2Tools
 	/**
 	 * Returns the dot product of this vector with vector v.
 	 */
-	inline public static function dot (v1 :XY, v2 :XY) :Float
+	inline public static function dot (v1 :Vec2, v2 :Vec2) :Float
 	{
 		return v1.x * v2.x + v1.y * v2.y;
 	}
@@ -214,7 +213,7 @@ class Vec2Tools
 	/**
 	 * Returns this vector's length.
 	 */
-	inline public static function getLength (v :XY) :Float
+	inline public static function getLength (v :Vec2) :Float
 	{
 		return Math.sqrt(v.x * v.x + v.y * v.y);
 	}
@@ -223,7 +222,7 @@ class Vec2Tools
 	 * Adds another Vec2 to this, in place.
 	 * Returns a reference to 'this', for chaining.
 	 */
-	inline public static function addLocal (v1 :Vec2, v2 :XY) :Vec2
+	inline public static function addLocal (v1 :Vec2, v2 :Vec2) :Vec2
 	{
 		v1.x += v2.x;
 		v1.y += v2.y;
@@ -234,7 +233,7 @@ class Vec2Tools
 	/**
 	 * Returns a copy of this vector added to 'v'.
 	 */
-	public static function add (v1 :XY, v2 :XY) :Vec2
+	public static function add (v1 :Vec2, v2 :Vec2) :Vec2
 	{
 		return v1.clone().addLocal(v2);
 	}
@@ -243,7 +242,7 @@ class Vec2Tools
 	 * Subtracts another vector from this one, in place.
 	 * Returns a reference to 'this', for chaining.
 	 */
-	public static function subtractLocal (v1 :Vec2, v2 :XY) :Vec2
+	public static function subtractLocal (v1 :Vec2, v2 :Vec2) :Vec2
 	{
 		v1.x -= v2.x;
 		v1.y -= v2.y;
@@ -254,7 +253,7 @@ class Vec2Tools
 	/**
 	 * Returns (this - v).
 	 */
-	public static function subtract (v1: XY, v2 :XY) :Vec2
+	public static function subtract (v1: Vec2, v2 :Vec2) :Vec2
 	{
 	   return clone(v1).subtractLocal(v2);
 	}
@@ -271,7 +270,7 @@ class Vec2Tools
 	}
 
 	/** Returns (this * value). */
-	public static function scale (v :XY, value :Float) :XY
+	public static function scale (v :Vec2, value :Float) :Vec2
 	{
 		return v.clone().scaleLocal(value);
 	}
@@ -291,12 +290,12 @@ class Vec2Tools
 	/**
 	 * Returns a rotated copy of this vector.
 	 */
-	public static function rotate (v :XY, radians :Float) :Vec2
+	public static function rotate (v :Vec2, radians :Float) :Vec2
 	{
 		return v.clone().rotateLocal(radians);
 	}
 	
-	inline public static function angle (v :XY) :Float
+	inline public static function angle (v :Vec2) :Float
 	{
 		return Math.atan2(v.y, v.x);
 	}
@@ -306,7 +305,7 @@ class Vec2Tools
 	 * at proportion p, where p is in [0, 1], p = 0 means the result is equal to a,
 	 * and p = 1 means the result is equal to b.
 	 */
-	public static function interpolate (a :XY, b :XY, p :Float) :Vec2
+	public static function interpolate (a :Vec2, b :Vec2, p :Float) :Vec2
 	{
 		var q:Float = 1 - p;
 		return new Vec2(q * a.x + p * b.x, q * a.y + p * b.y);
@@ -316,7 +315,7 @@ class Vec2Tools
 	 * Returns the smaller of the two angles between v1 and v2, in radians.
 	 * Result will be in range [0, pi].
 	 */
-	public static function smallerAngleBetween (v1 :XY, v2 :XY) :Float
+	public static function smallerAngleBetween (v1 :Vec2, v2 :Vec2) :Float
 	{
 		var dot = dot(v1, v2);
 		var len1= getLength(v1);
@@ -326,7 +325,7 @@ class Vec2Tools
 	}
 	
 	
-	public static function serializeVec2 (val :XY, xml :Xml) :Void
+	public static function serializeVec2 (val :Vec2, xml :Xml) :Void
 	{
 		xml.createChild("x", val.x, Serializer.serializeFloat);
 		xml.createChild("y", val.y, Serializer.serializeFloat);
@@ -349,7 +348,7 @@ class Vec2Tools
 		return new Vec2(p.x, p.y);
 	}
 	
-	public static function toPoint (v :XY) :flash.geom.Point
+	public static function toPoint (v :Vec2) :flash.geom.Point
 	{
 		return new flash.geom.Point(v.x, v.y);
 	}

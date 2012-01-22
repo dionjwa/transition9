@@ -12,7 +12,7 @@ import org.transition9.geom.Circle;
 import org.transition9.geom.Rectangle;
 import org.transition9.util.Cloneable;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 interface IBounds<T> 
 	implements Cloneable<T>//, implements ISpatialObject2D

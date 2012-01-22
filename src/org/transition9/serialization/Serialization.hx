@@ -52,7 +52,7 @@ class Serialization
 	}
 	
 	// #if polygonal
-	public static function xyArrayToFloatArray (xys :Array<de.polygonal.motor.geom.math.Vec2>) :Array<Float>
+	public static function xyArrayToFloatArray (xys :Array<de.polygonal.core.math.Vec2>) :Array<Float>
 	{
 		var arr = [];
 		for (v in xys) {
@@ -62,12 +62,12 @@ class Serialization
 		return arr;
 	}
 	
-	public static function floatArrayToVec2Array (floats :Array<Float>) :Array<de.polygonal.motor.geom.math.Vec2>
+	public static function floatArrayToVec2Array (floats :Array<Float>) :Array<de.polygonal.core.math.Vec2>
 	{
-		var arr = new Array<de.polygonal.motor.geom.math.Vec2>();
+		var arr = new Array<de.polygonal.core.math.Vec2>();
 		var ii = 0;
 		while (ii < floats.length) {
-			arr.push(new de.polygonal.motor.geom.math.Vec2(floats[ii], floats[ii + 1]));
+			arr.push(new de.polygonal.core.math.Vec2(floats[ii], floats[ii + 1]));
 			ii += 2;
 		}
 		return arr;

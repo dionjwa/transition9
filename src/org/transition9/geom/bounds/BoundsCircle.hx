@@ -20,7 +20,7 @@ import org.transition9.geom.bounds.BoundsUtil;
 import org.transition9.geom.bounds.IBounds;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.CircleUtil;
 using org.transition9.geom.Vec2Tools;

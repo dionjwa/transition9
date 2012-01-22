@@ -13,7 +13,7 @@ import org.transition9.geom.Rectangle;
 import org.transition9.geom.bounds.AbstractBounds;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.CircleUtil;
 
