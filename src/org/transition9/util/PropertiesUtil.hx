@@ -18,18 +18,18 @@ class PropertiesUtil
 		} catch (e :Dynamic) {
 			try {
 				var i = Std.parseInt(fieldValue);
-				if (Math.isNaN(i)) {
+				if (i == null || Math.isNaN(i)) {
 					throw "NaN";
 				}
 				Reflect.setField(obj, fieldName, i);
 			} catch (e :Dynamic) {
-				if (fieldValue == 'true' || fieldValue == 'false') {
-					Reflect.setField(obj, fieldName, fieldValue == 'true');
+				if (fieldValue.toLowerCase() == 'true' || fieldValue.toLowerCase() == 'false') {
+					Reflect.setField(obj, fieldName, fieldValue.toLowerCase() == 'true');
 				} else {
+					trace(fieldName + "=String");
 					Reflect.setField(obj, fieldName, fieldValue);
 				}
 			}
 		}
 	}
-	
 }
