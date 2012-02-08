@@ -124,21 +124,12 @@ class HashMap<K, V> implements Map<K, V>
 		Returns an iterator of all values in the hashtable.
 	**/
 	public function iterator() :Iterator<V> {
-		#if (haxedev || haxe_208)
 		return untyped {
 			ref :h,
 			it :__keys__(h).iterator(),
 			hasNext :function() { return untyped __this__.it.hasNext(); },
 			next :function() { var i :Dynamic = untyped __this__.it.next(); return __this__.ref[i]; }
 		};
-		#else
-		return untyped {
-			ref :h,
-			it :__keys__(h).iterator(),
-			hasNext :function() { return untyped __this__.it.hasNext(); },
-			next :function() { var i :Dynamic = untyped __this__.it.next(); return __this__.ref[i]; }
-		};
-		#end
 	}
 
 	public function size () :Int

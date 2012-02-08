@@ -5,10 +5,10 @@ import com.pblabs.components.scene2D.ImageData;
 
 import de.polygonal.core.math.Mathematics;
 import de.polygonal.motor.geom.primitive.AABB2;
-#if jeash
-import Html5Dom;
-typedef Canvas = Html5Dom.HTMLCanvasElement;
-#end
+// #if jeash
+// import Html5Dom;
+// typedef Canvas = Html5Dom.HTMLCanvasElement;
+// #end
 
 class BitmapUtil
 {
@@ -78,11 +78,7 @@ class BitmapUtil
 		var canvas = createCanvas();	
 		canvas.width = image.width;
 		canvas.height = image.height;
-		#if haxedev
 		canvas.getContext("2d").drawImage(image, 0, 0);
-		#else
-		canvas.getContext("2d").drawImage(cast image, 0, 0);
-		#end
 		return canvas;
 	}
 	
