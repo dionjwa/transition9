@@ -34,6 +34,7 @@ class ObjectUtil
 	
 	public static function copy (obj :Dynamic, ?into :Dynamic) :Dynamic
 	{
+		if (obj == null) return into;
 		var result = into == null ? {} : into;
 		for (f in Reflect.fields(obj)) {
 			if (f.startsWith("__")) {

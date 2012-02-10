@@ -11,7 +11,7 @@ package org.transition9.geom;
 import org.transition9.util.Cloneable;
 import org.transition9.util.Equalable;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 /**
  * Basic 2D vector implementation.

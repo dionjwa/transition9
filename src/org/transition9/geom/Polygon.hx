@@ -14,9 +14,9 @@ import org.transition9.geom.Rectangle;
 import org.transition9.geom.Vec2Tools;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Assert;
-import de.polygonal.ds.Cloneable;
 import org.transition9.util.NumberUtil;
 
+import de.polygonal.ds.Cloneable;
 import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.CircleUtil;

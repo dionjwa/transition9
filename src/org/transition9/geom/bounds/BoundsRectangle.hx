@@ -18,7 +18,7 @@ import org.transition9.geom.bounds.BoundsPolygon;
 import org.transition9.geom.bounds.BoundsUtil;
 import org.transition9.geom.bounds.IBounds;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.PolygonTools;
 using org.transition9.geom.RectangleTools;

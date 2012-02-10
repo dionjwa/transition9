@@ -12,7 +12,7 @@ import org.transition9.geom.Rectangle;
 import Vec2;
 import org.transition9.rtti.ReflectUtil;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 class BoundsNone extends AbstractBounds<BoundsNone> 
 {
