@@ -37,8 +37,6 @@ import haxe.Int32;
 import js.Node;
 #end
 
-#if nodejs
-#end
 /**
  * Contains useful static function for performing operations on Strings.
  */

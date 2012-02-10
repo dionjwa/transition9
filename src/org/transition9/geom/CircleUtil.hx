@@ -12,7 +12,7 @@ import org.transition9.geom.Circle;
 import org.transition9.geom.Geometry;
 import org.transition9.geom.Rectangle;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 class CircleUtil
 {

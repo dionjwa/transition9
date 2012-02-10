@@ -29,6 +29,9 @@ package org.transition9.ds.maps;
 
 import org.transition9.ds.Map;
 
+import org.transition9.util.Log;
+import org.transition9.util.Preconditions;
+
 import haxe.Timer;
 
 /**
@@ -79,7 +82,7 @@ class ExpiringMap<K, V> extends LinkedMap<K, V>
 					try {
 						_expireHandler(exp.key, exp.value);
 					} catch (e :Dynamic) {
-						Log.warn(["Error calling expire handler", e]);
+						org.transition9.util.Log.warn("Error calling expire handler:" + e);
 					}
 				}
 

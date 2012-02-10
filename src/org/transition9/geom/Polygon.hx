@@ -14,10 +14,10 @@ import org.transition9.geom.Rectangle;
 import org.transition9.geom.Vec2Tools;
 import org.transition9.util.ArrayUtil;
 import org.transition9.util.Assert;
-import org.transition9.util.Cloneable;
+import de.polygonal.ds.Cloneable;
 import org.transition9.util.NumberUtil;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.CircleUtil;
 using org.transition9.geom.PolygonTools;

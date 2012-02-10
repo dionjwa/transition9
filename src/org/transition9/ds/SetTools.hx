@@ -1,5 +1,7 @@
 package org.transition9.ds;
 
+import org.transition9.util.StringUtil;
+
 class SetTools
 {
 	public static function toString(set :Iterable<Dynamic>, ?sep :String = ",") :String 

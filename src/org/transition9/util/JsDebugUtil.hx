@@ -1,5 +1,7 @@
 package org.transition9.util;
 
+#if js
+
 import org.transition9.util.svg.SvgData;
 
 import js.Dom;
@@ -25,3 +27,5 @@ class JsDebugUtil
 		insertIntoDebugDiv(svgdiv);
 	}
 }
+
+#end

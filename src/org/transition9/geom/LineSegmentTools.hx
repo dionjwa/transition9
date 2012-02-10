@@ -10,7 +10,7 @@ package org.transition9.geom;
 
 import org.transition9.geom.LineSegment;
 
-import de.polygonal.motor.geom.math.Vec2;
+import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.Vec2Tools;
 
