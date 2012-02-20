@@ -13,6 +13,7 @@ srcFolders = sys.argv[2:] if len (sys.argv) > 2 else None
 if not srcFolders:
 	srcFolders = [os.getcwd()]
 
+print "srcFolders=", srcFolders
 if not os.path.exists(etcFile):
 	print etcFile + " doesn't exist."
 	sys.exit(0)
@@ -29,7 +30,6 @@ for srcFolder in srcFolders:
 
 tmpfolder = tempfile.mkdtemp()
 
-# print "tmp folder: " + tmpfolder
 def nodot (item):
 	return item[0] != '.'
 
@@ -38,9 +38,8 @@ for src in srcFolders:
 		
 		fullfilepath = os.path.join(src, f);
 		if os.path.isdir(fullfilepath):
-			# print "Copying " + fullfilepath + " to " + os.path.join(tmpfolder, f)  
 			shutil.copytree(fullfilepath, os.path.join(tmpfolder, f), ignore=shutil.ignore_patterns(".DS_Store", ".git", ".svn", "*.xml", "*.zip", "*.sh"))
-		elif re.match(".*(haxelib\.xml|\.hx|\.hxml)$", f):
+		elif re.match(".*(haxelib\.xml|\.hx|\.hxml|\.js)$", f):
 			shutil.copyfile(fullfilepath, os.path.join(tmpfolder, f))
 			
 shutil.copyfile(etcFile, os.path.join(tmpfolder, os.path.basename(etcFile)))
@@ -53,8 +52,7 @@ for root, dirnames, files in os.walk(tmpfolder, followlinks=True):
 		if file != projectName + ".zip":
 			print file
 			z.write(os.path.join(root, file), os.path.join(root, file).replace(tmpfolder, ""), zipfile.ZIP_DEFLATED )
-
-# print os.path.join(tmpfolder, projectName + ".zip")
+z.close()
 
 shutil.move(zipFileName, os.path.join(os.getcwd(), projectName + ".zip"));
 shutil.rmtree(tmpfolder)
