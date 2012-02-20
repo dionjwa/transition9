@@ -91,6 +91,12 @@ flex_config_xml = """<?xml version="1.0"?>
     <warn-slow-text-field-addition>true</warn-slow-text-field-addition>
     <warn-unlikely-function-value>true</warn-unlikely-function-value>
     <warn-xml-class-has-changed>false</warn-xml-class-has-changed>
+    
+    <theme>
+        <filename>$flex_sdk/frameworks/libs/spark.swc</filename>
+    </theme>
+    
+    
   </compiler>
   <default-background-color>0x000000</default-background-color>
   <default-frame-rate>30</default-frame-rate>
@@ -117,7 +123,7 @@ flex_config_xml = """<?xml version="1.0"?>
     <policy-file-url></policy-file-url>
   </runtime-shared-library-path>
   <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
-  <target-player>11</target-player>
+  <target-player>10</target-player>
   <use-network>true</use-network>
 </flex-config>
 """
