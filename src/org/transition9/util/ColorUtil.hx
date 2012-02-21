@@ -1,7 +1,5 @@
 package org.transition9.util;
 
-import de.polygonal.gl.color.ColorMatrix;
-
 class ColorUtil
 {
 	#if flash
@@ -13,15 +11,14 @@ class ColorUtil
 		argb += (rgb);
 		return argb;
 	}
-	
 	public static function createColorFilter (color :Int) :flash.filters.ColorMatrixFilter
     {
-        return new ColorMatrix().colorize(color).getFilter();
+        return new de.polygonal.gl.color.ColorMatrix().colorize(color).getFilter();
     }
     
     public static function createHueFilter (angle :Float) :flash.filters.ColorMatrixFilter
     {
-        return new ColorMatrix().adjustHue(angle).getFilter();
+        return new de.polygonal.gl.color.ColorMatrix().adjustHue(angle).getFilter();
     }
     #end
     

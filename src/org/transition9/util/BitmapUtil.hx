@@ -10,7 +10,7 @@ class BitmapUtil
 {
 	public static function createImageData (width :Int, height :Int) :ImageData
 	{
-		#if (flash || cpp)
+		#if (flash || cpp || spaceport)
 		return new flash.display.BitmapData(width, height);
 		#elseif js
 		var canvas = createCanvas();
@@ -20,10 +20,10 @@ class BitmapUtil
 		#end
 	}
 	
-	#if (flash || cpp)
+	#if (flash || cpp ||spaceport)
 	public static function createBitmapData (d :flash.display.DisplayObject, ?scale :Float = 1.0, ?center :flash.geom.Point) :flash.display.BitmapData
 	{
-		#if flash
+		#if (flash || spaceport)
 		var bounds = d.getBounds(d);
 		#elseif cpp
 		var bounds = d.nmeGetPixelBounds();
@@ -47,7 +47,7 @@ class BitmapUtil
 
 		bd.draw(d, new flash.geom.Matrix(scale, 0, 0, scale, center.x, center.y), null, null, null, false);
 		
-		#if graphics_debug
+		#if (graphics_debug && !spaceport)
 		var shape = new flash.display.Shape();
 		var g = shape.graphics;
 		g.lineStyle(1, 0);
@@ -59,7 +59,7 @@ class BitmapUtil
 	}
 	#end
 	
-	#if js
+	#if (js && !spaceport)
 	public static function toCanvas (image :ImageType) :Canvas
 	{
 		var canvas = createCanvas();
