@@ -4,15 +4,6 @@ import de.polygonal.core.math.Vec2;
 
 using org.transition9.geom.Vec2Tools;
 
-enum Browser {
-	ANDROID;
-	SAFARI_OSX;
-	SAFARI_IOS;
-	CHROME;
-	FIREFOX;
-	IE;
-}
-
 class Device
 {
 	#if js

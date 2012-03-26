@@ -70,7 +70,6 @@ class Log
 	#end
 }
 
-// #if !no_logging
 enum LogLevel {
 	DEBUG;
 	INFO;
@@ -78,4 +77,3 @@ enum LogLevel {
 	ERROR;
 	OFF;
 }
-// #end

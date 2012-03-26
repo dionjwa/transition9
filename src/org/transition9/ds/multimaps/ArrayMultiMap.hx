@@ -21,7 +21,7 @@ class ArrayMultiMap<K, V> extends AbstractMultiMap<K, V>,
 {
 	public static function create <K, V>(keyType :ValueType) :ArrayMultiMap<K, V>
 	{
-		org.transition9.util.Assert.isNotNull(keyType);
+		org.transition9.util.Assert.isNotNull(keyType, "keyType != null");
 		return new ArrayMultiMap<K, V>(keyType);
 	}
 	
