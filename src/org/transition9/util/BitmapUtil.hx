@@ -1,8 +1,5 @@
 package org.transition9.util;
 
-import com.pblabs.components.scene2D.ImageType;
-import com.pblabs.components.scene2D.ImageData;
-
 import de.polygonal.core.math.Mathematics;
 import de.polygonal.motor.geom.primitive.AABB2;
 
