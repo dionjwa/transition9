@@ -157,7 +157,7 @@ class Comparators
 		return compareStrings(Std.string(s1).toLowerCase(), Std.string(s2).toLowerCase());
 	}
 	
-	inline public static function compareEnums (e1 :Enum<Dynamic>, e2 :Enum<Dynamic>) :Int
+	inline public static function compareEnums (e1 :EnumValue, e2 :EnumValue) :Int
 	{
 	    return compareStrings(Type.enumConstructor(e1), Type.enumConstructor(e2));
 	}

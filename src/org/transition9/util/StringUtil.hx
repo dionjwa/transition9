@@ -79,7 +79,7 @@ class StringUtil
 				if (c == String) {
 					return Std.string(obj);
 				}
-			case TEnum(e): return Type.enumConstructor(e).substr(Type.enumConstructor(e).lastIndexOf(".") + 1);
+			// case TEnum(e): return Type.enumConstructor(e).substr(Type.enumConstructor(e).lastIndexOf(".") + 1);
 			case TUnknown: Std.string(obj);
 			default://Keep going
 		}
