@@ -1,7 +1,7 @@
 <project name="transition9" url="https://github.com/dionjwa/transition9" license="BSD">
         <user name="dionjwa"/>
         <description>A collection of tools.</description>
-        <version name="0.8.2">Minor update.</version>
+        <version name="0.8.3">Minor update.</version>
         <depends name="polygonal" />
         <tag v="nodejs"/>
         <tag v="asynchronous"/>
