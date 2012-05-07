@@ -18,7 +18,8 @@ class BitmapUtil
 	}
 	
 	#if (flash || cpp ||spaceport)
-	public static function createBitmapData (d :flash.display.DisplayObject, ?scale :Float = 1.0, ?center :flash.geom.Point) :flash.display.BitmapData
+	public static function createBitmapData (d :flash.display.DisplayObject, ?scale :Float = 1.0, 
+		?center :flash.geom.Point, ?drawnBounds :flash.geom.Rectangle, ?colorBounds :Bool = false, ?mask :UInt = 0xFF000000, ?color :UInt = 0x00000000, ?findColor :Bool = false) :flash.display.BitmapData
 	{
 		#if (flash || spaceport)
 		var bounds = d.getBounds(d);
@@ -30,6 +31,13 @@ class BitmapUtil
 			return null;
 		}
 		
+		if (drawnBounds != null) {
+			drawnBounds.x = Math.floor(bounds.x);
+			drawnBounds.y = Math.floor(bounds.y);
+			drawnBounds.width = Mathematics.ceil(bounds.width * scale);
+			drawnBounds.height = Mathematics.ceil(bounds.height * scale);
+		}
+		
 		if (center == null) {
 			center = new flash.geom.Point();
 		}
@@ -37,12 +45,31 @@ class BitmapUtil
 		center.y = Mathematics.ceil(-bounds.y * scale);
 		
 		#if flash
-		var bd = new flash.display.BitmapData(Mathematics.ceil(bounds.width * scale), Mathematics.ceil(bounds.height * scale), true, ColorUtil.toARGB(0xffffff, 0));
-		#else
 		var bd = new flash.display.BitmapData(Mathematics.ceil(bounds.width * scale), Mathematics.ceil(bounds.height * scale), true, 0xffffff);
+		#else
+		var bd = new flash.display.BitmapData(Mathematics.ceil(bounds.width * scale), Mathematics.ceil(bounds.height * scale), true, 0xffffff));
 		#end
 
 		bd.draw(d, new flash.geom.Matrix(scale, 0, 0, scale, center.x, center.y), null, null, null, false);
+		
+		if (colorBounds) {
+			bounds = bd.getColorBoundsRect(mask, color, findColor);
+			trace("bounds=" +bounds);
+			bounds.x = Math.floor(bounds.x);
+			bounds.y = Math.floor(bounds.y);
+			bounds.width = Math.ceil(bounds.width);
+			bounds.height = Math.ceil(bounds.height);
+			var drawnbd = new flash.display.BitmapData(Mathematics.ceil(bounds.width), Mathematics.ceil(bounds.height), true, ColorUtil.toARGB(0xffffff, 0));
+			drawnbd.copyPixels(bd, bounds, new flash.geom.Point(0, 0));
+			bd = drawnbd;
+			
+			if (drawnBounds != null) {
+				drawnBounds.x += bounds.x;
+				drawnBounds.y += bounds.y;
+				drawnBounds.width = bounds.width;
+				drawnBounds.height = bounds.height;
+			}
+		}
 		
 		#if (graphics_debug && !spaceport)
 		var shape = new flash.display.Shape();
