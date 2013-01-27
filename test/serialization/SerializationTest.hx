@@ -1,9 +1,9 @@
 package serialization;
 
 import serialization.support.RedisSerializableClass;
-import org.transition9.serialization.Serialization;
+import transition9.serialization.Serialization;
 // import utest.Assert;
-import org.transition9.util.Assert;
+import transition9.util.Assert;
 
 using Lambda;
 

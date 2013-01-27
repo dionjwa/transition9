@@ -4,7 +4,7 @@ class Tests
 {
 	public static function main () :Void
 	{
-		org.transition9.unit.AsyncTestTools.runTestsOn(cast [
+		transition9.unit.AsyncTestTools.runTestsOn(cast [
 			async.StepTest,
 		]);
 	}

@@ -3,6 +3,7 @@
         <description>A collection of tools.</description>
         <version name="0.8.4">Minor update.</version>
         <depends name="polygonal" />
+        <depends name="flambe" />
         <tag v="nodejs"/>
         <tag v="asynchronous"/>
 </project>

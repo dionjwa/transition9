@@ -7,6 +7,14 @@ import argparse
 
 def main (haxelibPath, srcFolders, nonSrcFolders, isLive):
 	
+	srcFolders = list(set(srcFolders))
+	nonSrcFolders = list(set(nonSrcFolders))
+	
+	print "haxelibPath=", haxelibPath
+	print "srcFolders=", srcFolders
+	print "nonSrcFolders=", nonSrcFolders
+	print "isLive=", isLive
+	
 	if not os.path.exists(haxelibPath):
 		print haxelibPath + " doesn't exist."
 		sys.exit(0)
@@ -68,7 +76,7 @@ def addFolder(src, dest, isSource=False):
 if __name__=="__main__":
 	parser = argparse.ArgumentParser(description='Package and submit a haxelib package')
 	parser.add_argument('--src', action='append', default=["src"], help='A src folder (base folder is ignored, only *.hx files added)')
-	parser.add_argument('--extra', action='append', default=["demo", "demos"], help='An additional folder to add (base folder included, all files added')
+	parser.add_argument('--extra', action='append', default=[], help='An additional folder to add (base folder included, all files added') #"demo", "demos"
 	parser.add_argument('--live', default=False, action="store_true", help='Without this, installs locally only')
 	parser.add_argument( '--haxelib', default="etc/haxelib.xml", help='Path to the haxelib.xml file')
 	namespace = parser.parse_args()
