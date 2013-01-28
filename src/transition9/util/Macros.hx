@@ -314,7 +314,7 @@ class Macros
 	{
 		var pos = haxe.macro.Context.currentPos();
 		var fields = haxe.macro.Context.getBuildFields();
-        
+		
 		var data = "";
 		for (resourcePath in resourcePaths) {
 			data += neko.io.File.getContent(resourcePath);
@@ -392,6 +392,11 @@ class Macros
 	@:macro
 	public static function embedBinaryDataResource(binPath :String, ?resourceId :String = null, ?xorKey :Int = -1)
 	{
+		if (Context.defined("display")) {
+			// When running in code completion, skip out early
+			return toExpr(EBlock([]));
+		}
+		
 		resourceId = resourceId != null ? resourceId : binPath;
 		
 		var pos = haxe.macro.Context.currentPos();
@@ -408,15 +413,20 @@ class Macros
 	/**
 	  * Embeds all the resources from a resources.xml file, in the format:
 	  * <resources>
-	  *      <svg id="SCENERY_BACKGROUND_02" url="rsrc/scenery/background_02.svg"/>
-	  *      <svg id="UI_BUTTON_01" url="rsrc/ui/button_01.svg"/>
-	  *      <svg id="UI_BUTTON_01_DOWN" url="rsrc/ui/button_01_down.svg"/>
-	  *      <svg id="UI_BUTTON_02" url="rsrc/ui/button_02.svg"/>
+	  *	  <svg id="SCENERY_BACKGROUND_02" url="rsrc/scenery/background_02.svg"/>
+	  *	  <svg id="UI_BUTTON_01" url="rsrc/ui/button_01.svg"/>
+	  *	  <svg id="UI_BUTTON_01_DOWN" url="rsrc/ui/button_01_down.svg"/>
+	  *	  <svg id="UI_BUTTON_02" url="rsrc/ui/button_02.svg"/>
 	  *  </resources>
 	  */
 	@:macro
 	public static function embedResourceXml(resourceXmlPath :String, allowedTypes :Array<String>)
 	{
+		if (Context.defined("display")) {
+			// When running in code completion, skip out early
+			return toExpr(EBlock([]));
+	   }
+		
 		var pos = haxe.macro.Context.currentPos();
 		var xml = Xml.parse(neko.io.File.getContent(resourceXmlPath));
 		for (resources in xml.elementsNamed("resources")) {
@@ -473,13 +483,16 @@ class Macros
 				pos: pos,
 				meta: []
 			});
-				
-			switch(constructor.kind) {
-				case FFun(f): 
-				//Create the key increment function
-					var expr = Context.parseInlineString("key = de.polygonal.ds.HashKey.next()", pos);
-					MacroUtil.insertExpressionIntoFunction(expr, f);
-				default: //Ignored
+			
+			if (!Context.defined("display")) {
+				// When running in code completion, skip out early
+				switch(constructor.kind) {
+					case FFun(f): 
+					//Create the key increment function
+						var expr = Context.parseInlineString("key = de.polygonal.ds.HashKey.next()", pos);
+						MacroUtil.insertExpressionIntoFunction(expr, f);
+					default: //Ignored
+				}
 			}
 		}
 		var found = false;
@@ -497,7 +510,7 @@ class Macros
 	@macro
 	public static function warn (msg :String) :Void
 	{
-	    haxe.macro.Context.warning(msg, haxe.macro.Context.currentPos());
+		haxe.macro.Context.warning(msg, haxe.macro.Context.currentPos());
 	}
 	#end
 }
