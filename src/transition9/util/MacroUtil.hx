@@ -7,10 +7,15 @@ import haxe.macro.Type;
 class MacroUtil
 {
 	/**
-     * Inserts an expression into the function block.  
-     */
+	 * Inserts an expression into the function block.  
+	 */
 	public static function insertExpressionIntoFunction(exprToAdd :Expr, func :Function, ?beginningOfFunction :Bool = true) :Void
 	{
+		if (Context.defined("display")) {
+			// When running in code completion, skip out early
+			return toExpr(EBlock([]));
+		}
+		
 		if (func.expr != null) {
 			switch(func.expr.expr) {
 				case EBlock(exprs): //exprs : Array<Expr>
