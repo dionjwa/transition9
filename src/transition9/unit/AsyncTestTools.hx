@@ -134,7 +134,7 @@ class AsyncTestTools
 			if (Reflect.field(inst, "tearDown") != null) {
 				// trace("tearDown");
 				#if haxe3
-					Reflect.callMethod(inst, Reflect.field(inst, "tearDown"), [cb.callback(err)]);
+					Reflect.callMethod(inst, Reflect.field(inst, "tearDown"), [cb.bind(err)]);
 				#else
 					Reflect.callMethod(inst, Reflect.field(inst, "tearDown"), [callback(cb, err)]);
 				#end
@@ -147,7 +147,7 @@ class AsyncTestTools
 			// trace("doAsyncCall " + asyncFieldName);
 			#if haxe3
 				// var onTestFinish = tearDown(cb);
-				var onTestFinish = tearDown.callback(_, cb);
+				var onTestFinish = tearDown.bind(_, cb);
 			#else
 				var onTestFinish = function(err :Err) {tearDown(err, cb);};
 			#end

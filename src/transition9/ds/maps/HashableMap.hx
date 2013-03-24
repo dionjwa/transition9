@@ -16,6 +16,7 @@ import de.polygonal.ds.Map;
 
 import haxe.FastList;
 
+//OBSOLETE
 /**
  * Keys are objects that implement Hashable, useful for platforms 
  * where no object dictionary exists, such as js, php (others?).

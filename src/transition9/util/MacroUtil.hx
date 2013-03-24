@@ -13,7 +13,7 @@ class MacroUtil
 	{
 		if (Context.defined("display")) {
 			// When running in code completion, skip out early
-			return toExpr(EBlock([]));
+			return;
 		}
 		
 		if (func.expr != null) {
@@ -47,5 +47,32 @@ class MacroUtil
 		}
 		
 		return classContainsField(cls.superClass != null ? cls.superClass.t.get() : null, fieldName);
+	}
+
+
+	//Searches superclass as well
+	public static function getAllClassFields(cls :ClassType) :Array<ClassField>
+	{
+		if (cls == null) {
+			return null;
+		}
+		
+		var fields = [];
+		if (cls.fields.get() != null) {
+			for (field in cls.fields.get()) {
+				fields.push(field);
+			}
+		}
+		
+		if (cls.superClass == null) {
+			return fields;
+		} else {
+			var superFields = getAllClassFields(cls.superClass.t.get());
+			if (superFields == null) {
+				return fields;
+			} else {
+				return fields.concat(superFields);
+			}
+		}
 	}
 }

@@ -1,7 +1,5 @@
 package async;
 
-import flambe.util.Assert;
-
 import transition9.async.Step;
 import transition9.async.AsyncLambda;
 
@@ -12,7 +10,7 @@ using Lambda;
 using StringTools;
 
 /**
- * Serialization tests
+ * Step tests
  */
 class StepTest 
 {
@@ -35,7 +33,6 @@ class StepTest
 	@AsyncTest
 	public function testStep (onTestFinish :Err->Void, assert :Bool->?Dynamic->Void) :Void
 	{
-		// onTestFinish();
 		var step = new Step();
 		
 		var delayed = function (input :String, cb :Dynamic->String->Void) :Void {
@@ -73,32 +70,24 @@ class StepTest
 				parallel("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				// Assert.isTrue(input1 == parallelResult1);
-				// Assert.isTrue(input2 == parallelResult2);
-				// assert(false, "WTF");
-				assert(input1 == parallelResult1, "input1 != parallelResult1");
-				assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Console.assert(input1 == parallelResult1, "input1 != parallelResult1");
+				Console.assert(input2 == parallelResult2, "input2 != parallelResult2");
 				
 				delayed(input1 + input2, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				// Assert.isTrue(input == parallelResult1 + parallelResult2);
-				assert(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
+				Console.assert(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
 				
 				delayed(input, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				// Assert.isNull(err);
-				assert(err == null, "err == null");
+				Console.assert(err == null, "err == null");
 				parallelNoDelay("1", step.parallel());
 				parallelNoDelay("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				// Assert.isTrue(input1 == parallelResult1);
-				// Assert.isTrue(input2 == parallelResult2);
-				
-				assert(input1 == parallelResult1, "input1 != parallelResult1");
-				assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Console.assert(input1 == parallelResult1, "input1 != parallelResult1");
+				Console.assert(input2 == parallelResult2, "input2 != parallelResult2");
 				
 				delayed(null, step.cb);
 			},
@@ -110,12 +99,10 @@ class StepTest
 				group("4", step.group());
 			},
 			function (err :Dynamic, input :Array<String>) :Void {
-				// Assert.isTrue(input.length == 5);
-				assert(input.length == 5, "input.length == 5");
+				Console.assert(input.length == 5, "input.length == 5");
 				
 				for (ii in 0...5) {
-					// Assert.isTrue(input[ii] == "g" + ii);
-					Assert.that(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
+					Console.assert(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
 				}
 				delayed(input.join(", "), step.cb);
 			},
@@ -125,10 +112,9 @@ class StepTest
 		]);
 	}
 	
-	// @AsyncTest
+	@AsyncTest
 	public function testStepErrors (onTestFinish :Err->Void, assert :Bool->?Dynamic->Void) :Void
 	{
-		// onTestFinish(null);
 		var step = new Step();
 		
 		var delayed = function (input :String, cb :Dynamic->String->Void) :Void {
@@ -153,13 +139,11 @@ class StepTest
 				delayedError(step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				// assert(false, "Should never reach here");
-				assert(err != null, "What happened to the delayed error?");
+				Console.assert(err != null, "What happened to the delayed error?");
+				delayed("ignored", step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				assert(err == null);
-				// if (err != null) {
-				// }
+				Console.assert(err == null, "err != null");
 				onTestFinish(null);
 			},
 		]);

@@ -5,7 +5,7 @@ import os, os.path, string, sys, shutil, tempfile, re, zipfile
 from xml.dom import minidom
 import argparse
 
-def main (haxelibPath, srcFolders, nonSrcFolders, isLive):
+def main (haxelibPath, srcFolders, nonSrcFolders, excludeFolders, isLive):
 	
 	srcFolders = list(set(srcFolders))
 	nonSrcFolders = list(set(nonSrcFolders))
@@ -13,6 +13,7 @@ def main (haxelibPath, srcFolders, nonSrcFolders, isLive):
 	print "haxelibPath=", haxelibPath
 	print "srcFolders=", srcFolders
 	print "nonSrcFolders=", nonSrcFolders
+	print "excludeFolders=", excludeFolders
 	print "isLive=", isLive
 	
 	if not os.path.exists(haxelibPath):
@@ -31,6 +32,9 @@ def main (haxelibPath, srcFolders, nonSrcFolders, isLive):
 	if srcFolders != None:
 		for src in srcFolders:
 			if not os.path.exists(src):
+				continue
+			print src, " in ", excludeFolders, "=", (src in excludeFolders)
+			if excludeFolders and src in excludeFolders:
 				continue
 			print "Adding", src
 			addFolder(src, tmpfolder, True);
@@ -55,7 +59,8 @@ def main (haxelibPath, srcFolders, nonSrcFolders, isLive):
 	if isLive:
 		command = "haxelib submit " + zipFileName
 	else:
-		command = "haxelib test " + zipFileName
+		command = "haxelib local " + zipFileName
+		# command = "haxelib test " + zipFileName
 	print command
 	os.system(command)
 	shutil.rmtree(tmpfolder)
@@ -79,5 +84,6 @@ if __name__=="__main__":
 	parser.add_argument('--extra', action='append', default=[], help='An additional folder to add (base folder included, all files added') #"demo", "demos"
 	parser.add_argument('--live', default=False, action="store_true", help='Without this, installs locally only')
 	parser.add_argument( '--haxelib', default="etc/haxelib.xml", help='Path to the haxelib.xml file')
+	parser.add_argument('--exclude', action='append', default=["test"], help='Ignore these folders')
 	namespace = parser.parse_args()
-	main(namespace.haxelib, namespace.src, namespace.extra, namespace.live)
+	main(namespace.haxelib, namespace.src, namespace.extra, namespace.exclude, namespace.live)

@@ -8,6 +8,8 @@
  ******************************************************************************/
 package transition9.ds;
 
+//OBSOLETE
+
 #if macro
 import haxe.macro.Expr;
 #end
@@ -18,7 +20,7 @@ import transition9.ds.Hashable;
 import transition9.ds.Map;
 import transition9.ds.maps.EnumMap;
 import transition9.ds.maps.HashMap;
-import transition9.ds.maps.HashableMap;
+// import transition9.ds.maps.HashableMap;
 import transition9.ds.maps.IntHashMap;
 import transition9.ds.maps.StringMap;
 import transition9.ds.maps.TransformKeyMap;

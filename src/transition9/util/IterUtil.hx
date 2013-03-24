@@ -8,6 +8,7 @@
  ******************************************************************************/
 package transition9.util;
 
+//This is mostly obsolete now.
 class IterUtil
 {
 	public static function getFirst <T>(it :Iterable<T>, f :T->Bool) :T
@@ -38,43 +39,43 @@ class IterUtil
 		return -1; // never found
 	}
 	
-	public static function exists (arr :Iterable<Dynamic>, element :Dynamic) :Bool
-	{
-		return indexOf(arr, element) != -1;
-	}
+	// public static function exists (arr :Iterable<Dynamic>, element :Dynamic) :Bool
+	// {
+	// 	return indexOf(arr, element) != -1;
+	// }
 	
-	public static function join (arr :Iterable<Dynamic>, ?sep :String = ", ") :String
-	{
-		var iter = arr.iterator();
-		var s = if (iter.hasNext()) Std.string(iter.next()) else "";
-		while (iter.hasNext()) {
-			s += sep + iter.next();
-		}
-		return s;
-	}
+	// public static function join (arr :Iterable<Dynamic>, ?sep :String = ", ") :String
+	// {
+	// 	var iter = arr.iterator();
+	// 	var s = if (iter.hasNext()) Std.string(iter.next()) else "";
+	// 	while (iter.hasNext()) {
+	// 		s += sep + iter.next();
+	// 	}
+	// 	return s;
+	// }
 	
-	public static function map<A, B> (it :Iterator<A>, f :A->B) :Iterable<B>
-	{
-		var list = new List<B>();
-		while(it.hasNext()) {
-			list.add(f(it.next()));
-		}
-		return list;
-	}
+	// public static function map<A, B> (it :Iterator<A>, f :A->B) :Iterable<B>
+	// {
+	// 	var list = new List<B>();
+	// 	while(it.hasNext()) {
+	// 		list.add(f(it.next()));
+	// 	}
+	// 	return list;
+	// }
 	
-	public static function toArray <T> (it :Iterator<T>) :Array<T>
-	{
-		return array(it);
-	}
+	// public static function toArray <T> (it :Iterator<T>) :Array<T>
+	// {
+	// 	return array(it);
+	// }
 	
-	public static function array <T> (it :Iterator<T>) :Array<T>
-	{
-		var result = new Array<T>();
-		while (it.hasNext()) {
-			result.push(it.next());
-		}
-		return result;
-	}
+	// public static function array <T> (it :Iterator<T>) :Array<T>
+	// {
+	// 	var result = new Array<T>();
+	// 	while (it.hasNext()) {
+	// 		result.push(it.next());
+	// 	}
+	// 	return result;
+	// }
 	
 	public static function size (it :Iterator<Dynamic>) :Int
 	{

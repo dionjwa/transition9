@@ -11,7 +11,6 @@ import Type;
 import transition9.util.Preconditions;
 import transition9.rtti.ReflectUtil;
 
-import haxe.Int32;
 #if nodejs
 import js.Node;
 #end

@@ -1,7 +1,5 @@
 package transition9.async;
 
-import flambe.util.Assert;
-
 using Lambda;
 
 class Step
@@ -35,8 +33,8 @@ class Step
 	  */
 	public function cb (err :Dynamic, result :Dynamic) :Void
 	{
-		Assert.that(_chain != null);
-		Assert.that(_chain.length > 0);
+		Console.assert(_chain != null, "_chain == null");
+		Console.assert(_chain.length > 0, "_chain.length <= 0");
 		callNext([err, err == null ? result : null]);
 	}
 	
@@ -68,7 +66,7 @@ class Step
 	
 	function handleError (err :Dynamic) :Void
 	{
-		Assert.that(_chain.length > 0);
+		Console.assert(_chain.length > 0, "_chain.length <= 0");
 		callNext([err, null]);
 	}
 	
@@ -77,24 +75,23 @@ class Step
 		if (_groupedCall == null) {
 			_groupedCall = new GroupedCall(_callId, isParallel, callNext);
 		} else {
-			transition9.util.Assert.isTrue(_groupedCall.isParallel == isParallel);
+			Console.assert(_groupedCall.isParallel == isParallel, "_groupedCall.isParallel != isParallel");
 		}
 		return _groupedCall.createCallback();
 	}
 	
 	function callNext (args :Array<Dynamic>) :Void
 	{
-		Assert.that(_chain != null, '_chain != null');
-		Assert.that(_chain.length > 0, '_chain.length > 0');
-		Assert.that(_chain[0] != null, '_chain[0] != null');
-		Assert.that(Reflect.isFunction(_chain[0]), 'Reflect.isFunction(_chain[0])');
+		Console.assert(_chain != null, '_chain != null');
+		Console.assert(_chain.length > 0, '_chain.length > 0');
+		Console.assert(_chain[0] != null, '_chain[0] != null');
+		Console.assert(Reflect.isFunction(_chain[0]), 'Reflect.isFunction(_chain[0])');
 		_callId++;
 		if (_groupedCall != null) {
 			_groupedCall.shutdown();
 			_groupedCall = null;
 		}
 		try {
-			// _groupedFunctionIndex = _pending = 0;
 			Reflect.callMethod(null, _chain.shift(), args);
 		} catch (e :Dynamic) {
 			trace("Step caught exception: " + e);
@@ -117,7 +114,6 @@ class GroupedCall
 	var _pending :Int;
 	
 	var _pendingResults :Array<Dynamic>;
-	// public var pendingErrors :Array<Dynamic>;
 	var _err :Dynamic;
 	public var callNext :Array<Dynamic>->Void;
 	public var finished :Bool;
@@ -156,7 +152,6 @@ class GroupedCall
 				if (_err == null) {
 					_err = err;
 				}
-				// haxe.Timer.delay(calledGroupCallback, 0);
 			} else {
 				_pendingResults[index] = result;
 			}

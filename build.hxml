@@ -1,15 +1,12 @@
 # Nodejs
-# --macro RTTI.generate()
 -debug
 
--main Tests
-
-# -lib robothaxe
 -lib nodejs_std
-
 -D nodejs
 
 -cp src
 -cp test
+-cp lib/mconsole/src
 
+-main Tests
 -js build/nodejs_test.js

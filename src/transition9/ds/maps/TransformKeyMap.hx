@@ -16,6 +16,8 @@ import transition9.util.StringUtil;
 
 using Lambda;
 
+
+//OBSOLETE????
 /**
  * Basis for maps where the stored key is different to 
  * the given key.  Examples: HashableMap, where Hashable keys
@@ -25,7 +27,7 @@ using Lambda;
  * the given keys are not used by the underlying map.
  */
 class TransformKeyMap<K, TransformedKey, V>
-	implements Map<K, V> , implements haxe.rtti.Infos
+	implements Map<K, V>  implements haxe.rtti.Infos
 {
 	var _convertKey :K->TransformedKey;
 	var _keys :FastList<K>;
