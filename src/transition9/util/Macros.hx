@@ -21,7 +21,8 @@ using StringTools;
 class Macros
 {
 	
-	@:macro public static function getDate() 
+	macro 
+	public static function getDate() 
 	{
 		var date = Date.now().toString();
 		var pos = haxe.macro.Context.currentPos();
@@ -37,7 +38,7 @@ class Macros
 	  * Careful: the Macros.getFieldName() MUST be on the same 
 	  * line as the var declaration!
 	  */
-	@:macro 
+	macro 
 	public static function getFieldName() {
 		var pos = haxe.macro.Context.currentPos();
 		
@@ -48,7 +49,7 @@ class Macros
 		
 		var varNameRegex : EReg = ~/^[ \t]*((public|static|private)[ \t]+)*var[ \t]+([_a-zA-Z]+[_a-zA-Z0-9]*)[ \t:]+.*+/;
 
-		var str = neko.io.File.getContent(fileName).split("\n")[line];
+		var str = sys.io.File.getContent(fileName).split("\n")[line];
 		varNameRegex.match(str);
 		var varName = varNameRegex.matched(3);
 		return { expr :EConst(CString(varName)), pos : pos };
@@ -57,7 +58,7 @@ class Macros
 	/**
 	  * Adds all the instance and class fields to an Enumerable class.
 	  */
-	@:macro 
+	macro 
 	public static function buildEnumerableFromEmbeddedXML() :Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -141,7 +142,7 @@ class Macros
 	/**
 	  * Adds all the instance and class fields to an Enumerable class.
 	  */
-	@:macro 
+	macro 
 	public static function buildEnumerableFromEmbeddedJson() :Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -226,7 +227,7 @@ class Macros
 	/**
 	  * Builds the corresponding enum for Enumerables that use enums
 	  */
-	@:macro 
+	macro 
 	public static function buildEnumerableEnumFromEmbeddedJson(classNameExpr : Expr) :Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -267,7 +268,7 @@ class Macros
 	/**
 	  * Builds the corresponding enum for Enumerables that use enums
 	  */
-	@:macro 
+	macro 
 	public static function buildEnumerableEnumFromEmbeddedXML(classNameExpr : Expr) :Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -309,7 +310,7 @@ class Macros
 	  * name=value
 	  * More than one properties file can be added.
 	  */
-	@:macro 
+	macro 
 	public static function buildPropertiesClass(resourcePaths :Array<String>) :Array<Field>
 	{
 		var pos = haxe.macro.Context.currentPos();
@@ -317,7 +318,7 @@ class Macros
 		
 		var data = "";
 		for (resourcePath in resourcePaths) {
-			data += neko.io.File.getContent(resourcePath);
+			data += sys.io.File.getContent(resourcePath);
 		}
 		
 		var intRE :EReg = ~/^[0-9]+$/;
@@ -348,7 +349,7 @@ class Macros
 				expr = {expr :EConst(haxe.macro.Constant.CFloat(val)), pos :pos};
 				type = tFloat;
 			} else if (boolRE.match(val)) {
-				expr = {expr :EConst(haxe.macro.Constant.CType(val)), pos :pos};
+				expr = {expr :EConst(haxe.macro.Constant.CIdent(val)), pos :pos};
 				type = tBool;
 			} else {
 				expr = {expr :EConst(haxe.macro.Constant.CString(val)), pos :pos};
@@ -379,7 +380,7 @@ class Macros
 	  *	  <svg id="UI_BUTTON_02" url="rsrc/ui/button_02.svg"/>
 	  *  </resources>
 	  */
-	@:macro
+	macro
 	public static function embedResourceXml(resourceXmlPath :String, allowedTypes :Array<String>)
 	{
 		if (Context.defined("display")) {
@@ -388,11 +389,11 @@ class Macros
 	   }
 		
 		var pos = haxe.macro.Context.currentPos();
-		var xml = Xml.parse(neko.io.File.getContent(resourceXmlPath));
+		var xml = Xml.parse(sys.io.File.getContent(resourceXmlPath));
 		for (resources in xml.elementsNamed("resources")) {
 			for (e in resources.elements()) {
-				if (allowedTypes.exists(callback(StringTools.endsWith, e.nodeName))) {
-					var bytes = neko.io.File.getBytes(e.get("url"));
+				if (allowedTypes.exists(StringTools.endsWith.bind(e.nodeName))) {
+					var bytes = sys.io.File.getBytes(e.get("url"));
 					haxe.macro.Context.addResource(e.get("id"), bytes);
 				}
 				
@@ -407,7 +408,7 @@ class Macros
 	* Objects add a "public var key :Int" field that is initialized
 	* in the constructor, incremented by de.polygonal.ds.HashKey.
 	*/
-	@:macro
+	macro
 	public static function addKeyField() :Array<Field>
 	{
 		var pos = Context.currentPos();

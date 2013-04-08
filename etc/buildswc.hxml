@@ -1,9 +1,0 @@
--cmd mkdir -p build
---next
-
--lib polygonal
-
--cp src
---macro include('org.transition9')
--swf-version 10
--swf build/transition9.swc

@@ -1,7 +1,5 @@
 package ;
 
-import transition9.ds.Maps;
-
 class Tests
 {
 	public static function main () :Void
