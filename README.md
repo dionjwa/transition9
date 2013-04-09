@@ -6,15 +6,6 @@
 
 ## A collection of utilities for [Haxe][haxe].
 
-### Various utilities
-
-Including logging, fully typed maps and sets, SVG tools, and many more. 
-
-### Remoting services
-
-Html5StorageManager is a service for storing data in flash and javascript using html5 localStorage.  In Javascript, the service just wraps the native functions.  In flash, a remoting proxy is created to communicate with the javascript 'server'.  
-
-
 ### Tools for asynchronous programming in [Haxe][haxe], targeted at [Node.js][nodejs].
 
 [Node.js][nodejs] is a single-threaded asynchronous server, particularly well suited for high performance servers such as game back-ends.  Writing your Node.js code in [Haxe][haxe] is provides so many advantages there are almost too many to list.
@@ -88,7 +79,3 @@ array:
 
 I could not find any existing unit testing framework that was both asynchronous and worked with Node.js (i.e. Javascript).  This class is a simple implementation.  See test.hxml for an example.
 
-### Geometry classes
-
-Mostly obsolete since polygonal is far superior.
-    

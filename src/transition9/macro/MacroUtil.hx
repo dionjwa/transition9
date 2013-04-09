@@ -1,4 +1,4 @@
-package transition9.util;
+package transition9.macro;
 
 import haxe.macro.Expr;
 import haxe.macro.Context;
