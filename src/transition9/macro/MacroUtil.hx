@@ -75,4 +75,75 @@ class MacroUtil
 			}
 		}
 	}
+	
+	/**
+     * Creates a list of fields from a block expression.
+     * From flambe.uti.Macros, here to avoid a package dependency for just one block of code.
+     */
+    public static function buildFields (block :Expr) :Array<Field>
+    {
+        var fields :Array<Field> = [];
+        switch (block.expr) {
+            case EBlock(exprs):
+                for (expr in exprs) {
+                    switch (expr.expr) {
+                        case EVars(vars):
+                            for (v in vars) {
+                                fields.push({
+                                    name: getFieldName(v.name),
+                                    doc: null,
+                                    access: getAccess(v.name),
+                                    kind: FVar(v.type, v.expr),
+                                    pos: v.expr.pos,
+                                    meta: []
+                                });
+                            }
+                        case EFunction(name, f):
+                            fields.push({
+                                name: getFieldName(name),
+                                doc: null,
+                                access: getAccess(name),
+                                kind: FFun(f),
+                                pos: f.expr.pos,
+                                meta: []
+                            });
+                        default:
+                    }
+                }
+            default:
+        }
+        return fields;
+    }
+
+    /**
+      * From flambe.util.Macros, here to avoid a package dependency for just one block of code.
+      */
+    private static function getAccess (name :String) :Array<Access>
+    {
+        var result = [];
+        for (token in name.split("__")) {
+            var access = switch (token) {
+                case "public": APublic;
+                case "private": APrivate;
+                case "static": AStatic;
+                case "override": AOverride;
+                case "dynamic": ADynamic;
+                case "inline": AInline;
+                default: null;
+            }
+            if (access != null) {
+                result.push(access);
+            }
+        }
+        return result;
+    }
+
+    /**
+      * From flambe.util.Macros, here to avoid a package dependency for just one block of code.
+      */
+    private static function getFieldName (name :String) :String
+    {
+        var idx = name.lastIndexOf("__");
+        return (idx < 0) ? name : name.substr(idx + 2);
+    }
 }

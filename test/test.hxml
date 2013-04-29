@@ -1,6 +1,7 @@
 # Nodejs
 # --macro RTTI.generate()
 -debug
+-D flambe_keep_asserts
 
 -main Tests
 
@@ -11,5 +12,6 @@
 
 -cp src
 -cp test
+-cp lib/mconsole/src
 
 -js build/nodejs_test.js
