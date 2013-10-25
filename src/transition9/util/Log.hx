@@ -32,7 +32,7 @@ class Log extends flambe.util.PackageLog
 #elseif (mconsole && !no_console) //This is a pretty good logger in webkit
 class Log
 {
-	inline public static function debug (message :String, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function debug (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
 			Console.debug([message, fields], pos);
@@ -41,7 +41,7 @@ class Log
 		}
 	}
 	
-	inline public static function info (message :String, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function info (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
 			Console.info([message, fields], pos);
@@ -50,7 +50,7 @@ class Log
 		}
 	}
 	
-	inline public static function warn (message :String, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function warn (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
 			Console.warn([message, fields], pos);
@@ -59,7 +59,7 @@ class Log
 		}
 	}
 	
-	inline public static function error (message :String, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function error (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
 			Console.error([message, fields], pos);
@@ -80,30 +80,31 @@ class Log
 #elseif !disable_logging
 class Log
 {
-	inline public static function debug (?message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function debug (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
-		trace(message + " [" + fields.join(", ") + "]");
+		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
 	
-	inline public static function info (?message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function info (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
-		trace(message + " [" + fields.join(", ") + "]");
+		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
 	
-	inline public static function warn (?message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function warn (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
-		trace(message + " [" + fields.join(", ") + "]");
+		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
 	
-	inline public static function error (?message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function error (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
-		trace(message + " [" + fields.join(", ") + "]");
+		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
 	
-	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
 		if (condition) {
-			trace(message + " [" + fields.join(", ") + "]");
+			haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
+			throw message;
 		}
 	}
 	

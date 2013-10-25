@@ -1,0 +1,17 @@
+{
+  "contributors": [
+    "dionjwa"
+  ],
+  "dependencies": {
+    "polygonal-ds": "1.4.1"
+  },
+  "description": "This library is useless in the same way on every platform",
+  "license": "MIT",
+  "name": "transition9",
+  "releasenote": "Initial release, everything is working correctly",
+  "tags": [
+    "nodejs"
+  ],
+  "url": "https://github.com/dionjwa/transition9",
+  "version": "0.0.1"
+}

@@ -8,5 +8,6 @@
 -cp test
 -cp lib/mconsole/src
 
+
 -main Tests
 -js build/nodejs_test.js

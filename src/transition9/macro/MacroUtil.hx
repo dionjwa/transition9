@@ -7,7 +7,7 @@ import haxe.macro.Type;
 class MacroUtil
 {
 	/**
-	 * Inserts an expression into the function block.  
+	 * Inserts an expression into the function block.
 	 */
 	public static function insertExpressionIntoFunction(exprToAdd :Expr, func :Function, ?beginningOfFunction :Bool = true) :Void
 	{
@@ -15,7 +15,7 @@ class MacroUtil
 			// When running in code completion, skip out early
 			return;
 		}
-		
+
 		if (func.expr != null) {
 			switch(func.expr.expr) {
 				case EBlock(exprs): //exprs : Array<Expr>
@@ -30,14 +30,14 @@ class MacroUtil
 			}
 		}
 	}
-	
+
 	//Searches superclass as well
 	public static function classContainsField(cls :ClassType, fieldName :String) :Bool
 	{
 		if (cls == null) {
 			return false;
 		}
-		
+
 		if (cls.fields != null) {
 			for (field in cls.fields.get()) {
 				if (field.name == fieldName) {
@@ -45,7 +45,7 @@ class MacroUtil
 				}
 			}
 		}
-		
+
 		return classContainsField(cls.superClass != null ? cls.superClass.t.get() : null, fieldName);
 	}
 
@@ -56,14 +56,14 @@ class MacroUtil
 		if (cls == null) {
 			return null;
 		}
-		
+
 		var fields = [];
 		if (cls.fields.get() != null) {
 			for (field in cls.fields.get()) {
 				fields.push(field);
 			}
 		}
-		
+
 		if (cls.superClass == null) {
 			return fields;
 		} else {
@@ -75,10 +75,11 @@ class MacroUtil
 			}
 		}
 	}
-	
+
 	/**
      * Creates a list of fields from a block expression.
      * From flambe.uti.Macros, here to avoid a package dependency for just one block of code.
+     * https://github.com/aduros/flambe/blob/master/LICENSE.txt
      */
     public static function buildFields (block :Expr) :Array<Field>
     {
@@ -94,7 +95,7 @@ class MacroUtil
                                     doc: null,
                                     access: getAccess(v.name),
                                     kind: FVar(v.type, v.expr),
-                                    pos: v.expr.pos,
+                                    pos: Context.currentPos(), //v.expr.pos,
                                     meta: []
                                 });
                             }
@@ -116,8 +117,9 @@ class MacroUtil
     }
 
     /**
-      * From flambe.util.Macros, here to avoid a package dependency for just one block of code.
-      */
+     * From flambe.uti.Macros, here to avoid a package dependency for just one block of code.
+     * https://github.com/aduros/flambe/blob/master/LICENSE.txt
+     */
     private static function getAccess (name :String) :Array<Access>
     {
         var result = [];
@@ -139,8 +141,9 @@ class MacroUtil
     }
 
     /**
-      * From flambe.util.Macros, here to avoid a package dependency for just one block of code.
-      */
+     * From flambe.uti.Macros, here to avoid a package dependency for just one block of code.
+     * https://github.com/aduros/flambe/blob/master/LICENSE.txt
+     */
     private static function getFieldName (name :String) :String
     {
         var idx = name.lastIndexOf("__");

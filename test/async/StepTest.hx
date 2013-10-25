@@ -12,56 +12,56 @@ using StringTools;
 /**
  * Step tests
  */
-class StepTest 
+class StepTest
 {
 	public function new()
 	{
 	}
-	
+
 	/**
 	@Before
 	public function setup (cb :Void->Void) :Void
 	{
 		cb();
 	}
-	
+
 	@After
 	public function tearDown (cb :Void->Void) :Void
 	{
 		cb();
 	}
 	*/
-	
+
 	@AsyncTest
 	public function testStep (onTestFinish :Err->Void, assert :Bool->?Dynamic->Void) :Void
 	{
 		var step = new Step();
-		
+
 		var delayed = function (input :String, cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb(null, input);
 			}, 100);
 		}
-		
+
 		var parallel = function (input :String, cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb(null, "p" + input);
 			}, 100);
 		}
-		
+
 		var parallelNoDelay = function (input :String, cb :Dynamic->String->Void) :Void {
 			cb(null, "p" + input);
 		}
-		
+
 		var group = function (input :String, cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb(null, "g" + input);
 			}, 100);
 		}
-		
+
 		var parallelResult1 = "p1";
 		var parallelResult2 = "p2";
-		
+
 		step.chain(
 		[
 			function () :Void {
@@ -88,7 +88,7 @@ class StepTest
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
 				assert(input1 == parallelResult1, "input1 != parallelResult1");
 				assert(input2 == parallelResult2, "input2 != parallelResult2");
-				
+
 				delayed(null, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
@@ -100,7 +100,7 @@ class StepTest
 			},
 			function (err :Dynamic, input :Array<String>) :Void {
 				assert(input.length == 5, "input.length == 5");
-				
+
 				for (ii in 0...5) {
 					assert(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
 				}
@@ -111,24 +111,24 @@ class StepTest
 			},
 		]);
 	}
-	
+
 	@AsyncTest
 	public function testStepErrors (onTestFinish :Err->Void, assert :Bool->?Dynamic->Void) :Void
 	{
 		var step = new Step();
-		
+
 		var delayed = function (input :String, cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb(null, input);
 			}, 100);
 		}
-		
+
 		var delayedError = function (cb :Dynamic->String->Void) :Void {
 			haxe.Timer.delay(function () {
 				cb("some error", null);
 			}, 100);
 		}
-		
+
 		step.chain(
 		[
 			function () :Void {
@@ -148,5 +148,5 @@ class StepTest
 			},
 		]);
 	}
-	
+
 }

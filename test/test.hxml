@@ -6,9 +6,9 @@
 -main Tests
 
 # -lib robothaxe
--lib nodejs_std
+-lib nodejs
 
--D nodejs
+# -D nodejs
 
 -cp src
 -cp test
