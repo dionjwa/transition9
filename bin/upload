@@ -1,0 +1,69 @@
+#!/bin/bash -e
+#
+# Bag and tag a release to npm and haxelib
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 VERSION"
+    exit 1
+fi
+
+if ! git diff-index --quiet HEAD --; then
+    echo "You have uncommitted changes"
+    exit 1
+fi
+
+VERSION=$1
+ARCHIVE=/tmp/haxelib.zip
+
+# FLAMBE_ROOT=`readlink -f $(dirname $0)/..`
+# DEMOS_ROOT="$FLAMBE_ROOT/../flambe-demos"
+# cd $FLAMBE_ROOT
+
+# Bump the version number
+bin/set-version "$VERSION"
+
+# Make sure the unit tests pass
+test/runtests.sh
+
+rm -f $ARCHIVE
+
+# git ls-files LICENSE.txt | zip $ARCHIVE -@
+
+# Include the src directory's contents at the top-level to be nice to IDEs
+# This includes the newly version-replaced haxelib.json
+pushd src
+git ls-files | zip $ARCHIVE -@
+popd
+
+# Include our haxedoc.xml as well
+# bin/build-dox
+# zip -j $ARCHIVE dox/haxedoc.xml
+
+read -p "Submit transition9 $VERSION to haxelib [Y/n]? " CONFIRM
+case "$CONFIRM" in
+    "Y" | "y" | "")
+        # Upload the demos
+        $DEMOS_ROOT/bin/upload-all
+
+        # Upload the API docs
+        rsync -avz --delete dox/ catdap:web/flambe/api/
+
+        # Upload the NPM module
+        npm publish ./command --force
+
+        # Upload the haxelib
+        haxelib submit $ARCHIVE
+
+        # Commit the version bump
+        git commit -a -m "Release $VERSION"
+
+        # Tag it
+        git tag flambe-$VERSION
+        pushd $DEMOS_ROOT
+        git tag flambe-$VERSION
+        popd
+
+        # Spam it
+        xdg-open "flambe@googlegroups.com?subject=Flambe $VERSION released"
+        ;;
+esac
