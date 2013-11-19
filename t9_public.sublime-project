@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "/Users/dion/storage/projects/haxelibs/t9_public"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/usr/lib/haxe/std"
+		}
+	]
+}

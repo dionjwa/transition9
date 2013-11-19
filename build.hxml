@@ -1,8 +1,8 @@
 # Nodejs
 -debug
 
--lib nodejs_std
--D nodejs
+-lib nodejs
+# -D nodejs
 
 -cp src
 -cp test

@@ -2,6 +2,23 @@ package macros;
 
 class TestMacros extends haxe.unit.TestCase
 {
+	public function testMacroTemplate() :Void
+	{
+		var templateContent = sys.io.File.getContent("test/macros/out.txt");
+		assertTrue(templateContent == "My name is a test string and I'm 55 years old.");
+	}
+
+	public function testTypedefCompletion () :Void
+	{
+		var thing = transition9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Strings.json");
+		assertTrue(thing.String1 == "String1");
+		assertTrue(thing.String2 == "String2");
+
+		var data = transition9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Data.json");
+		assertTrue(data.String1 == "a test string");
+		assertTrue(data.ANumber == 55);
+	}
+
 	public function testPooledMacro () :Void
 	{
 		var p1 = PooledClass.get();

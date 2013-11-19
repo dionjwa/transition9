@@ -1,6 +1,6 @@
 package transition9.macro;
 
-import haxe.macro.Context;
+// import haxe.macro.Context;
 
 class BuildMacros
 {
@@ -23,33 +23,43 @@ class BuildMacros
 	  * 	trace("error loading  swf " + Std.string(e));
 	  * });
 	  */
-	macro
-	public static function embedBinaryDataResource(binPath :String, ?resourceId :String = null, ?xorKey :Int = -1)
+	// macro
+	// public static function embedBinaryDataResource(binPath :String, ?resourceId :String = null, ?xorKey :Int = -1)
+	// {
+	// 	if (Context.defined("display")) {
+	// 		// When running in code completion, skip out early
+	// 		return { expr: EBlock([]), pos: Context.currentPos()};
+	// 	}
+
+	// 	resourceId = resourceId != null ? resourceId : binPath;
+
+	// 	var pos = haxe.macro.Context.currentPos();
+
+	// 	if (!sys.FileSystem.exists(binPath)) {
+	// 		Context.warning(binPath + " not found, prepending path with '../' ", pos);
+	// 		binPath = "../" + binPath;
+	// 	}
+
+	// 	if (!sys.FileSystem.exists(binPath)) {
+	// 		Context.error(binPath + " not found", pos);
+	// 	}
+
+	// 	var bytes = sys.io.File.getBytes(binPath);
+	// 	if (xorKey > 0) {
+	// 		bytes = transition9.util.BytesUtil.xorBytes(bytes, xorKey);
+	// 	}
+
+	// 	haxe.macro.Context.addResource(resourceId, bytes);
+	// 	return { expr : EConst(CString(resourceId)), pos : pos };
+	// }
+
+	public static function processTemplateFromJson(templatePath :String, jsonPath :String, outPath :String)
 	{
-		if (Context.defined("display")) {
-			// When running in code completion, skip out early
-			return { expr: EBlock([]), pos: Context.currentPos()};
-		}
-
-		resourceId = resourceId != null ? resourceId : binPath;
-
-		var pos = haxe.macro.Context.currentPos();
-
-		if (!sys.FileSystem.exists(binPath)) {
-			Context.warning(binPath + " not found, prepending path with '../' ", pos);
-			binPath = "../" + binPath;
-		}
-
-		if (!sys.FileSystem.exists(binPath)) {
-			Context.error(binPath + " not found", pos);
-		}
-
-		var bytes = sys.io.File.getBytes(binPath);
-		if (xorKey > 0) {
-			bytes = transition9.util.BytesUtil.xorBytes(bytes, xorKey);
-		}
-
-		haxe.macro.Context.addResource(resourceId, bytes);
-		return { expr : EConst(CString(resourceId)), pos : pos };
+		var jsonFileContents = sys.io.File.getContent(jsonPath);
+		var json = haxe.Json.parse(jsonFileContents);
+		var templateContent = sys.io.File.getContent(templatePath);
+		var t = new haxe.Template(templateContent);
+		var output = t.execute(json);
+		sys.io.File.saveContent(outPath, output);
 	}
 }
