@@ -15,4 +15,4 @@ before_script:
     - haxelib install nodejs
     - haxelib install polygonal-ds 1.4.1
 
-script: haxe test/travis.hxml
+script: test/runtests.sh
