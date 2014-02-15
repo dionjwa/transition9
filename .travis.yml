@@ -3,7 +3,7 @@
 # http://travis-ci.org/aduros/flambe
 
 language: node_js
-node_js: ["0.8", "0.10"]
+node_js: ["0.10"]
 
 # Install Haxe
 before_script:

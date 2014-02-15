@@ -5,6 +5,7 @@
 -D flambe_keep_asserts
 -D disable_flambe_logging
 -D flambe
+-D travis
 
 -lib nodejs
 -lib polygonal-ds

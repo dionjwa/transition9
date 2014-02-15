@@ -20,8 +20,10 @@ class Tests
 		r.run();
 
 		trace("async tests:");
-#if nodejs
-		untyped __js__("if (require.resolve('source-map-support')) {require('source-map-support').install();}");
+#if (nodejs && !travis)
+		try {
+			untyped __js__("if (require.resolve('source-map-support')) {require('source-map-support').install();}");
+		} catch (e :Dynamic) {}
 #end
 		transition9.unit.AsyncTestTools.runTestsOn(cast [
 			async.StepTest,
