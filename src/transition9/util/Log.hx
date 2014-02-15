@@ -11,7 +11,7 @@ package transition9.util;
  * Flambe's internal logger. Games should use their own by calling System.logger() or extending
  * PackageLog.
  */
-class Log extends flambe.util.PackageLog 
+class Log extends flambe.util.PackageLog
 {
 	/**
 	  * Additional logging method not in flambe.util.PackageLog
@@ -20,7 +20,7 @@ class Log extends flambe.util.PackageLog
 	{
 		info(message, fields);
 	}
-	
+
 	/**
 	  * Wrap the flambe assert in the Log class to avoid refactoring when using other libs.
 	  */
@@ -40,7 +40,7 @@ class Log
 			Console.debug(message, pos);
 		}
 	}
-	
+
 	inline public static function info (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
@@ -49,7 +49,7 @@ class Log
 			Console.info(message, pos);
 		}
 	}
-	
+
 	inline public static function warn (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
@@ -58,7 +58,7 @@ class Log
 			Console.warn(message, pos);
 		}
 	}
-	
+
 	inline public static function error (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
@@ -67,7 +67,7 @@ class Log
 			Console.error(message, pos);
 		}
 	}
-	
+
 	inline public static function assert (condition :Bool, ?message :String, ?fields :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (fields != null) {
@@ -80,42 +80,42 @@ class Log
 #elseif !disable_logging
 class Log
 {
-	inline public static function debug (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+	inline public static function debug (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
 		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
-	
-	inline public static function info (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+
+	inline public static function info (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
 		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
-	
-	inline public static function warn (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+
+	inline public static function warn (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
 		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
-	
-	inline public static function error (?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+
+	inline public static function error (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
 		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 	}
-	
+
 	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
 	{
-		if (condition) {
+		if (!condition) {
 			haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
 			throw message;
 		}
 	}
-	
+
 }
 #else //Remove logging
 class Log
 {
-	inline public static function debug (?message :String, ?fields :Array<Dynamic>) :Void {}
-	inline public static function info (?message :String, ?fields :Array<Dynamic>) :Void {}
-	inline public static function warn (?message :String, ?fields :Array<Dynamic>) :Void {}
-	inline public static function error (?message :String, ?fields :Array<Dynamic>) :Void {}
+	inline public static function debug (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
+	inline public static function info (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
+	inline public static function warn (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
+	inline public static function error (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
 	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>) :Void {}
 }
 #end

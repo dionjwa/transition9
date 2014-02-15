@@ -2,6 +2,28 @@ package macros;
 
 class TestMacros extends haxe.unit.TestCase
 {
+	public function testSingleton() :Void
+	{
+		//Singleton
+		var s = Singleton.i;
+		assertTrue(s != null);
+		assertTrue(s == Singleton.i);
+	}
+
+	public function testMacroClassFromRegex() :Void
+	{
+		var thing = transition9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
+		//Same object, should return exactly the same object without having to rebuild.
+		var thing2 = transition9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
+		assertTrue(thing == thing2);
+
+		assertTrue(thing.testField1 == "testField1");
+		assertTrue(thing.testField2 == "testField2");
+
+		assertTrue(thing.testField1 == thing2.testField1);
+		assertTrue(thing.testField2 == thing2.testField2);
+	}
+
 	public function testMacroTemplate() :Void
 	{
 		var templateContent = sys.io.File.getContent("test/macros/out.txt");
@@ -26,13 +48,13 @@ class TestMacros extends haxe.unit.TestCase
 		assertTrue(p1 != null);
 		assertTrue(p2 != null);
 		assertTrue(p1 != p2);
-		assertTrue(PooledClass.POOL.length == 0);
+		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 0);
 
 		p2.dispose();
-		assertTrue(PooledClass.POOL.length == 1);
+		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 1);
 
 		var p3 = PooledClass.get();
-		assertTrue(PooledClass.POOL.length == 0);
+		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 0);
 
 		assertTrue(p2 == p3);
 
@@ -48,7 +70,7 @@ class TestMacros extends haxe.unit.TestCase
 
 		p2.dispose();
 		p3.dispose();
-		assertTrue(PooledClass.POOL.length == 3);
+		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 3);
 	}
 
 	public function testPooledWithExistingDisposeMacro () :Void
@@ -58,15 +80,15 @@ class TestMacros extends haxe.unit.TestCase
 		assertTrue(p1 != null);
 		assertTrue(p2 != null);
 		assertTrue(p1 != p2);
-		assertTrue(PooledClassWithExistingDispose.POOL.length == 0);
+		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 0);
 
 		p2.dispose();
-		assertTrue(PooledClassWithExistingDispose.POOL.length == 1);
+		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 1);
 		assertTrue(p2.isDisposeCalled);
 		p2.isDisposeCalled = false; //Reset it
 
 		var p3 = PooledClassWithExistingDispose.get();
-		assertTrue(PooledClassWithExistingDispose.POOL.length == 0);
+		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 0);
 
 		assertTrue(p2 == p3);
 
@@ -84,7 +106,7 @@ class TestMacros extends haxe.unit.TestCase
 
 		p2.dispose();
 		p3.dispose();
-		assertTrue(PooledClassWithExistingDispose.POOL.length == 3);
+		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 3);
 
 		assertTrue(p2.isDisposeCalled);
 		assertTrue(p3.isDisposeCalled);
@@ -126,4 +148,5 @@ class TestMacros extends haxe.unit.TestCase
 		assertTrue(p3.before == p1);
 		assertTrue(p3.after == null);
 	}
+
 }

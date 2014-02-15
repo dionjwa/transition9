@@ -13,7 +13,7 @@ using StringTools;
 class AsyncTestTools
 {
 	static var ASYNC_LABEL = "AsyncTest";
-	
+
 	public static function assert (check :Bool, errorCallback :Err->Void) :Void
 	{
 		if (!check) {
@@ -24,24 +24,24 @@ class AsyncTestTools
 			}
 		}
 	}
-	
-	
+
+
 	public static function runTestsOn (testClasses :Array<Class<Dynamic>>) :Void
 	{
 		#if !debug
 		throw "You must run the tests with the -debug";
 		#end
-		
+
 		var allresults = [];
-		AsyncLambda.iter(testClasses, 
+		AsyncLambda.iter(testClasses,
 			function (cls :Class<Dynamic>, elementDone :Err->Void) :Void {
 				AsyncTestTools.doTests(cls, function (results :TestResults) {
 					allresults.push(results);
 					elementDone(null);
-				});	
-			}, 
+				});
+			},
 			function (err) {
-			
+
 				var allok = true;
 				var totalTests = 0;
 				for (result in allresults) {
@@ -51,23 +51,23 @@ class AsyncTestTools
 						break;
 					}
 				}
-				
+
 				trace(!allok ? "TESTS FAILED" : totalTests + " test" + (totalTests > 1 ? "s" : "") + " completed OK");
-				
+
 				// #if nodejs
 				// untyped __js__('process.exit(0)');
 				// #end
 			});
 	}
-	
+
 	public static function doTests (cls :Class<Dynamic>, testsComplete :TestResults->Void) :Void
 	{
 		var inst = Type.createInstance(cls, []);
 		var className = Type.getClassName(cls);
-		
+
 		var syncTestQueue = [];
 		var asyncTestQueue = [];
-		
+
 		for (fieldName in Type.getInstanceFields(cls)) {
 			if (fieldName.startsWith("test")) {
 				if (MetaUtil.isFieldMetaData(cls, fieldName, ASYNC_LABEL)) {
@@ -77,11 +77,11 @@ class AsyncTestTools
 				}
 			}
 		}
-		
+
 		var totalTests :Int = syncTestQueue.length + asyncTestQueue.length;
-		
+
 		var testResults = new TestResults(cls, totalTests);
-		
+
 		//This is called when all tests have finished or timed out
 		var onFinish = function (err :Err) :Void {
 			if (testResults == null) return;
@@ -89,7 +89,7 @@ class AsyncTestTools
 			testsComplete(testResults);
 			testResults = null;
 		}
-		
+
 		//Do the sync tests
 		for (syncTestName in syncTestQueue) {
 			try {
@@ -99,7 +99,7 @@ class AsyncTestTools
 				trace("    " + className + "::" + syncTestName + " Error: " + Std.string(e) + "\n" + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
 			}
 		}
-		
+
 		//Async setup and tear down
 		var setup = function (cb :Void->Void) :Void {
 			if (Reflect.field(inst, "setup") != null) {
@@ -108,7 +108,7 @@ class AsyncTestTools
 				cb();
 			}
 		}
-		
+
 		var tearDown = function (err :Err, cb :Err->Void) :Void {
 			if (Reflect.field(inst, "tearDown") != null) {
 				Reflect.callMethod(inst, Reflect.field(inst, "tearDown"), [cb.bind(err)]);
@@ -116,22 +116,22 @@ class AsyncTestTools
 				cb(err);
 			}
 		}
-		
+
 		var doAsyncCall = function (asyncFieldName :String, cb :Err->Void) :Void {
 			var onTestFinish = tearDown.bind(_, cb);
-			//Call this aftersetup 
+			//Call this aftersetup
 			var doTest = function () :Void {
 				var finished = false;
-				
+
 				var maxTime = 2000;
 				//Add the timer check, in case the test times out.
 				haxe.Timer.delay(function () {
 					if (!finished) {
 						finished = true;
 						onTestFinish("    " + className + "::" + asyncFieldName + " TIMEDOUT");
-					} 
+					}
 				}, maxTime);
-				
+
 				//test function
 				var asyncTestCallback = function (err :Err) :Void {
 					if (!finished) {
@@ -144,14 +144,14 @@ class AsyncTestTools
 						onTestFinish(err);
 					}
 				}
-				
+
 				var asyncAssert = function(check :Bool, ?description :Dynamic) :Void {
 					if(!check && !finished) {
 						finished = true;
 						onTestFinish(Type.getClassName(cls) + "." + asyncFieldName + ": " + description);
 					}
 				}
-				
+
 				//Now actually make the call
 				try {
 					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback, asyncAssert]);
@@ -176,14 +176,14 @@ class TestResults
 	public var testsFailed :Int;
 	public var totalTests :Int;
 	public var err :Dynamic;
-	
+
 	public function new (cls :Class<Dynamic>, totalTests :Int	)
 	{
 		this.cls = cls;
 		this.totalTests = totalTests;
 		testsFailed = testsPassed = 0;
 	}
-	
+
 	public function toString () :String
 	{
 		if (err != null) {

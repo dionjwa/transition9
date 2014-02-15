@@ -1,6 +1,6 @@
 package transition9.macro;
 
-// import haxe.macro.Context;
+import haxe.macro.Context;
 
 class BuildMacros
 {
@@ -23,35 +23,63 @@ class BuildMacros
 	  * 	trace("error loading  swf " + Std.string(e));
 	  * });
 	  */
-	// macro
-	// public static function embedBinaryDataResource(binPath :String, ?resourceId :String = null, ?xorKey :Int = -1)
-	// {
-	// 	if (Context.defined("display")) {
-	// 		// When running in code completion, skip out early
-	// 		return { expr: EBlock([]), pos: Context.currentPos()};
-	// 	}
+	macro
+	public static function embedBinaryDataResource(binPath :String, ?resourceId :String = null, ?xorKey :Int = -1)
+	{
+		if (Context.defined("display")) {
+			// When running in code completion, skip out early
+			return { expr: EBlock([]), pos: Context.currentPos()};
+		}
 
-	// 	resourceId = resourceId != null ? resourceId : binPath;
+		resourceId = resourceId != null ? resourceId : binPath;
 
-	// 	var pos = haxe.macro.Context.currentPos();
+		var pos = haxe.macro.Context.currentPos();
 
-	// 	if (!sys.FileSystem.exists(binPath)) {
-	// 		Context.warning(binPath + " not found, prepending path with '../' ", pos);
-	// 		binPath = "../" + binPath;
-	// 	}
+		if (!sys.FileSystem.exists(binPath)) {
+			Context.warning(binPath + " not found, prepending path with '../' ", pos);
+			binPath = "../" + binPath;
+		}
 
-	// 	if (!sys.FileSystem.exists(binPath)) {
-	// 		Context.error(binPath + " not found", pos);
-	// 	}
+		if (!sys.FileSystem.exists(binPath)) {
+			Context.error(binPath + " not found", pos);
+		}
 
-	// 	var bytes = sys.io.File.getBytes(binPath);
-	// 	if (xorKey > 0) {
-	// 		bytes = transition9.util.BytesUtil.xorBytes(bytes, xorKey);
-	// 	}
+		var bytes = sys.io.File.getBytes(binPath);
+		// if (xorKey > 0) {
+		// 	bytes = transition9.util.BytesUtil.xorBytes(bytes, xorKey);
+		// }
 
-	// 	haxe.macro.Context.addResource(resourceId, bytes);
-	// 	return { expr : EConst(CString(resourceId)), pos : pos };
-	// }
+		haxe.macro.Context.addResource(resourceId, bytes);
+		return { expr : EConst(CString(resourceId)), pos : pos };
+	}
+
+	macro
+	public static function getEmbeddedJson(jsonPath :String)
+	{
+		if (Context.defined("display")) {
+			// When running in code completion, skip out early
+			return { expr: EBlock([]), pos: Context.currentPos()};
+		}
+
+		var pos = haxe.macro.Context.currentPos();
+
+		if (!sys.FileSystem.exists(jsonPath)) {
+			Context.warning(jsonPath + " not found, prepending path with '../' ", pos);
+			jsonPath = "../" + jsonPath;
+		}
+
+		if (!sys.FileSystem.exists(jsonPath)) {
+			Context.error(jsonPath + " not found", pos);
+		}
+
+		var bytes = sys.io.File.getBytes(jsonPath);
+
+		haxe.macro.Context.addResource(jsonPath, bytes);
+
+		var e = macro $v{jsonPath};
+
+		return macro haxe.Json.parse(haxe.Resource.getString($e));
+	}
 
 	public static function processTemplateFromJson(templatePath :String, jsonPath :String, outPath :String)
 	{

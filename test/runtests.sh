@@ -1,2 +1,3 @@
 #! /usr/bin/env sh
-haxe -cmd "node build/nodejs_test.js" test/test.hxml
+mkdir -p build
+haxe -cmd "node build/nodejs_test.js" test/travis.hxml

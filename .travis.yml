@@ -1,0 +1,18 @@
+#
+# Continuous integration config
+# http://travis-ci.org/aduros/flambe
+
+language: node_js
+node_js: ["0.8", "0.10"]
+
+# Install Haxe
+before_script:
+    - sudo add-apt-repository ppa:eyecreate/haxe -y
+    - sudo apt-get update -y
+    - sudo apt-get install haxe -y
+    - mkdir -p ~/.haxe/lib
+    - haxelib setup ~/.haxe/lib
+    - haxelib install nodejs
+    - haxelib install polygonal-ds 1.4.1
+
+script: haxe test/travis.hxml

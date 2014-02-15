@@ -14,23 +14,7 @@ using StringTools;
  */
 class StepTest
 {
-	public function new()
-	{
-	}
-
-	/**
-	@Before
-	public function setup (cb :Void->Void) :Void
-	{
-		cb();
-	}
-
-	@After
-	public function tearDown (cb :Void->Void) :Void
-	{
-		cb();
-	}
-	*/
+	public function new() {}
 
 	@AsyncTest
 	public function testStep (onTestFinish :Err->Void, assert :Bool->?Dynamic->Void) :Void
@@ -72,22 +56,22 @@ class StepTest
 				parallel("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				assert(input1 == parallelResult1, "input1 != parallelResult1");
-				assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Log.assert(input1 == parallelResult1, "input1 != parallelResult1");
+				Log.assert(input2 == parallelResult2, "input2 != parallelResult2");
 				delayed(input1 + input2, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				assert(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
+				Log.assert(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
 				delayed(input, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				assert(err == null, "err == null");
+				Log.assert(err == null, "err == null");
 				parallelNoDelay("1", step.parallel());
 				parallelNoDelay("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				assert(input1 == parallelResult1, "input1 != parallelResult1");
-				assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Log.assert(input1 == parallelResult1, "input1 != parallelResult1");
+				Log.assert(input2 == parallelResult2, "input2 != parallelResult2");
 
 				delayed(null, step.cb);
 			},
@@ -99,10 +83,9 @@ class StepTest
 				group("4", step.group());
 			},
 			function (err :Dynamic, input :Array<String>) :Void {
-				assert(input.length == 5, "input.length == 5");
-
+				Log.assert(input.length == 5, "input.length == 5");
 				for (ii in 0...5) {
-					assert(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
+					Log.assert(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
 				}
 				delayed(input.join(", "), step.cb);
 			},
@@ -139,11 +122,11 @@ class StepTest
 				delayedError(step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				assert(err != null, "What happened to the delayed error?");
+				Log.assert(err != null, "What happened to the delayed error?");
 				delayed("ignored", step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				assert(err == null, "err != null");
+				Log.assert(err == null, "err != null");
 				onTestFinish(null);
 			},
 		]);

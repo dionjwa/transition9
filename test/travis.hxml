@@ -3,18 +3,16 @@
 
 -debug
 -D flambe_keep_asserts
+-D disable_flambe_logging
+-D flambe
 
--main Tests
-
-# -lib robothaxe
 -lib nodejs
-
-# -D nodejs
+-lib polygonal-ds
 
 -cp src
 -cp test
--cp lib/mconsole/src
+
+-main Tests
 
 -js build/nodejs_test.js
---remap sys:sys
 
