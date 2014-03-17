@@ -18,7 +18,6 @@ using StringTools;
 
 class Macros
 {
-
 	macro
 	public static function getDate()
 	{

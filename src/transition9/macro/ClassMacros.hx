@@ -4,6 +4,8 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.Type;
 
+using Lambda;
+
 class ClassMacros
 {
 	/**
@@ -16,7 +18,7 @@ class ClassMacros
 	 * then the logic for returning to the pool will
 	 * inserted into the existing function.
 	 */
-	public static function addObjectPooling () :Array<Field>
+	public static function addObjectPooling (?disposeFunctionName :String) :Array<Field>
 	{
 		var pos = Context.currentPos();
 		var fields = Context.getBuildFields();
@@ -24,139 +26,108 @@ class ClassMacros
 		var cls = ComplexType.TPath({name:clsType.name, pack:clsType.pack, params:[]});
 		var className = clsType.pack.join(".") + "." + clsType.name;
 
-		//Find the dispose method, or if none found create one.
-		var disposeField :Field = null;
-		for (f in fields) {
-			if (f.name == "dispose") {
-				disposeField = f;
-				break;
+		var varNext = "_next_" + clsType.name + "Pool";
+
+		if (disposeFunctionName != null) {
+			//Find the dispose method, or if none found create one.
+			var disposeField :Field = null;
+			for (f in fields) {
+				if (f.name == disposeFunctionName) {
+					disposeField = f;
+					break;
+				}
+			}
+
+			if (disposeField == null) {
+				var isOverridingFunction = MacroUtil.classContainsField(clsType, disposeFunctionName);
+				var funcExpr = Context.parse("{POOL.put(this);}", pos);
+				var access = isOverridingFunction ? [APublic, AOverride] : [APublic];
+				var functionExpression = {ret:null, params:[], args:[], expr:funcExpr};
+				fields.push({ name : disposeFunctionName, doc : null, meta : [], access : access, kind :FieldType.FFun(functionExpression), pos : pos });
+			} else {
+				//Add the expression to remove all _disposables on removal to the onRemoved function
+				switch(disposeField.kind) {
+					case FFun(f):
+						//Dispose of the _disposables on component removal
+						var expr = Context.parseInlineString("{POOL.put(this);}", pos);
+						transition9.macro.MacroUtil.insertExpressionIntoFunction(expr, f);
+					default: //Ignored
+				}
 			}
 		}
 
-		if (disposeField == null) {
-			// Context.warning("building new disposeField", pos);
+		//Build the fields for the class that manages the pool
+		var poolingClassName = clsType.name + "Pool";
+		var poolingClassFields = [];
 
-			var isOverridingFunction = MacroUtil.classContainsField(clsType, "dispose");
-			if (isOverridingFunction) {
-					disposeField = MacroUtil.buildFields(macro {
-						function override__public__dispose () {
-							super.dispose();
-#if debug
-							disposed = true;
-#end
-							if (POOL_LIMIT <= 0 || INTERNAL_POOL_SIZE < POOL_LIMIT) {
-								this.returnToPool();
-							}
-						}
-					})[0];
-				} else {
-					disposeField = MacroUtil.buildFields(macro {
-						function public__dispose () {
-#if debug
-							disposed = true;
-#end
-							if (POOL_LIMIT <= 0 || INTERNAL_POOL_SIZE < POOL_LIMIT) {
-								this.returnToPool();
-							}
-						}
-					})[0];
-				}
-			fields.push(disposeField);
-		} else {
-			//Add the expression to remove all _disposables on removal to the onRemoved function
-			switch(disposeField.kind) {
-				case FFun(f):
-					//Dispose of the _disposables on component removal
-#if debug
-					var expr = Context.parseInlineString("{disposed = true; if (POOL_LIMIT <= 0 || INTERNAL_POOL_SIZE < POOL_LIMIT) { this.returnToPool(); }}", pos);
-#else
-					var expr = Context.parseInlineString("{if (POOL_LIMIT <= 0 || INTERNAL_POOL_SIZE < POOL_LIMIT) { this.returnToPool(); }}", pos);
-#end
-					transition9.macro.MacroUtil.insertExpressionIntoFunction(expr, f);
-				default: //Ignored
-			}
-		}
-
-		fields = fields.concat(MacroUtil.buildFields(macro {
-
-			var public__static__POOL_LIMIT :Int = -1; //-1 == no limit
-			var public__static__INTERNAL_POOLING_HEAD :$cls;
-			var public__static__INTERNAL_POOL_SIZE :Int = 0;
-			var public__internalPoolingBefore :$cls;
-			var public__internalPoolingAfter :$cls;
-			var public__internalIsInPool :Bool;
-
-			function private__static__internalGetFromPool()
-			{
-				var newHead = INTERNAL_POOLING_HEAD.internalPoolingAfter;
-				var currentHead = INTERNAL_POOLING_HEAD;
-				INTERNAL_POOLING_HEAD = newHead;
-				currentHead.internalPoolingRemove();
-				INTERNAL_POOL_SIZE--;
-				return currentHead;
-			}
-
-			function public__returnToPool()
-			{
-				if (internalIsInPool) {
-					Log.error("Already in pool");
-				}
-				if (INTERNAL_POOLING_HEAD == null) {
-					INTERNAL_POOLING_HEAD = this;
-				} else {
-					var currentHead = INTERNAL_POOLING_HEAD;
-					INTERNAL_POOLING_HEAD = this;
-					currentHead.internalPoolingAddBefore(this);
-				}
-				INTERNAL_POOL_SIZE++;
-				internalIsInPool = true;
-			}
-
-			function public__internalPoolingAddBefore (other :$cls)
-		    {
-		        internalPoolingAfter = other;
-		        internalPoolingBefore = other.internalPoolingBefore;
-		        if (internalPoolingBefore != null) {
-		        	internalPoolingBefore.internalPoolingAfter = this;
-		        }
-		        internalPoolingAfter.internalPoolingBefore = this;
-		    }
-
-		    function public__internalPoolingRemove ()
-		    {
-		    	if (internalPoolingBefore != null) {
-		        	internalPoolingBefore.internalPoolingAfter = internalPoolingAfter;
-		        }
-		        if (internalPoolingAfter != null) {
-		        	internalPoolingAfter.internalPoolingBefore = internalPoolingBefore;
-		        }
-		    }
-
-#if debug
-			var private__disposed :Bool = true;
-			function inline__public__isDisposed() :Bool
-			{
-				return disposed;
-			}
-#end
-
-		}));
-
+		poolingClassFields.push({ name : "MAX_SIZE", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro -1), pos : pos });
+		poolingClassFields.push({ name : "INTERNAL_POOLING_HEAD", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(cls, null), pos : pos });
+		poolingClassFields.push({ name : "POOL_SIZE", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro 0), pos : pos });
+		// var isPoolingSubclass = MacroUtil.classContainsField(clsType, "internalIsInPool");
 		var block = Context.parse(
 			"{"
-			+"	function public__static__get() :" + clsType.name
+			+"	function public__new() {}"
+			+"	function public__get() :" + clsType.name
 			+"	{"
 			+"		var obj = if (INTERNAL_POOLING_HEAD == null) {"
 			+"			new " + clsType.name + "();"
 			+"		} else {"
-			+"			internalGetFromPool();"
+			+"			POOL_SIZE--;"
+			+"			var next = INTERNAL_POOLING_HEAD;"
+			+"			var afterNext = INTERNAL_POOLING_HEAD." + varNext + ";"
+			+"			INTERNAL_POOLING_HEAD = afterNext;"
+			+"			next;"
 			+"		};"
-			+"		obj.internalIsInPool = false;"
 			+"		return obj;"
 			+"	}"
+			+"	function public__put(obj :" + clsType.name + ")"
+			+"	{"
+#if debug
+			+"		var current = INTERNAL_POOLING_HEAD;"
+			+"		while (current != null) {"
+			+"			if (current == obj) throw \"Object already exists in pool!\";"
+			+"			current = current." + varNext + ";"
+			+"		}"
+#end
+			+"		if(MAX_SIZE > 0 && POOL_SIZE >= MAX_SIZE) {return;}"
+			+"		obj." + varNext + " = INTERNAL_POOLING_HEAD;"
+			+"		INTERNAL_POOLING_HEAD = obj;"
+			+"		POOL_SIZE++;"
+			+"	}"
+			+"	function public__isInPool(obj :" + clsType.name + ")"
+			+"	{"
+			+"		var current = INTERNAL_POOLING_HEAD;"
+			+"		while(current != null) {"
+			+"			if (current == obj) return true;"
+			+"			current = current." + varNext + ";"
+			+"		}"
+			+"		return false;"
+			+"	}"
 			+"}", Context.currentPos());
+	    poolingClassFields = poolingClassFields.concat(MacroUtil.buildFields(block));
 
-		fields = fields.concat(MacroUtil.buildFields(block));
+	    var type :TypeDefinition = {
+			pos:pos,
+			params:[],
+			pack:clsType.pack,
+			name: poolingClassName,
+			meta:[],
+			kind:haxe.macro.TypeDefKind.TDClass(),
+			isExtern:false,
+			fields:poolingClassFields
+		}
+		Context.defineType(type);
+
+		fields.push({ name : varNext, doc : null, meta : [], access : [APublic], kind : FieldType.FVar(cls, null), pos : pos });
+
+		fields = fields.concat(MacroUtil.buildFields(Context.parse(
+			"{"
+			+"	var public__static__POOL :" + poolingClassName + " = new " + poolingClassName + "();"
+			+"	function public__inline__static__fromPool()"
+			+"	{"
+			+"		return POOL.get();"
+			+"	}"
+			+"}", Context.currentPos())));
 
 		return fields;
 	}

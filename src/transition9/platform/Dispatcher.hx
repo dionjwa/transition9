@@ -5,6 +5,8 @@ import de.polygonal.ds.Prioritizable;
 
 @:coreType abstract Seconds from Float to Float { }
 
+typedef Disposable = {var dispose:Void->Void;};
+
 /**
  * Designed to pass on platform/ui/signal events between platforms, and
  * bridge websockets/html callbacks, and UI events.
@@ -37,7 +39,7 @@ class Dispatcher
 		#end
 	}
 
-	public function addListener0(eventId :String, handler :Void->Void) :{dispose:Void->Void}
+	public function addListener0(eventId :String, handler :Void->Void) :Disposable
 	{
 		if (!_listeners0.exists(eventId)) {
 			_listeners0.set(eventId, []);
@@ -64,7 +66,7 @@ class Dispatcher
 		return {dispose:dispose};
 	}
 
-	public function addListener1(eventId :String, handler :Dynamic->Void) :{dispose:Void->Void}
+	public function addListener1(eventId :String, handler :Dynamic->Void) :Disposable
 	{
 		if (!_listeners1.exists(eventId)) {
 			_listeners1.set(eventId, []);
@@ -91,7 +93,7 @@ class Dispatcher
 		return {dispose:dispose};
 	}
 
-	public function onMessageRecieved(messageId :String, ?payload :Dynamic, ?priority :Float = 0)
+	public function addMessageToQueue(messageId :String, ?payload :Dynamic, ?priority :Float = 0)
 	{
 		var msg = Message.get();
 		msg.messageId = messageId;
@@ -100,7 +102,7 @@ class Dispatcher
 		_queue.enqueue(msg);
 	}
 
-	public function addTask(id :String, onTick :Float->Bool, ?priority :Float = -1, ?onComplete :Void->Void) :{dispose:Void->Void} //Priority is less than the default
+	public function addTask(id :String, onTick :Float->Bool, ?priority :Float = -1, ?onComplete :Void->Void) :Disposable //Priority is less than the default
 	{
 		var msg = Message.get();
 		msg.priority = priority;
@@ -211,6 +213,10 @@ class Dispatcher
 	var _addedToMainLoop :Bool;
 	public function useFlambeMainloop()
 	{
+		if (_timer != null) {
+			_timer.stop();
+			_timer = null;
+		}
 		if (!_addedToMainLoop) {
 			flambe.System.init();
 			var mainLoop :flambe.platform.MainLoop = Reflect.field(Reflect.field(flambe.System, "_platform"), "mainLoop");

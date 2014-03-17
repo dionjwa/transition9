@@ -41,58 +41,85 @@ class TestMacros extends haxe.unit.TestCase
 		assertTrue(data.ANumber == 55);
 	}
 
-	public function testPooledMacro () :Void
+	public function testPooledMacroFromClassThatExtendsAPooledClass () :Void
 	{
-		var p1 = PooledClass.get();
-		var p2 = PooledClass.get();
+		var p1 = PooledClassExtended.fromPool();
+		var p2 = PooledClassExtended.fromPool();
 		assertTrue(p1 != null);
 		assertTrue(p2 != null);
 		assertTrue(p1 != p2);
-		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 0);
+		assertTrue(PooledClassExtended.POOL.POOL_SIZE == 0);
 
 		p2.dispose();
-		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 1);
+		assertTrue(PooledClassExtended.POOL.POOL_SIZE == 1);
 
-		var p3 = PooledClass.get();
-		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 0);
+		var p3 = PooledClassExtended.fromPool();
+		assertTrue(PooledClassExtended.POOL.POOL_SIZE == 0);
 
 		assertTrue(p2 == p3);
 
-		var p2 = PooledClass.get();
+		var p2 = PooledClassExtended.fromPool();
 
 		assertTrue(p2 != p3);
 		assertTrue(p2 != p1);
 
 		p1.dispose();
-		#if debug
-		assertTrue(p1.isDisposed());
-		#end
 
 		p2.dispose();
 		p3.dispose();
-		assertTrue(PooledClass.INTERNAL_POOL_SIZE == 3);
+		assertTrue(PooledClassExtended.POOL.POOL_SIZE == 3);
+	}
+
+	public function testPooledMacro () :Void
+	{
+		var p1 = PooledClass.POOL.get();
+		var p2 = PooledClass.POOL.get();
+		assertTrue(p1 != null);
+		assertTrue(p2 != null);
+		assertTrue(p1 != p2);
+		assertTrue(PooledClass.POOL.POOL_SIZE == 0);
+
+		p2.dispose();
+		assertTrue(PooledClass.POOL.isInPool(p2));
+		assertFalse(PooledClass.POOL.isInPool(p1));
+		assertTrue(PooledClass.POOL.POOL_SIZE == 1);
+
+		var p3 = PooledClass.POOL.get();
+		assertTrue(PooledClass.POOL.POOL_SIZE == 0);
+
+		assertTrue(p2 == p3);
+
+		var p2 = PooledClass.POOL.get();
+
+		assertTrue(p2 != p3);
+		assertTrue(p2 != p1);
+
+		p1.dispose();
+
+		p2.dispose();
+		p3.dispose();
+		assertTrue(PooledClass.POOL.POOL_SIZE == 3);
 	}
 
 	public function testPooledWithExistingDisposeMacro () :Void
 	{
-		var p1 = PooledClassWithExistingDispose.get();
-		var p2 = PooledClassWithExistingDispose.get();
+		var p1 = PooledClassWithExistingDispose.fromPool();
+		var p2 = PooledClassWithExistingDispose.fromPool();
 		assertTrue(p1 != null);
 		assertTrue(p2 != null);
 		assertTrue(p1 != p2);
-		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 0);
+		assertTrue(PooledClassWithExistingDispose.POOL.POOL_SIZE == 0);
 
 		p2.dispose();
-		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 1);
-		assertTrue(p2.isDisposeCalled);
+		assertTrue(PooledClassWithExistingDispose.POOL.POOL_SIZE == 1);
 		p2.isDisposeCalled = false; //Reset it
 
-		var p3 = PooledClassWithExistingDispose.get();
-		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 0);
+		var p3 = PooledClassWithExistingDispose.fromPool();
+		assertTrue(PooledClassWithExistingDispose.POOL.POOL_SIZE == 0);
 
 		assertTrue(p2 == p3);
 
-		var p2 = PooledClassWithExistingDispose.get();
+		var p2 = PooledClassWithExistingDispose.fromPool();
 
 		assertTrue(p2 != p3);
 		assertTrue(p2 != p1);
@@ -100,13 +127,10 @@ class TestMacros extends haxe.unit.TestCase
 		p1.dispose();
 		assertTrue(p1.isDisposeCalled);
 		p1.isDisposeCalled = false; //Reset it
-		#if debug
-		assertTrue(p1.isDisposed());
-		#end
 
 		p2.dispose();
 		p3.dispose();
-		assertTrue(PooledClassWithExistingDispose.INTERNAL_POOL_SIZE == 3);
+		assertTrue(PooledClassWithExistingDispose.POOL.POOL_SIZE == 3);
 
 		assertTrue(p2.isDisposeCalled);
 		assertTrue(p3.isDisposeCalled);

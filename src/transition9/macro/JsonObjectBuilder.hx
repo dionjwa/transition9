@@ -9,11 +9,6 @@ using StringTools;
 
 class JsonObjectBuilder
 {
-	static var TYPE_BOOL = TPath({ sub:null, name:"Bool", pack:[], params:[] });
-	static var TYPE_INT = TPath({ sub:null, name:"Int", pack:[], params:[] });
-	static var TYPE_FLOAT = TPath({ sub:null, name:"Float", pack:[], params:[] });
-	static var TYPE_STRING= TPath({ sub:null, name:"String", pack:[], params:[] });
-
 	macro
 	static public function buildObjectFromJsonFile(filePath :String) :Expr
 	{
@@ -46,14 +41,6 @@ class JsonObjectBuilder
 		if (DEFINED_CLASSES.exists(typeName)) {
 			return {pos:pos, expr:haxe.macro.ExprDef.EConst(haxe.macro.Constant.CIdent(typeName))};
 		}
-
-		// if (Type.resolveClass(typeName) != null) {
-		// 	trace(typeName + " already exists!");
-		// 	return {pos:pos, expr:haxe.macro.ExprDef.EConst(haxe.macro.Constant.CIdent(typeName))};
-		// } else {
-		// 	trace(typeName + " doesn't exist!");
-		// }
-
 
 		var fileContents = File.getContent(filePath);
 		var regExpr = new EReg(regularExpression, "");
@@ -98,7 +85,7 @@ class JsonObjectBuilder
 										pos:pos,
 										name:element,
 										meta:null,
-										kind:haxe.macro.FieldType.FVar(TYPE_STRING, Context.makeExpr(element, pos)),
+										kind:haxe.macro.FieldType.FVar(MacroConstants.TYPE_STRING, Context.makeExpr(element, pos)),
 										doc:null,
 										access:[haxe.macro.Access.APublic, haxe.macro.Access.AStatic]
 									});
@@ -108,7 +95,7 @@ class JsonObjectBuilder
 									pos:pos,
 									name:element,
 									meta:null,
-									kind:haxe.macro.FieldType.FVar(TYPE_INT, macro element),
+									kind:haxe.macro.FieldType.FVar(MacroConstants.TYPE_INT, macro element),
 									doc:null,
 									access:[haxe.macro.Access.APublic, haxe.macro.Access.AStatic]
 								});
@@ -126,7 +113,7 @@ class JsonObjectBuilder
 									pos:pos,
 									name:fieldName,
 									meta:null,
-									kind:haxe.macro.FieldType.FVar(TYPE_STRING, Context.makeExpr(element, pos)),
+									kind:haxe.macro.FieldType.FVar(MacroConstants.TYPE_STRING, Context.makeExpr(element, pos)),
 									doc:null,
 									access:[haxe.macro.Access.APublic, haxe.macro.Access.AStatic]
 								});
@@ -136,7 +123,7 @@ class JsonObjectBuilder
 								pos:pos,
 								name:fieldName,
 								meta:null,
-								kind:haxe.macro.FieldType.FVar(TYPE_INT, Context.makeExpr(element, pos)),
+								kind:haxe.macro.FieldType.FVar(MacroConstants.TYPE_INT, Context.makeExpr(element, pos)),
 								doc:null,
 								access:[haxe.macro.Access.APublic, haxe.macro.Access.AStatic]
 							});
@@ -145,7 +132,7 @@ class JsonObjectBuilder
 								pos:pos,
 								name:fieldName,
 								meta:null,
-								kind:haxe.macro.FieldType.FVar(TYPE_FLOAT, Context.makeExpr(element, pos)),
+								kind:haxe.macro.FieldType.FVar(MacroConstants.TYPE_FLOAT, Context.makeExpr(element, pos)),
 								doc:null,
 								access:[haxe.macro.Access.APublic, haxe.macro.Access.AStatic]
 							});
