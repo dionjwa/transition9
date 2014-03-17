@@ -22,6 +22,18 @@ class ClassMacros
 	{
 		var pos = Context.currentPos();
 		var fields = Context.getBuildFields();
+
+		if (Context.defined("display")) {
+			fields = fields.concat(MacroUtil.buildFields(Context.parse(
+			"{"
+			+"	function public__inline__static__fromPool()"
+			+"	{"
+			+"		return null;"
+			+"	}"
+			+"}", Context.currentPos())));
+			return fields;
+		}
+
 		var clsType = Context.getLocalClass().get();
 		var cls = ComplexType.TPath({name:clsType.name, pack:clsType.pack, params:[]});
 		var className = clsType.pack.join(".") + "." + clsType.name;
