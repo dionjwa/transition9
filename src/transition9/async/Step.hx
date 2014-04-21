@@ -16,7 +16,7 @@ class Step
 	}
 
 	/**
-	  * Chain a series of functions together.  The callback from the previous 
+	  * Chain a series of functions together.  The callback from the previous
 	  * function is fed into the next function.
 	  */
 	public function chain (arr :Array<Dynamic>) :Void
@@ -54,6 +54,14 @@ class Step
 		cb(null, null);
 	}
 
+	/**
+	  * Adapt the callback to func(err, result)
+	  */
+	public function error (err :Dynamic) :Void
+	{
+		cb(err, null);
+	}
+
 	public function parallel () :Dynamic->Dynamic->Void
 	{
 		return createCallback(true);
@@ -62,12 +70,6 @@ class Step
 	public function group () :Dynamic->Dynamic->Void
 	{
 		return createCallback(false);
-	}
-
-	function handleError (err :Dynamic) :Void
-	{
-		Log.assert(_chain.length > 0, "_chain.length <= 0");
-		callNext([err, null]);
 	}
 
 	function createCallback (isParallel :Bool) :Dynamic->Dynamic->Void
@@ -94,7 +96,7 @@ class Step
 		try {
 			Reflect.callMethod(null, _chain.shift(), args);
 		} catch (e :Dynamic) {
-			trace("Step caught exception: " + e);
+			trace("Step caught exception: " + e + "\n" + haxe.CallStack.toString(haxe.CallStack.callStack()));
 			if (_chain != null && _chain.length > 0) {
 				callNext([e, null]);
 			} else {
@@ -156,7 +158,11 @@ class GroupedCall
 				_pendingResults[index] = result;
 			}
 			if (_pending == 0) {
-				haxe.Timer.delay(calledGroupCallback, 0);
+				#if nodejs
+					untyped setImmediate(calledGroupCallback);
+				#else
+					haxe.Timer.delay(calledGroupCallback, 0);
+				#end
 			}
 		}
 	}
