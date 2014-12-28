@@ -2,13 +2,17 @@
 --macro transition9.macro.BuildMacros.processTemplateFromJson('test/macros/template.tmpl', 'test/macros/Data.json', 'test/macros/out.txt')
 
 -debug
--D flambe_keep_asserts
--D disable_flambe_logging
--D flambe
+#-D flambe_keep_asserts
+#-D disable_flambe_logging
+# -D flambe
 -D travis
 
 -lib nodejs
 -lib polygonal-ds
+-lib flambe
+#https://github.com/proletariatgames/haxe-continuation/
+-lib continuation
+-lib tink_core
 
 -cp src
 -cp test

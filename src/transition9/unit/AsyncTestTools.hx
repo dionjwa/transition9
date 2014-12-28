@@ -2,15 +2,19 @@ package transition9.unit;
 
 import Type;
 
+import com.dongxiguo.continuation.Async;
+
 import transition9.async.AsyncLambda;
 import transition9.rtti.MetaUtil;
 
 using StringTools;
+using Lambda;
 
 /**
   * Simple async testing.  Workds with Node.js
   */
 class AsyncTestTools
+	implements Async
 {
 	static var ASYNC_LABEL = "AsyncTest";
 
@@ -24,7 +28,6 @@ class AsyncTestTools
 			}
 		}
 	}
-
 
 	public static function runTestsOn (testClasses :Array<Class<Dynamic>>) :Void
 	{
@@ -47,20 +50,23 @@ class AsyncTestTools
 				for (result in allresults) {
 					totalTests += result.totalTests;
 					if (result.testsPassed != result.totalTests) {
+						Log.error("Failed on " + Type.getClassName(result.cls));
 						allok = false;
 						break;
 					}
 				}
-
-				trace(!allok ? "TESTS FAILED" : totalTests + " test" + (totalTests > 1 ? "s" : "") + " completed OK");
-
-				// #if nodejs
-				// untyped __js__('process.exit(0)');
-				// #end
+				if (allok) {
+					Log.info(totalTests + " test" + (totalTests > 1 ? "s" : "") + " completed OK");
+					// untyped __js__('process.exit(0)');
+					Sys.exit(0);
+				} else {
+					Log.error("TESTS FAILED: " + err);
+					Sys.exit(1);
+				}
 			});
 	}
 
-	public static function doTests (cls :Class<Dynamic>, testsComplete :TestResults->Void) :Void
+	public static function doTests (cls :Class<Dynamic>, testsComplete:TestResults->Void)
 	{
 		var inst = Type.createInstance(cls, []);
 		var className = Type.getClassName(cls);
@@ -96,41 +102,46 @@ class AsyncTestTools
 				Reflect.callMethod(inst, Reflect.field(inst, syncTestName), []);
 				testResults.testsPassed++;
 			} catch (e :Dynamic) {
-				trace("    " + className + "::" + syncTestName + " Error: " + Std.string(e) + "\n" + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+				Log.error("    " + className + "::" + syncTestName + " Error: " + Std.string(e) + "\n" + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
 			}
 		}
 
 		//Async setup and tear down
 		var setup = function (cb :Void->Void) :Void {
-			if (Reflect.field(inst, "setup") != null) {
-				Reflect.callMethod(inst, Reflect.field(inst, "setup"), [cb]);
+			if (Type.getInstanceFields(cls).has("setup")) {
+				var castedInst :{function setup(cb :Void->Void):Void;} = cast inst;
+				castedInst.setup(cb);
 			} else {
 				cb();
 			}
 		}
 
-		var tearDown = function (err :Err, cb :Err->Void) :Void {
-			if (Reflect.field(inst, "tearDown") != null) {
-				Reflect.callMethod(inst, Reflect.field(inst, "tearDown"), [cb.bind(err)]);
+		var tearDown = function (cb :Void->Void) :Void {
+			if (Type.getInstanceFields(cls).has("tearDown")) {
+				var castedInst :{function tearDown(cb :Void->Void):Void;} = cast inst;
+				castedInst.tearDown(
+					function() {
+						cb();
+					});
 			} else {
-				cb(err);
+				cb();
 			}
 		}
 
 		var doAsyncCall = function (asyncFieldName :String, cb :Err->Void) :Void {
-			var onTestFinish = tearDown.bind(_, cb);
+			var onTestFinish = function(err) {tearDown(function() {cb(err);});};
 			//Call this aftersetup
 			var doTest = function () :Void {
 				var finished = false;
 
-				var maxTime = 2000;
-				//Add the timer check, in case the test times out.
-				haxe.Timer.delay(function () {
-					if (!finished) {
-						finished = true;
-						onTestFinish("    " + className + "::" + asyncFieldName + " TIMEDOUT");
-					}
-				}, maxTime);
+				// var maxTime = 2000;
+				// //Add the timer check, in case the test times out.
+				// haxe.Timer.delay(function () {
+				// 	if (!finished) {
+				// 		finished = true;
+				// 		onTestFinish("    " + className + "::" + asyncFieldName + " TIMEDOUT");
+				// 	}
+				// }, maxTime);
 
 				//test function
 				var asyncTestCallback = function (err :Err) :Void {
@@ -141,6 +152,7 @@ class AsyncTestTools
 						} else {
 							testResults.err = err;
 						}
+						Log.info("onTestFinish");
 						onTestFinish(err);
 					}
 				}
@@ -154,9 +166,10 @@ class AsyncTestTools
 
 				//Now actually make the call
 				try {
-					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback, asyncAssert]);
+					Log.info(asyncFieldName);
+					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback, function() {trace("Called back from async " + asyncFieldName);}]);
 				} catch (e :Dynamic) {
-					trace("    " + className + "::" + asyncFieldName + " Error: " + Std.string(e));
+					Log.error("    " + className + "::" + asyncFieldName + " Error: " + Std.string(e));
 					if (!finished) {
 						finished = true;
 						onTestFinish(e);
@@ -192,5 +205,4 @@ class TestResults
 			return "    " + (testsPassed == totalTests ? "OK   " : "FAIL   ") +  Type.getClassName(cls) + "...passed " + testsPassed + " / " + totalTests;
 		}
 	}
-
 }

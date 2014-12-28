@@ -3,6 +3,8 @@ package transition9.platform;
 import de.polygonal.ds.PriorityQueue;
 import de.polygonal.ds.Prioritizable;
 
+// import transition9.remoting.jsonrpc.RPC;
+
 @:coreType abstract Seconds from Float to Float { }
 
 typedef Disposable = {var dispose:Void->Void;};
@@ -15,7 +17,9 @@ typedef Disposable = {var dispose:Void->Void;};
  */
 @:build(transition9.macro.ClassMacros.addSingletonPattern())
 class Dispatcher
-#if flambe implements flambe.platform.Tickable #end
+#if flambe
+	implements flambe.platform.Tickable
+#end
 {
 	var _maxMessagesPerTick :Int = 1;
 	var _queue :PriorityQueue<Message>;
@@ -95,7 +99,8 @@ class Dispatcher
 
 	public function addMessageToQueue(messageId :String, ?payload :Dynamic, ?priority :Float = 0)
 	{
-		var msg = Message.get();
+		trace("addMessageToQueue messageId=" + messageId);
+		var msg = Message.fromPool();
 		msg.messageId = messageId;
 		msg.payload = payload;
 		msg.priority = priority;
@@ -104,7 +109,7 @@ class Dispatcher
 
 	public function addTask(id :String, onTick :Float->Bool, ?priority :Float = -1, ?onComplete :Void->Void) :Disposable //Priority is less than the default
 	{
-		var msg = Message.get();
+		var msg = Message.fromPool();
 		msg.priority = priority;
 		msg.onTick = onTick;
 		msg.onComplete = onComplete;
@@ -138,6 +143,7 @@ class Dispatcher
 	/** Plug this into your timer of choice. */
 	public function onTick(dt :Seconds)
 	{
+		// trace("dispatcher.onTick");
 		var elapsed :Seconds = 0;
 		var processedMessages = 0;
 
@@ -209,7 +215,7 @@ class Dispatcher
 		return _queue.size();
 	}
 
-	#if flambe
+#if flambe
 	var _addedToMainLoop :Bool;
 	public function useFlambeMainloop()
 	{
@@ -230,41 +236,6 @@ class Dispatcher
 		onTick(dt);
 		return false;
 	}
-	#end
+#end
 }
 
-@:build(transition9.macro.ClassMacros.addObjectPooling())
-class Message
-	implements Prioritizable
-{
-	public var priority:Float;
-	public var position:Int;
-
-	public var messageId :String;
-	public var payload :Dynamic;
-
-	//If this is non-null, is called and the listeners aren't dispatched until it completes.
-	public var onTick :Float->Bool;
-	public var onComplete :Void->Void;
-	public var onDispose :Void->Void;
-
-	public function new()
-	{
-		priority = 0;
-		position = 0;
-	}
-
-	public function dispose()
-	{
-		if (onDispose != null) {
-			onDispose();
-			onDispose = null;
-		}
-		priority = 0;
-		position = 0;
-		messageId = null;
-		payload = null;
-		onTick = null;
-		onComplete = null;
-	}
-}

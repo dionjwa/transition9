@@ -1,0 +1,1 @@
+typedef Assert=transition9.util.Assert;

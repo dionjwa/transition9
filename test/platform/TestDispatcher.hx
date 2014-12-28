@@ -25,10 +25,10 @@ class TestDispatcher extends haxe.unit.TestCase
 				});
 		}
 
-		dispatcher.onMessageRecieved(events[0], null, 0);
-		dispatcher.onMessageRecieved(events[2], null, 2);
-		dispatcher.onMessageRecieved(events[3], null, 3);
-		dispatcher.onMessageRecieved(events[1], null, 1);
+		dispatcher.addMessageToQueue(events[0], null, 0);
+		dispatcher.addMessageToQueue(events[2], null, 2);
+		dispatcher.addMessageToQueue(events[3], null, 3);
+		dispatcher.addMessageToQueue(events[1], null, 1);
 
 		assertTrue(dispatcher.size == 4);
 
@@ -50,11 +50,11 @@ class TestDispatcher extends haxe.unit.TestCase
 	public function testDispatcherQueuingFlambe () :Void
 	{
 		var dispatcher = new Dispatcher();
-		var platform :flambe.platform.node.NodePlatform = Reflect.field(flambe.System, "_platform");
+		var platform :flambe.platform.nodejs.NodePlatform = flambe.platform.nodejs.NodePlatform.instance;
 		platform.stopMainLoop();
 		dispatcher.useFlambeMainloop();
 		var tick = function() {
-			platform.step(0.03);
+			platform.step();
 		}
 		dispatcherQueuing(dispatcher, tick);
 	}
@@ -110,10 +110,10 @@ class TestDispatcher extends haxe.unit.TestCase
 
 		dispatcher.addTask("someid", longProcess, -1, longProcessComplete);
 
-		dispatcher.onMessageRecieved(events[0], null, 0);
-		dispatcher.onMessageRecieved(events[2], null, 2);
-		dispatcher.onMessageRecieved(events[3], null, 3);
-		dispatcher.onMessageRecieved(events[1], null, 1);
+		dispatcher.addMessageToQueue(events[0], null, 0);
+		dispatcher.addMessageToQueue(events[2], null, 2);
+		dispatcher.addMessageToQueue(events[3], null, 3);
+		dispatcher.addMessageToQueue(events[1], null, 1);
 
 		assertTrue(dispatcher.size == 5);
 

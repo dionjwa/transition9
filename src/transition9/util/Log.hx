@@ -6,6 +6,10 @@ package transition9.util;
   * having to rewrite logging/assert calls.
   */
 
+#if cocos2dx
+import cc.Cocos2dx;
+#end
+
 #if (flambe && !disable_flambe_logging)
 /**
  * Flambe's internal logger. Games should use their own by calling System.logger() or extending
@@ -16,106 +20,191 @@ class Log extends flambe.util.PackageLog
 	/**
 	  * Additional logging method not in flambe.util.PackageLog
 	  */
-	inline public static function debug (message :String, ?fields :Array<Dynamic>) :Void
+	inline public static function debug (message :String, ?extra :Dynamic) :Void
 	{
-		info(message, fields);
+		info(message, extra);
 	}
 
-	/**
-	  * Wrap the flambe assert in the Log class to avoid refactoring when using other libs.
-	  */
-	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>) :Void
-	{
-		flambe.util.Assert.that(condition, message, fields);
-	}
+	//Webkit extra calls
+	inline public static function count (id :String) :Void {}
+	inline public static function enterDebugger () :Void {}
+	inline public static function group (groupId :String) :Void {}
+	inline public static function groupEnd () :Void {}
+	inline public static function time (id) :Void {}
+	inline public static function timeEnd (id) :Void {}
+	inline public static function profile (id) :Void {}
+	inline public static function profileEnd (id) :Void {}
 }
 #elseif (mconsole && !no_console) //This is a pretty good logger in webkit
 class Log
 {
-	inline public static function debug (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	private static function __init__() : Void untyped
+    {
+    	trace("Console.start");
+        Console.start();
+    }
+
+    inline public static function count (id :String) :Void
 	{
-		if (fields != null) {
-			Console.debug([message, fields], pos);
+		Console.count(id);
+	}
+
+	inline public static function enterDebugger () :Void
+	{
+		Console.enterDebugger();
+	}
+
+	inline public static function group (groupId :String) :Void
+	{
+		Console.group(groupId);
+	}
+
+	inline public static function groupEnd () :Void
+	{
+		Console.groupEnd();
+	}
+
+	inline public static function time (id) :Void
+	{
+		Console.time(id);
+	}
+
+	inline public static function timeEnd (id) :Void
+	{
+		Console.timeEnd(id);
+	}
+
+	inline public static function profile (id) :Void
+	{
+		Console.profile(id);
+	}
+
+	inline public static function profileEnd (id) :Void
+	{
+		Console.profileEnd(id);
+	}
+
+	inline public static function debug (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		if (extra != null) {
+			Console.debug([message, extra], pos);
 		} else {
 			Console.debug(message, pos);
 		}
 	}
 
-	inline public static function info (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function info (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		if (fields != null) {
-			Console.info([message, fields], pos);
+		if (extra != null) {
+			Console.info([message, extra], pos);
 		} else {
 			Console.info(message, pos);
 		}
 	}
 
-	inline public static function warn (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function warn (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		if (fields != null) {
-			Console.warn([message, fields], pos);
+		if (extra != null) {
+			Console.warn([message, extra], pos);
 		} else {
 			Console.warn(message, pos);
 		}
 	}
 
-	inline public static function error (message :Dynamic, ?fields: Dynamic, ?pos :haxe.PosInfos) :Void
+	inline public static function error (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		if (fields != null) {
-			Console.error([message, fields], pos);
+		if (extra != null) {
+			Console.error([message, extra], pos);
 		} else {
 			Console.error(message, pos);
 		}
 	}
-
-	inline public static function assert (condition :Bool, ?message :String, ?fields :Dynamic, ?pos :haxe.PosInfos) :Void
+}
+#elseif cocos2dx
+class Log
+{
+	inline public static var NO_FORWARD :String = "SCRIPT: ";
+	inline public static function debug (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		if (fields != null) {
-			Console.assert(condition, [message, fields], pos);
-		} else {
-			Console.assert(condition, message, pos);
-		}
+		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
 	}
+
+	inline public static function info (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
+	}
+
+	inline public static function warn (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
+	}
+
+	inline public static function error (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
+	}
+
+	//Webkit extra calls
+	inline public static function count (id :String) :Void {}
+	inline public static function enterDebugger () :Void {}
+	inline public static function group (groupId :String) :Void {}
+	inline public static function groupEnd () :Void {}
+	inline public static function time (id) :Void {}
+	inline public static function timeEnd (id) :Void {}
+	inline public static function profile (id) :Void {}
+	inline public static function profileEnd (id) :Void {}
+
 }
 #elseif !disable_logging
 class Log
 {
-	inline public static function debug (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+	inline public static function debug (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
+		haxe.Log.trace(message + (extra != null ? " [" + extra.join(", ") + "]" : ""), pos);
 	}
 
-	inline public static function info (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+	inline public static function info (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
+		haxe.Log.trace(message + (extra != null ? " [" + extra.join(", ") + "]" : ""), pos);
 	}
 
-	inline public static function warn (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+	inline public static function warn (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
+		haxe.Log.trace(message + (extra != null ? " [" + extra.join(", ") + "]" : ""), pos);
 	}
 
-	inline public static function error (?message :Dynamic, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
+	inline public static function error (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
-		haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
+		haxe.Log.trace(message + (extra != null ? " [" + extra.join(", ") + "]" : ""), pos);
 	}
 
-	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>, ?pos :haxe.PosInfos) :Void
-	{
-		if (!condition) {
-			haxe.Log.trace(message + (fields != null ? " [" + fields.join(", ") + "]" : ""), pos);
-			throw message;
-		}
-	}
-
+	//Webkit extra calls
+	inline public static function count (id :String) :Void {}
+	inline public static function enterDebugger () :Void {}
+	inline public static function group (groupId :String) :Void {}
+	inline public static function groupEnd () :Void {}
+	inline public static function time (id) :Void {}
+	inline public static function timeEnd (id) :Void {}
+	inline public static function profile (id) :Void {}
+	inline public static function profileEnd (id) :Void {}
 }
 #else //Remove logging
 class Log
 {
-	inline public static function debug (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
-	inline public static function info (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
-	inline public static function warn (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
-	inline public static function error (?message :Dynamic, ?fields :Array<Dynamic>) :Void {}
-	inline public static function assert (condition :Bool, ?message :String, ?fields :Array<Dynamic>) :Void {}
+	inline public static function debug (?message :Dynamic, ?extra :Dynamic) :Void {}
+	inline public static function info (?message :Dynamic, ?extra :Dynamic) :Void {}
+	inline public static function warn (?message :Dynamic, ?extra :Dynamic) :Void {}
+	inline public static function error (?message :Dynamic, ?extra :Dynamic) :Void {}
+	inline public static function assert (condition :Bool, ?message :String, ?extra :Dynamic) :Void {}
+
+	//Webkit extra calls
+	inline public static function count (id :String) :Void {}
+	inline public static function enterDebugger () :Void {}
+	inline public static function group (groupId :String) :Void {}
+	inline public static function groupEnd () :Void {}
+	inline public static function time (id) :Void {}
+	inline public static function timeEnd (id) :Void {}
+	inline public static function profile (id) :Void {}
+	inline public static function profileEnd (id) :Void {}
 }
 #end

@@ -33,8 +33,8 @@ class Step
 	  */
 	public function cb (err :Dynamic, result :Dynamic) :Void
 	{
-		Log.assert(_chain != null, "_chain == null");
-		Log.assert(_chain.length > 0, "_chain.length <= 0");
+		Assert.that(_chain != null, "_chain == null");
+		Assert.that(_chain.length > 0, "_chain.length <= 0");
 		callNext([err, err == null ? result : null]);
 	}
 
@@ -77,17 +77,17 @@ class Step
 		if (_groupedCall == null) {
 			_groupedCall = new GroupedCall(_callId, isParallel, callNext);
 		} else {
-			Log.assert(_groupedCall.isParallel == isParallel, "_groupedCall.isParallel != isParallel");
+			Assert.that(_groupedCall.isParallel == isParallel, "_groupedCall.isParallel != isParallel");
 		}
 		return _groupedCall.createCallback();
 	}
 
 	function callNext (args :Array<Dynamic>) :Void
 	{
-		Log.assert(_chain != null, '_chain != null');
-		Log.assert(_chain.length > 0, '_chain.length > 0');
-		Log.assert(_chain[0] != null, '_chain[0] != null');
-		Log.assert(Reflect.isFunction(_chain[0]), 'Reflect.isFunction(_chain[0])');
+		Assert.that(_chain != null, '_chain != null');
+		Assert.that(_chain.length > 0, '_chain.length > 0');
+		Assert.that(_chain[0] != null, '_chain[0] != null');
+		Assert.that(Reflect.isFunction(_chain[0]), 'Reflect.isFunction(_chain[0])');
 		_callId++;
 		if (_groupedCall != null) {
 			_groupedCall.shutdown();

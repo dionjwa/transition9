@@ -5,6 +5,7 @@ import haxe.macro.Context;
 import haxe.macro.Type;
 
 using Lambda;
+using StringTools;
 
 class ClassMacros
 {
@@ -193,6 +194,7 @@ class ClassMacros
 
 	/**
 	 * Adds the singleton pattern to the class.
+	 * @:build(transition9.macro.ClassMacros.addSingletonPattern()) class C {}
 	 */
 	public static function addSingletonPattern () :Array<Field>
 	{
@@ -200,7 +202,7 @@ class ClassMacros
 		var fields = Context.getBuildFields();
 		var clsType = Context.getLocalClass().get();
 		var cls = ComplexType.TPath({name:clsType.name, pack:clsType.pack, params:[]});
-		var className = clsType.pack.join(".") + "." + clsType.name;
+		var className = clsType.pack.length == 0 ? clsType.name : clsType.pack.join(".") + "." + clsType.name;
 
 		var newExpr = Context.parse("i_ = new " + className + "()", pos);
 

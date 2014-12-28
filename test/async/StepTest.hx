@@ -56,22 +56,22 @@ class StepTest
 				parallel("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				Log.assert(input1 == parallelResult1, "input1 != parallelResult1");
-				Log.assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Assert.that(input1 == parallelResult1, "input1 != parallelResult1");
+				Assert.that(input2 == parallelResult2, "input2 != parallelResult2");
 				delayed(input1 + input2, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				Log.assert(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
+				Assert.that(input == parallelResult1 + parallelResult2, "input == parallelResult1 + parallelResult2");
 				delayed(input, step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				Log.assert(err == null, "err == null");
+				Assert.that(err == null, "err == null");
 				parallelNoDelay("1", step.parallel());
 				parallelNoDelay("2", step.parallel());
 			},
 			function (err :Dynamic, input1 :String, input2 :String) :Void {
-				Log.assert(input1 == parallelResult1, "input1 != parallelResult1");
-				Log.assert(input2 == parallelResult2, "input2 != parallelResult2");
+				Assert.that(input1 == parallelResult1, "input1 != parallelResult1");
+				Assert.that(input2 == parallelResult2, "input2 != parallelResult2");
 
 				delayed(null, step.cb);
 			},
@@ -83,9 +83,9 @@ class StepTest
 				group("4", step.group());
 			},
 			function (err :Dynamic, input :Array<String>) :Void {
-				Log.assert(input.length == 5, "input.length == 5");
+				Assert.that(input.length == 5, "input.length == 5");
 				for (ii in 0...5) {
-					Log.assert(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
+					Assert.that(input[ii] == "g" + ii, 'input[ii] == "g" + ii');
 				}
 				delayed(input.join(", "), step.cb);
 			},
@@ -122,11 +122,11 @@ class StepTest
 				delayedError(step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				Log.assert(err != null, "What happened to the delayed error?");
+				Assert.that(err != null, "What happened to the delayed error?");
 				delayed("ignored", step.cb);
 			},
 			function (err :Dynamic, input :String) :Void {
-				Log.assert(err == null, "err != null");
+				Assert.that(err == null, "err != null");
 				onTestFinish(null);
 			},
 		]);
