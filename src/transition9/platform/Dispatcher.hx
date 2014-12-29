@@ -99,7 +99,6 @@ class Dispatcher
 
 	public function addMessageToQueue(messageId :String, ?payload :Dynamic, ?priority :Float = 0)
 	{
-		trace("addMessageToQueue messageId=" + messageId);
 		var msg = Message.fromPool();
 		msg.messageId = messageId;
 		msg.payload = payload;
