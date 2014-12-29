@@ -1,4 +1,4 @@
-package transition9.macro;
+package t9.macro;
 
 import sys.io.File;
 import haxe.io.StringInput;

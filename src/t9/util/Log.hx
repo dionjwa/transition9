@@ -1,4 +1,4 @@
-package transition9.util;
+package t9.util;
 
 /**
   * Some logging systems are specific for client code (e.g. Flambe) which is problematic for 

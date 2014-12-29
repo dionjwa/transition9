@@ -1,6 +1,6 @@
 package platform;
 
-import transition9.platform.Dispatcher;
+import t9.platform.Dispatcher;
 
 class TestDispatcher extends haxe.unit.TestCase
 {

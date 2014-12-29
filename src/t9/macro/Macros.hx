@@ -6,7 +6,7 @@
  * This file is licensed under the terms of the MIT license, which is included
  * in the License.html file at the root directory of this SDK.
  ******************************************************************************/
-package transition9.macro;
+package t9.macro;
 #if macro
 import haxe.macro.Expr;
 import haxe.macro.Type;

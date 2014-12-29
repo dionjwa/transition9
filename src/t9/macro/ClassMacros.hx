@@ -1,4 +1,4 @@
-package transition9.macro;
+package t9.macro;
 
 import haxe.macro.Expr;
 import haxe.macro.Context;
@@ -63,7 +63,7 @@ class ClassMacros
 					case FFun(f):
 						//Dispose of the _disposables on component removal
 						var expr = Context.parseInlineString("{POOL.put(this);}", pos);
-						transition9.macro.MacroUtil.insertExpressionIntoFunction(expr, f);
+						t9.macro.MacroUtil.insertExpressionIntoFunction(expr, f);
 					default: //Ignored
 				}
 			}
@@ -194,7 +194,7 @@ class ClassMacros
 
 	/**
 	 * Adds the singleton pattern to the class.
-	 * @:build(transition9.macro.ClassMacros.addSingletonPattern()) class C {}
+	 * @:build(t9.macro.ClassMacros.addSingletonPattern()) class C {}
 	 */
 	public static function addSingletonPattern () :Array<Field>
 	{

@@ -1,9 +1,9 @@
-package transition9.platform;
+package t9.platform;
 
 import de.polygonal.ds.PriorityQueue;
 import de.polygonal.ds.Prioritizable;
 
-// import transition9.remoting.jsonrpc.RPC;
+// import t9.remoting.jsonrpc.RPC;
 
 @:coreType abstract Seconds from Float to Float { }
 
@@ -15,7 +15,7 @@ typedef Disposable = {var dispose:Void->Void;};
  * AND integrating long running/cpu blocking processes that
  * would interfere with UI events.
  */
-@:build(transition9.macro.ClassMacros.addSingletonPattern())
+@:build(t9.macro.ClassMacros.addSingletonPattern())
 class Dispatcher
 #if flambe
 	implements flambe.platform.Tickable

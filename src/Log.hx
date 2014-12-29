@@ -1,1 +1,1 @@
-typedef Log=transition9.util.Log;
+typedef Log=t9.util.Log;

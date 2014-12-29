@@ -1,4 +1,4 @@
-package transition9.util;
+package t9.util;
 
 class Assert
 {

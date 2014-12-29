@@ -1,7 +1,7 @@
 package async;
 
-import transition9.async.Step;
-import transition9.async.AsyncLambda;
+import t9.async.Step;
+import t9.async.AsyncLambda;
 
 import js.Node;
 

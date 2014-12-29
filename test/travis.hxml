@@ -1,5 +1,5 @@
 # Nodejs
---macro transition9.macro.BuildMacros.processTemplateFromJson('test/macros/template.tmpl', 'test/macros/Data.json', 'test/macros/out.txt')
+--macro t9.macro.BuildMacros.processTemplateFromJson('test/macros/template.tmpl', 'test/macros/Data.json', 'test/macros/out.txt')
 
 -debug
 #-D flambe_keep_asserts

@@ -1,6 +1,6 @@
 package macros;
 
-@:build(transition9.macro.ClassMacros.addObjectPooling("dispose"))
+@:build(t9.macro.ClassMacros.addObjectPooling("dispose"))
 class PooledClassExtended extends PooledClass
 {
 	public function new()

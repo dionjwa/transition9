@@ -1,4 +1,4 @@
-package transition9.macro;
+package t9.macro;
 
 import haxe.macro.Context;
 
@@ -10,7 +10,7 @@ class BuildMacros
 	  * Returns the haxe.Resource key.
 	  *
 	  * Example:
-	  * var embed = transition9.util.Macros.embedBinaryDataResource("build/server.swf", "battlecomputer", 1234);
+	  * var embed = t9.util.Macros.embedBinaryDataResource("build/server.swf", "battlecomputer", 1234);
 	  * var bytes = haxe.Resource.getBytes("battlecomputer");
 	  * trace("bytes.length=" + (bytes == null ? -1 :bytes.length));
 	  * 
@@ -46,7 +46,7 @@ class BuildMacros
 
 		var bytes = sys.io.File.getBytes(binPath);
 		// if (xorKey > 0) {
-		// 	bytes = transition9.util.BytesUtil.xorBytes(bytes, xorKey);
+		// 	bytes = t9.util.BytesUtil.xorBytes(bytes, xorKey);
 		// }
 
 		haxe.macro.Context.addResource(resourceId, bytes);

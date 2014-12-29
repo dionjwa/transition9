@@ -1,6 +1,6 @@
-package transition9.macro;
+package t9.macro;
 
- @:autoBuild(transition9.macro.ClassMacros.addObjectPooling("dispose"))
+ @:autoBuild(t9.macro.ClassMacros.addObjectPooling("dispose"))
 interface Pooling
 {
 	//Use <Class>.fromPool(); to get an object from the object pool.

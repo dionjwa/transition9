@@ -12,9 +12,9 @@ class TestMacros extends haxe.unit.TestCase
 
 	public function testMacroClassFromRegex() :Void
 	{
-		var thing = transition9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
+		var thing = t9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
 		//Same object, should return exactly the same object without having to rebuild.
-		var thing2 = transition9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
+		var thing2 = t9.macro.JsonObjectBuilder.buildObjectFromRegexTokens("test/macros/regextest.txt", ".*[ \t]id=\"([A-Za-z0-9_]+)\"[ \t].*");
 		assertTrue(thing == thing2);
 
 		assertTrue(thing.testField1 == "testField1");
@@ -32,11 +32,11 @@ class TestMacros extends haxe.unit.TestCase
 
 	public function testTypedefCompletion () :Void
 	{
-		var thing = transition9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Strings.json");
+		var thing = t9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Strings.json");
 		assertTrue(thing.String1 == "String1");
 		assertTrue(thing.String2 == "String2");
 
-		var data = transition9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Data.json");
+		var data = t9.macro.JsonObjectBuilder.buildObjectFromJsonFile("test/macros/Data.json");
 		assertTrue(data.String1 == "a test string");
 		assertTrue(data.ANumber == 55);
 	}

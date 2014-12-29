@@ -26,7 +26,7 @@ class Tests
 			untyped __js__("if (require.resolve('source-map-support')) {require('source-map-support').install();}");
 		} catch (e :Dynamic) {}
 #end
-		transition9.unit.AsyncTestTools.runTestsOn(cast [
+		t9.unit.AsyncTestTools.runTestsOn(cast [
 			async.StepTest,
 		]);
 

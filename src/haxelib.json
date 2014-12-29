@@ -8,11 +8,11 @@
   "description": "A collection of macros, async methods, and general utilities.",
   "license": "MIT",
   "name": "transition9",
-  "releasenote": "Initial release, everything is working correctly",
+  "releasenote": "Initial release",
   "tags": [
     "nodejs",
     "macro"
   ],
-  "url": "https://github.com/dionjwa/transition9",
+  "url": "https://github.com/dionjwa/t9",
   "version": "1.0.0"
 }

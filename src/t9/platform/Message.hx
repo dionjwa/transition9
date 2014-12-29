@@ -1,9 +1,9 @@
-package transition9.platform;
+package t9.platform;
 
 import de.polygonal.ds.Prioritizable;
 
 class Message
-	implements transition9.macro.Pooling
+	implements t9.macro.Pooling
 	implements Prioritizable
 {
 	public var priority:Float;

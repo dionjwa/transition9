@@ -1,4 +1,4 @@
-package transition9.platform;
+package t9.platform;
 
 import jQuery.JQuery;
 import js.Browser;
