@@ -152,7 +152,7 @@ class AsyncTestTools
 						} else {
 							testResults.err = err;
 						}
-						Log.info("onTestFinish");
+						// Log.info("onTestFinish");
 						onTestFinish(err);
 					}
 				}
@@ -166,8 +166,8 @@ class AsyncTestTools
 
 				//Now actually make the call
 				try {
-					Log.info(asyncFieldName);
-					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback, function() {trace("Called back from async " + asyncFieldName);}]);
+					// Log.info(asyncFieldName);
+					Reflect.callMethod(inst, Reflect.field(inst, asyncFieldName), [asyncTestCallback, function() {/**trace("Called back from async " + asyncFieldName);*/}]);
 				} catch (e :Dynamic) {
 					Log.error("    " + className + "::" + asyncFieldName + " Error: " + Std.string(e));
 					if (!finished) {
