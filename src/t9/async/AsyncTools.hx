@@ -16,7 +16,7 @@ class AsyncTools
 			}
 		}
 	}
-	
+
 	/**
 	  * Converts the callback function into a Node.js compatible one, where the first arg is an error.
 	  */
@@ -31,7 +31,7 @@ class AsyncTools
 			}
 		}
 	}
-	
+
 	/**
 	  * To be used inside a callback:
 	  * if (AsyncTools.returnIfError(err, cb)) return;

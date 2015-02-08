@@ -28,12 +28,20 @@ class Log extends flambe.util.PackageLog
 	//Webkit extra calls
 	inline public static function count (id :String) :Void {}
 	inline public static function enterDebugger () :Void {}
-	inline public static function group (groupId :String) :Void {}
-	inline public static function groupEnd () :Void {}
+	inline public static function group (groupId :String) :Void
+	{
+		var groupId = groupId;
+		untyped __js__('console.group(groupId)');
+	}
+	inline public static function groupEnd () :Void
+	{
+		untyped __js__('console.groupEnd()');
+	}
 	inline public static function time (id) :Void {}
 	inline public static function timeEnd (id) :Void {}
 	inline public static function profile (id) :Void {}
 	inline public static function profileEnd (id) :Void {}
+	inline public static function log (v1 :Dynamic, ?v2 :Dynamic, ?v3 :Dynamic, ?v4 :Dynamic, ?v5 :Dynamic) :Void {}
 }
 #elseif (mconsole && !no_console) //This is a pretty good logger in webkit
 class Log
@@ -84,6 +92,15 @@ class Log
 		Console.profileEnd(id);
 	}
 
+	inline public static function log (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		if (extra != null) {
+			Console.log([message, extra], pos);
+		} else {
+			Console.log(message, pos);
+		}
+	}
+
 	inline public static function debug (message :Dynamic, ?extra: Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		if (extra != null) {
@@ -124,6 +141,10 @@ class Log
 class Log
 {
 	inline public static var NO_FORWARD :String = "SCRIPT: ";
+	inline public static function log (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
+	{
+		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
+	}
 	inline public static function debug (?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) :Void
 	{
 		CC.log(NO_FORWARD + message + (extra != null ? " [" + extra.join(", ") + "]" : ""));
@@ -191,6 +212,7 @@ class Log
 #else //Remove logging
 class Log
 {
+	inline public static function log (?message :Dynamic, ?extra :Dynamic) :Void {}
 	inline public static function debug (?message :Dynamic, ?extra :Dynamic) :Void {}
 	inline public static function info (?message :Dynamic, ?extra :Dynamic) :Void {}
 	inline public static function warn (?message :Dynamic, ?extra :Dynamic) :Void {}

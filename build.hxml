@@ -1,14 +1,1 @@
-# Nodejs
--debug
-
--lib nodejs
--lib polygonal-ds
-# -D nodejs
-
--cp src
--cp test
-# -cp lib/mconsole/src
-
-
--main Tests
--js build/nodejs_test.js
+test/travis.hxml
