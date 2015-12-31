@@ -7,11 +7,9 @@
 # -D flambe
 -D travis
 
--lib nodejs
+-D nodejs
+-lib hxnodejs:4.0.1
 -lib polygonal-ds
--lib flambe
-#https://github.com/proletariatgames/haxe-continuation/
--lib continuation
 -lib tink_core
 
 -cp src

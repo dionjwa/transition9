@@ -46,19 +46,19 @@ class TestDispatcher extends haxe.unit.TestCase
 		}
 	}
 
-	#if (flambe && nodejs)
-	public function testDispatcherQueuingFlambe () :Void
-	{
-		var dispatcher = new Dispatcher();
-		var platform :flambe.platform.nodejs.NodePlatform = flambe.platform.nodejs.NodePlatform.instance;
-		platform.stopMainLoop();
-		dispatcher.useFlambeMainloop();
-		var tick = function() {
-			platform.step();
-		}
-		dispatcherQueuing(dispatcher, tick);
-	}
-	#end
+	// #if (flambe && nodejs)
+	// public function testDispatcherQueuingFlambe () :Void
+	// {
+	// 	var dispatcher = new Dispatcher();
+	// 	var platform :flambe.platform.nodejs.NodePlatform = flambe.platform.nodejs.NodePlatform.instance;
+	// 	platform.stopMainLoop();
+	// 	dispatcher.useFlambeMainloop();
+	// 	var tick = function() {
+	// 		platform.step();
+	// 	}
+	// 	dispatcherQueuing(dispatcher, tick);
+	// }
+	// #end
 
 	public function testDispatcherQueuing () :Void
 	{
