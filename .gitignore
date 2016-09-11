@@ -1,0 +1,3 @@
+.haxelib
+build
+test/macros/out.txt

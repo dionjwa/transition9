@@ -1,14 +1,12 @@
-# Nodejs
 -debug
 
--lib nodejs
+-D nodejs
+
+-lib hxnodejs:4.0.9
 -lib polygonal-ds
-# -D nodejs
 
 -cp src
 -cp test
-# -cp lib/mconsole/src
-
 
 -main Tests
 -js build/nodejs_test.js
