@@ -26,12 +26,12 @@ class ReflectUtil
 	static var fieldTypes = new Map<String, CType>();
 	static var getters = new Map<String, Map<String, String>>();
 	static var setters = new Map<String, Map<String, String>>();
-	
+
 	public static function tinyClassName (obj :Dynamic) :String
 	{
 		return tinyName(Type.getClass(obj));
 	}
-	
+
 	inline public static function tinyName (cls :Class<Dynamic>) :String
 	{
 		#if debug
@@ -43,17 +43,17 @@ class ReflectUtil
 		return tokens[tokens.length - 1];
 		#end
 	}
-	
+
 	public static function getClassName (obj :Dynamic) :String
 	{
 		return Type.getClassName(getClass(obj));
 	}
-	
+
 	public static function isSameClass (obj1 :Dynamic, obj2 :Dynamic) :Bool
 	{
 		return getClass(obj1) == getClass(obj2);
 	}
-	
+
 	public static function hasStaticMetadata (cls :Class<Dynamic>, field :String, metaId :String) :Bool
 	{
 		var m = haxe.rtti.Meta.getStatics(cls);
@@ -64,7 +64,7 @@ class ReflectUtil
 		} 
 		return false;
 	}
-	
+
 	/** Alt Std.is implementation for cpp while Std.is bug exists */
 	public static function is (instance :Dynamic, type :String) :Bool
 	{
@@ -88,7 +88,7 @@ class ReflectUtil
 		}
 		return false;
 	}
-	
+
 	public static function hasSuperClass (cls :Class<Dynamic>, superClass :Class<Dynamic>) :Bool
 	{
 		var sc = Type.getSuperClass(cls);
@@ -100,7 +100,7 @@ class ReflectUtil
 		}
 		return false;
 	}
-	
+
 	public static function getClass (obj :Dynamic) :Dynamic//Class<Dynamic>
 	{
 		switch (Type.typeof(obj)) {
@@ -125,7 +125,7 @@ class ReflectUtil
 				return null;
 		}
 	}
-	
+
 	public static function getRttiTypeTree(cls : Class <Dynamic> ) :haxe.rtti.TypeTree
 	{
 		var name = Type.getClassName(cls);
@@ -137,13 +137,13 @@ class ReflectUtil
 			rttiTypeTree.set(name, null);
 			return null;
 		}
-		
+	
 		var x = new haxe.rtti.XmlParser().processElement(Xml.parse(rtti).firstElement());
-		
+	
 		rttiTypeTree.set(name, x);
 		return x;
 	}
-	
+
 	public static function getClassdef (cls : Class< Dynamic>) :Classdef
 	{
 		var name = Type.getClassName(cls);
@@ -155,41 +155,41 @@ class ReflectUtil
 		if (typeTree == null) {
 			return null;
 		}
-		
+	
 		var cdef :Classdef = switch (typeTree) {
 			case TClassdecl(c): c;
 			default: null;
 		}
-		
+	
 		cacheClassdef.set(name, cdef);
 		return cdef;
 	}
-	
+
 	public static function getFieldType (cls : Class< Dynamic>, field :String) :CType
 	{
 		var id = Type.getClassName(cls) + "." + field;
 		if (fieldTypes.exists(id)) {
 			return fieldTypes.get(id);
 		}
-		
+	
 		var cdef :Classdef = getClassdef(cls);
 		if (cdef == null) {
 			return null;
 		}
-		
+	
 		for (f in cdef.fields) {
 			if (f.name == field) {
 				fieldTypes.set(id, f.type);
 				return f.type;
 			}
 		}
-		
+	
 		var sp = Type.getSuperClass(cls);
 		var type = if (sp == null) null else getFieldType(sp, field);
 		fieldTypes.set(id, type);
 		return type;
 	}
-	
+
 	public static function getVarFieldType (cls : Class< Dynamic>, field :String) :Class<Dynamic>
 	{
 		var type = getFieldType(cls, field);
@@ -203,7 +203,7 @@ class ReflectUtil
 		}
 		return null;
 	}
-	
+
 	public static function field (obj :Dynamic, field :String) :Dynamic
 	{
 		processGetterSetterMeta(Type.getClass(obj));
@@ -213,7 +213,7 @@ class ReflectUtil
 			return Reflect.field(obj, field);
 		}
 	}
-	
+
 	public static function setField (obj :Dynamic, field :String, val :Dynamic) :Void
 	{
 		processGetterSetterMeta(Type.getClass(obj));
@@ -223,17 +223,17 @@ class ReflectUtil
 			Reflect.setField(obj, field, val);
 		}
 	}
-	
+
 	static function processGetterSetterMeta (cls :Class<Dynamic>) :Void
 	{
 		if (getters.get(Type.getClassName(cls)) != null) {
 			return;
 		}
 		var className = Type.getClassName(cls);
-		
+	
 		getters.set(className, new Map());
 		setters.set(className, new Map());
-		
+	
 		var rtti = ReflectUtil.getRttiTypeTree(cls);
 		if (rtti == null) {
 			// Log.info("No rtti type tree for " + Type.getClassName(cls));
@@ -241,18 +241,18 @@ class ReflectUtil
 		}
 		switch(rtti) {
 			case TClassdecl(typeInfo):
-			
+		
 				//Recurse into super classes.
 				if (Type.getSuperClass(cls) != null) {
 					processGetterSetterMeta(Type.getSuperClass(cls));
 				}
-			
+		
 				for (fieldMeta in typeInfo.fields) {
 					switch(fieldMeta.get) {
 						case RCall(m): getters.get(className).set(fieldMeta.name, m);
 						default:
 					}
-					
+				
 					switch(fieldMeta.set) {
 						case RCall(m): setters.get(className).set(fieldMeta.name, m);
 						default:
@@ -260,7 +260,7 @@ class ReflectUtil
 				}
 			default:
 		}
-		
+	
 		//Add superclass fields
 		if (Type.getSuperClass(cls) != null) {
 			var superClassName = Type.getClassName(Type.getSuperClass(cls));
@@ -276,6 +276,6 @@ class ReflectUtil
 			}
 		}
 	}
-	
+
 	static var EMPTY_ARRAY :Array<Dynamic> = new Array();
 }

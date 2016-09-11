@@ -15,7 +15,7 @@ class MetaUtil
 		if (meta == null) {
 			return false;
 		}
-		
+	
 		var hasMeta = Reflect.hasField(meta, fieldName) && Reflect.hasField(Reflect.field(meta, fieldName), metaLabel);
 		if (!hasMeta && Type.getSuperClass(cls) != null) {
 			return isFieldMetaData(Type.getSuperClass(cls), fieldName, metaLabel);
@@ -23,7 +23,7 @@ class MetaUtil
 			return hasMeta;
 		}
 	}
-	
+
 	/** Assumes we have checked with isFieldMetaData */
 	public static function getFieldMetaData (cls :Class<Dynamic>, fieldName :String, metaLabel :String) :Dynamic
 	{

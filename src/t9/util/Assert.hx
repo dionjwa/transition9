@@ -23,7 +23,7 @@ class Assert
         throw error;
 	}
 #else
-	inline public static function that(condition :Bool, message :Dynamic, ?extra :Dynamic) {}
-	inline public static function fail(message :String, ?extra :Dynamic) {}
+	inline public static function that(condition :Bool, ?message :Dynamic, ?extra :Dynamic, ?pos :haxe.PosInfos) {}
+	inline public static function fail(message :String, ?extra :Dynamic, ?pos :haxe.PosInfos) {}
 #end
 }

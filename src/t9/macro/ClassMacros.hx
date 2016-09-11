@@ -73,14 +73,14 @@ class ClassMacros
 		var poolingClassName = clsType.name + "Pool";
 		var poolingClassFields = [];
 
-		poolingClassFields.push({ name : "MAX_SIZE", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro -1), pos : pos });
-		poolingClassFields.push({ name : "INTERNAL_POOLING_HEAD", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(cls, null), pos : pos });
-		poolingClassFields.push({ name : "POOL_SIZE", doc : null, meta : [], access : [APublic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro 0), pos : pos });
+		poolingClassFields.push({ name : "MAX_SIZE", doc : null, meta : [], access : [APublic, AStatic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro -1), pos : pos });
+		poolingClassFields.push({ name : "INTERNAL_POOLING_HEAD", doc : null, meta : [], access : [APublic, AStatic], kind : FieldType.FVar(cls, null), pos : pos });
+		poolingClassFields.push({ name : "POOL_SIZE", doc : null, meta : [], access : [APublic, AStatic], kind : FieldType.FVar(MacroConstants.TYPE_INT, macro 0), pos : pos });
 		// var isPoolingSubclass = MacroUtil.classContainsField(clsType, "internalIsInPool");
 		var block = Context.parse(
 			"{"
 			+"	function public__new() {}"
-			+"	function public__get() :" + clsType.name
+			+"	function public__static__get() :" + clsType.name
 			+"	{"
 			+"		var obj = if (INTERNAL_POOLING_HEAD == null) {"
 			+"			new " + clsType.name + "();"
@@ -93,7 +93,7 @@ class ClassMacros
 			+"		};"
 			+"		return obj;"
 			+"	}"
-			+"	function public__put(obj :" + clsType.name + ")"
+			+"	function public__static__put(obj :" + clsType.name + ")"
 			+"	{"
 #if debug
 			+"		var current = INTERNAL_POOLING_HEAD;"
@@ -107,7 +107,7 @@ class ClassMacros
 			+"		INTERNAL_POOLING_HEAD = obj;"
 			+"		POOL_SIZE++;"
 			+"	}"
-			+"	function public__isInPool(obj :" + clsType.name + ")"
+			+"	function public__static__isInPool(obj :" + clsType.name + ")"
 			+"	{"
 			+"		var current = INTERNAL_POOLING_HEAD;"
 			+"		while(current != null) {"
@@ -135,7 +135,8 @@ class ClassMacros
 
 		fields = fields.concat(MacroUtil.buildFields(Context.parse(
 			"{"
-			+"	var public__static__POOL :" + poolingClassName + " = new " + poolingClassName + "();"
+			// +"	var public__static__POOL :" + poolingClassName + " = new " + poolingClassName + "();"
+			+"	var public__static__POOL = " + poolingClassName + ";"
 			+"	function public__inline__static__fromPool()"
 			+"	{"
 			+"		return POOL.get();"

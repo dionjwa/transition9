@@ -3,11 +3,10 @@
 
 -debug
 -D travis
+-D nodejs
 
 -lib hxnodejs:4.0.9
 -lib polygonal-ds
-# -lib flambe
-# -lib tink_core
 
 -cp src
 -cp test
